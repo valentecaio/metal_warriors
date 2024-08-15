@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://bxyhxlcg6yp4t"]
+
+[ext_resource type="Script" path="res://scripts/bullet_drache.gd" id="1_emspq"]
+[ext_resource type="Texture2D" uid="uid://oxpmy4vxenor" path="res://assets/bullets/bullet_drache.png" id="2_e0ayd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mn1yc"]
+atlas = ExtResource("2_e0ayd")
+region = Rect2(0, 0, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2n6kv"]
+atlas = ExtResource("2_e0ayd")
+region = Rect2(14, 0, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfphu"]
+atlas = ExtResource("2_e0ayd")
+region = Rect2(28, 0, 14, 14)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_foap3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mn1yc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mn1yc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2n6kv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yfphu")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ac0iw"]
+radius = 3.5
+
+[node name="StaticBody2D" type="StaticBody2D"]
+script = ExtResource("1_emspq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-0.5, -0.5)
+sprite_frames = SubResource("SpriteFrames_foap3")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ac0iw")
+disabled = true

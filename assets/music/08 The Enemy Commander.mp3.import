@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bwfl1nb6tjaiq"
+path="res://.godot/imported/08 The Enemy Commander.mp3-c9776ed7818b9ec096b14040789d6a16.mp3str"
+
+[deps]
+
+source_file="res://assets/music/08 The Enemy Commander.mp3"
+dest_files=["res://.godot/imported/08 The Enemy Commander.mp3-c9776ed7818b9ec096b14040789d6a16.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

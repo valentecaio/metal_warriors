@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dhjq3j40nib73"
+path="res://.godot/imported/11 Combat Menu.mp3-8719e164825b2168f80f0416ddd380c1.mp3str"
+
+[deps]
+
+source_file="res://assets/music/11 Combat Menu.mp3"
+dest_files=["res://.godot/imported/11 Combat Menu.mp3-8719e164825b2168f80f0416ddd380c1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
