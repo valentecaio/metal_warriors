@@ -214,8 +214,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gylwh"]
-radius = 14.0
-height = 40.0
+radius = 13.0
+height = 46.0
 
 [node name="RobotDracheRed" type="CharacterBody2D"]
 script = ExtResource("1_xq8l0")
@@ -223,10 +223,8 @@ script = ExtResource("1_xq8l0")
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 2)
 sprite_frames = SubResource("SpriteFrames_4e41d")
-animation = &"idle"
+animation = &"move_up"
 autoplay = "idle"
-frame = 2
-frame_progress = 0.566804
 
 [node name="ShotAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_g5o30")
@@ -235,5 +233,6 @@ frame = 1
 frame_progress = 0.37448
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_gylwh")
