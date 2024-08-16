@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends Area2D
 
 @export var speed = 400
 @export var fire_frequency = 8 # shots per second
@@ -10,9 +10,19 @@ extends StaticBody2D
 var direction = Vector2(1,0)
 
 func _ready():
-  # add error to bullet direction (random error between -10 and 10 degrees)
-  var rand_angle = deg_to_rad(randf_range(-10, 10))
-  direction = direction.rotated(rand_angle)
+  # add random error to bullet direction (between -10 and 10 degrees)
+  direction = direction.rotated(deg_to_rad(randf_range(-10, 10)))
+
 
 func _process(delta):
   position = position + speed * direction * delta
+
+
+# collision detection
+func _on_body_entered(body):
+  speed = 0
+  animated_sprite.play("hit")
+
+
+func _on_animated_sprite_2d_animation_finished():
+  queue_free()

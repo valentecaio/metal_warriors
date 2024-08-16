@@ -27,9 +27,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mn1yc")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_2n6kv")
 }, {
 "duration": 1.0,
@@ -41,17 +38,20 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ac0iw"]
-radius = 3.5
+radius = 2.5
 
-[node name="BulletDrache" type="StaticBody2D"]
-collision_layer = 2
-collision_mask = 2
+[node name="BulletDrache" type="Area2D"]
+collision_layer = 4
 script = ExtResource("1_emspq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-0.5, -0.5)
 sprite_frames = SubResource("SpriteFrames_foap3")
+animation = &"hit"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ac0iw")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

@@ -6,14 +6,14 @@ extends CharacterBody2D
 @onready var shot_animated_sprite = $ShotAnimatedSprite2D
 
 const SQRT2 = 1.41421356
-const BULLET = preload("res://scenes/bullet_drache.tscn")
+const bullet_scene = preload("res://scenes/bullet_drache.tscn")
 
 var time_to_next_shot = 0.0
 
 # angle in degrees
 func fire(angle):
   var direction = Vector2(1.0, 0.0).rotated(deg_to_rad(angle)).normalized()
-  var bullet = BULLET.instantiate()
+  var bullet = bullet_scene.instantiate()
   bullet.direction = direction
   bullet.position = global_position + Vector2(0,5)
   get_parent().add_child(bullet)
