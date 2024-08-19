@@ -1,14 +1,16 @@
 extends CharacterBody2D
 
 @export var speed = 250.0
+@export var acceleration = 3
+@export var friction = 600
 
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var shot_animated_sprite = $ShotAnimatedSprite2D
 
-const SQRT2 = 1.41421356
 const bullet_scene = preload("res://scenes/bullet_drache.tscn")
 
 var time_to_next_shot = 0.0
+
 
 # angle in degrees
 func fire(angle):
@@ -19,35 +21,41 @@ func fire(angle):
   get_parent().add_child(bullet)
   time_to_next_shot = 1.0/bullet.fire_frequency
 
+
+func eval_velocity(initial_velocity, input, delta):
+  if input:
+    return initial_velocity + input * speed * delta * acceleration
+  else:
+    return move_toward(initial_velocity, 0, friction * delta)
+
+
 func _physics_process(delta):
   time_to_next_shot -= delta
 
   # power dive
   if Input.is_action_pressed("shoulder_right"):
-    velocity.x = move_toward(velocity.x, 0, speed)
-    velocity.y = 2*speed
     body_animated_sprite.play("power_dive")
+    shot_animated_sprite.visible = false
+    var dir = Vector2.DOWN
+    velocity.x = eval_velocity(velocity.x, dir.x, delta)
+    velocity.y = eval_velocity(velocity.y, dir.y, delta)
+    velocity.y = clamp(velocity.y, 0, 2*speed)
     move_and_slide()
     return
 
   # movement
-  var direction_hor = Input.get_axis("left", "right")
-  var direction_ver = Input.get_axis("up", "down")
-  if direction_hor and direction_ver: # avoid going faster diagonally
-    direction_hor /= SQRT2
-    direction_ver /= SQRT2
-  velocity.x = (direction_hor * speed) if direction_hor else move_toward(velocity.x, 0, speed)
-  velocity.y = (direction_ver * speed) if direction_ver else move_toward(velocity.y, 0, speed)
-
-  # movement animation
-  if direction_hor:
+  var dir = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()
+  if dir.x:
     body_animated_sprite.play("move_right")
-    body_animated_sprite.flip_h = direction_hor < 0 # flip animation
-  elif direction_ver:
-    body_animated_sprite.play("move_up" if (direction_ver < 0) else "move_down")
+    body_animated_sprite.flip_h = dir.x < 0 # flip animation
+  elif dir.y > 0:
+    body_animated_sprite.play("move_up")
+  elif dir.y < 0:
+    body_animated_sprite.play("move_down")
   else:
     body_animated_sprite.play("idle")
-
+  velocity.x = clamp(eval_velocity(velocity.x, dir.x, delta), -speed, speed)
+  velocity.y = clamp(eval_velocity(velocity.y, dir.y, delta), -speed, speed)
   move_and_slide()
 
   # shooting (the order of elifs matters)

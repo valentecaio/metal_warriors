@@ -132,6 +132,7 @@ sources/0 = SubResource("TileSetAtlasSource_hwpc8")
 [node name="RobotDracheRed" parent="." instance=ExtResource("1_8x0vw")]
 z_index = 10
 position = Vector2(288, 319)
+speed = 250.0
 
 [node name="Camera2D" type="Camera2D" parent="RobotDracheRed"]
 position = Vector2(11, -24)
