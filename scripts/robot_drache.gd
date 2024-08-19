@@ -19,9 +19,16 @@ func fire(angle):
   get_parent().add_child(bullet)
   time_to_next_shot = 1.0/bullet.fire_frequency
 
-
 func _physics_process(delta):
   time_to_next_shot -= delta
+
+  # power dive
+  if Input.is_action_pressed("shoulder_right"):
+    velocity.x = move_toward(velocity.x, 0, speed)
+    velocity.y = 2*speed
+    body_animated_sprite.play("power_dive")
+    move_and_slide()
+    return
 
   # movement
   var direction_hor = Input.get_axis("left", "right")
@@ -40,6 +47,8 @@ func _physics_process(delta):
     body_animated_sprite.play("move_up" if (direction_ver < 0) else "move_down")
   else:
     body_animated_sprite.play("idle")
+
+  move_and_slide()
 
   # shooting (the order of elifs matters)
   shot_animated_sprite.visible = true
@@ -67,5 +76,3 @@ func _physics_process(delta):
     shot_animated_sprite.position = Vector2(0, 5) + Vector2(12, 0).rotated(deg_to_rad(angle))
     shot_animated_sprite.rotation = deg_to_rad(angle + 90) # add 90 because base sprite points upwards
     fire(angle)
-
-  move_and_slide()
