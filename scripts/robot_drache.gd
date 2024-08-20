@@ -6,10 +6,18 @@ extends CharacterBody2D
 
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var shot_animated_sprite = $ShotAnimatedSprite2D
+@onready var default_collision_shape = $DefaultCollisionShape2D
+@onready var power_dive_collision_shape = $PowerDiveCollisionShape2D
 
 const bullet_scene = preload("res://scenes/bullet_drache.tscn")
 
 var time_to_next_shot = 0.0
+
+var power_dive: bool:
+  set(value):
+    power_dive = value
+    default_collision_shape.disabled = value
+    power_dive_collision_shape.disabled = !value
 
 
 # angle in degrees
@@ -22,6 +30,7 @@ func fire(angle):
   time_to_next_shot = 1.0/bullet.fire_frequency
 
 
+# change velocity with inertia
 func eval_velocity(initial_velocity, input, delta):
   if input:
     return initial_velocity + input * speed * delta * acceleration
@@ -33,7 +42,9 @@ func _physics_process(delta):
   time_to_next_shot -= delta
 
   # power dive
-  if Input.is_action_pressed("shoulder_right"):
+  power_dive = Input.is_action_pressed("shoulder_right")
+  print(power_dive)
+  if power_dive:
     body_animated_sprite.play("power_dive")
     shot_animated_sprite.visible = false
     var dir = Vector2.DOWN
@@ -42,6 +53,8 @@ func _physics_process(delta):
     velocity.y = clamp(velocity.y, 0, 2*speed)
     move_and_slide()
     return
+
+  ### else ###
 
   # movement
   var dir = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()

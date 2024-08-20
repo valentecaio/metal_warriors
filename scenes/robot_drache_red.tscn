@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://0vhoym1v8uqs"]
+[gd_scene load_steps=27 format=3 uid="uid://0vhoym1v8uqs"]
 
 [ext_resource type="Texture2D" uid="uid://dt2n38b74amr7" path="res://assets/robots/drache_red.png" id="1_shs52"]
 [ext_resource type="Script" path="res://scripts/robot_drache.gd" id="1_xq8l0"]
@@ -236,6 +236,10 @@ animations = [{
 radius = 13.0
 height = 46.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3b4k"]
+radius = 14.0
+height = 42.0
+
 [node name="RobotDracheRed" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_xq8l0")
@@ -254,7 +258,15 @@ autoplay = "default"
 frame = 1
 frame_progress = 0.37448
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_gylwh")
+
+[node name="PowerDiveCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0.999996)
+rotation = -3.14159
+shape = SubResource("CapsuleShape2D_o3b4k")
+disabled = true
+
+[node name="Collision" type="Node" parent="."]
