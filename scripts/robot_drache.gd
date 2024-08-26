@@ -43,14 +43,12 @@ func _physics_process(delta):
 
   # power dive
   power_dive = Input.is_action_pressed("shoulder_right")
-  print(power_dive)
   if power_dive:
     body_animated_sprite.play("power_dive")
     shot_animated_sprite.visible = false
     var dir = Vector2.DOWN
     velocity.x = eval_velocity(velocity.x, dir.x, delta)
-    velocity.y = eval_velocity(velocity.y, dir.y, delta)
-    velocity.y = clamp(velocity.y, 0, 2*speed)
+    velocity.y = clamp(eval_velocity(velocity.y, dir.y, delta), 0, 2*speed)
     move_and_slide()
     return
 
@@ -72,26 +70,17 @@ func _physics_process(delta):
   move_and_slide()
 
   # shooting (the order of elifs matters)
-  shot_animated_sprite.visible = true
-  var angle
-  if   Input.is_action_pressed("button_south") and Input.is_action_pressed("button_east"):
-    angle = 45
-  elif Input.is_action_pressed("button_south") and Input.is_action_pressed("button_west"):
-    angle = 135
-  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_west"):
-    angle = 225
-  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_east"):
-    angle = 315
-  elif Input.is_action_pressed("button_east"):
-    angle = 0
-  elif Input.is_action_pressed("button_south"):
-    angle = 90
-  elif Input.is_action_pressed("button_west"):
-    angle = 180
-  elif Input.is_action_pressed("button_north"):
-    angle = 270
-  else:
-    shot_animated_sprite.visible = false
+  var angle = null
+  if   Input.is_action_pressed("button_south") and Input.is_action_pressed("button_east"): angle = 45
+  elif Input.is_action_pressed("button_south") and Input.is_action_pressed("button_west"): angle = 135
+  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_west"): angle = 225
+  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_east"): angle = 315
+  elif Input.is_action_pressed("button_east"):  angle = 0
+  elif Input.is_action_pressed("button_south"): angle = 90
+  elif Input.is_action_pressed("button_west"):  angle = 180
+  elif Input.is_action_pressed("button_north"): angle = 270
+
+  shot_animated_sprite.visible = angle != null
 
   if shot_animated_sprite.visible and time_to_next_shot < 0:
     shot_animated_sprite.position = Vector2(0, 5) + Vector2(12, 0).rotated(deg_to_rad(angle))
