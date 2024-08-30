@@ -1,7 +1,7 @@
 [gd_scene load_steps=27 format=3 uid="uid://0vhoym1v8uqs"]
 
 [ext_resource type="Texture2D" uid="uid://dt2n38b74amr7" path="res://assets/robots/drache_red.png" id="1_shs52"]
-[ext_resource type="Script" path="res://scripts/robot_drache.gd" id="1_xq8l0"]
+[ext_resource type="Script" path="res://scripts/robots/drache.gd" id="1_xq8l0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d3ypd"]
 atlas = ExtResource("1_shs52")

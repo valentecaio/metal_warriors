@@ -1,18 +1,18 @@
 [gd_scene load_steps=8 format=3 uid="uid://bxyhxlcg6yp4t"]
 
-[ext_resource type="Script" path="res://scripts/bullet_drache.gd" id="1_emspq"]
-[ext_resource type="Texture2D" uid="uid://oxpmy4vxenor" path="res://assets/bullets/bullet_drache.png" id="2_e0ayd"]
+[ext_resource type="Script" path="res://scripts/bullets/energy_cannon.gd" id="1_xu1og"]
+[ext_resource type="Texture2D" uid="uid://oxpmy4vxenor" path="res://assets/bullets/energy_cannon.png" id="2_w3gmu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mn1yc"]
-atlas = ExtResource("2_e0ayd")
+atlas = ExtResource("2_w3gmu")
 region = Rect2(0, 0, 14, 14)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2n6kv"]
-atlas = ExtResource("2_e0ayd")
+atlas = ExtResource("2_w3gmu")
 region = Rect2(14, 0, 14, 14)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yfphu"]
-atlas = ExtResource("2_e0ayd")
+atlas = ExtResource("2_w3gmu")
 region = Rect2(28, 0, 14, 14)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_foap3"]
@@ -42,7 +42,7 @@ radius = 2.5
 
 [node name="BulletDrache" type="Area2D"]
 collision_layer = 4
-script = ExtResource("1_emspq")
+script = ExtResource("1_xu1og")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-0.5, -0.5)

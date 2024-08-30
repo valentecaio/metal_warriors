@@ -1,0 +1,49 @@
+Mech    Ability         Category        Strength        Misc
+
+Nitro
+        Energy Rifle    WEA             Medium          Basic ranged
+        Beam Sabre      WEA             Very High       Close combat
+        Energy Shield   SHI             High
+        Remote Shield   SHI             Medium
+        Flight Pack     MSC             ---             Allows flight
+
+Havoc
+        Machine Gun     WEA             Medium          Scatters slightly
+        Blade Chain     WEA             Medium-High     Close Combat
+        Forearm Shield  SHI             High
+        Jump Jets       MSC             ---             Delayed fall
+        Zip Roller      MSC             ---             Speed Boost
+
+Ballistic
+        Machine Gun     WEA             Medium-Low      Scatters slightly
+        Plasma Cannon   WEA             Med to V High   Hold button to charge
+        Power Spin      WEA             Medium-High     Ram opponent
+                        MSC             ---             Dash away
+        Shield          SHI             High
+        Jump            MSC             ---             Basic jump
+
+Drache
+        Energy cannon   WEA             Medium-Low      Aim instantly
+        Power Dive      WEA             Extreme         Can kill in one hit
+
+Prometheus
+        Main Cannon     WEA             Very High       Infinite range
+        Flame Thrower   WEA             Medium-High     Sustained damage
+                        SHI             Medium          Blocks basic shots
+        Air Mines       WEA             High            Float upwards
+        Energy Shield   SHI             Medium-Low      Covers entire body
+        Bridge Builder  MSC             ---             Build bridges
+
+Spider
+        Energy Cannon   WEA             Medium-Low      Scatters slightly
+        Drone Strike    WEA             Medium          Close combat
+        Web             MSC             ---             Entrap opponent
+                        SHI             Medium          Block projectiles
+        Cloak           MSC             ---             Become invisible
+        Wall Walk       MSC             ---             Cling to walls
+        Jump            MSC             ---             Basic jump
+
+Pilot (out of mech)
+        Pistol          WEA             Negligible      Only hurts people out
+                                                        of mech
+        Jet Pack        MSC             ---             Allows flight

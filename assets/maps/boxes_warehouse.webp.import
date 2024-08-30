@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://oxpmy4vxenor"
-path="res://.godot/imported/bullet_drache.png-b7db1f727fc0cc2e8d192127cb822502.ctex"
+uid="uid://nmy030i3t1qj"
+path="res://.godot/imported/boxes_warehouse.webp-534556a816afc28cc30ee939791866b6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bullets/bullet_drache.png"
-dest_files=["res://.godot/imported/bullet_drache.png-b7db1f727fc0cc2e8d192127cb822502.ctex"]
+source_file="res://assets/maps/boxes_warehouse.webp"
+dest_files=["res://.godot/imported/boxes_warehouse.webp-534556a816afc28cc30ee939791866b6.ctex"]
 
 [params]
 
