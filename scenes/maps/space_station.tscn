@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=4 uid="uid://ndmu4y4a5qri"]
+[gd_scene load_steps=7 format=4 uid="uid://ndmu4y4a5qri"]
 
-[ext_resource type="PackedScene" uid="uid://0vhoym1v8uqs" path="res://scenes/robots/drache_red.tscn" id="1_fra3j"]
+[ext_resource type="PackedScene" uid="uid://0vhoym1v8uqs" path="res://scenes/robots/drache.tscn" id="1_fra3j"]
 [ext_resource type="Texture2D" uid="uid://ddipvsf5sjwtl" path="res://assets/maps/space_station.png" id="2_7p05h"]
+[ext_resource type="PackedScene" uid="uid://dkka816m1muwx" path="res://scenes/robots/nitro.tscn" id="2_7y4d2"]
 [ext_resource type="AudioStream" uid="uid://bwfl1nb6tjaiq" path="res://assets/music/08 The Enemy Commander.mp3" id="3_kdisv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwpc8"]
@@ -140,22 +141,29 @@ sources/0 = SubResource("TileSetAtlasSource_hwpc8")
 
 [node name="MapSpaceStation" type="Node2D"]
 
-[node name="RobotDracheRed" parent="." instance=ExtResource("1_fra3j")]
+[node name="Nitro" parent="." instance=ExtResource("2_7y4d2")]
+position = Vector2(366, 311)
+
+[node name="Camera2D" type="Camera2D" parent="Nitro"]
+position = Vector2(0, -16)
+zoom = Vector2(3, 3)
+
+[node name="Drache" parent="." instance=ExtResource("1_fra3j")]
 z_index = 10
 position = Vector2(288, 319)
 
-[node name="Camera2D" type="Camera2D" parent="RobotDracheRed"]
-position = Vector2(11, -24)
+[node name="Camera2D" type="Camera2D" parent="Drache"]
+position = Vector2(0, -16)
 zoom = Vector2(3, 3)
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 show_behind_parent = true
 offset_top = -10.0
 offset_right = 1088.0
 offset_bottom = 659.0
 texture = ExtResource("2_7p05h")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_kdisv")
 autoplay = true
 

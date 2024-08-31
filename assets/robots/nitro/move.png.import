@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0xkqgsc3vfxf"
-path="res://.godot/imported/nitro_blue.png-c96cdd50b00735d4af32ecbd761444d4.ctex"
+uid="uid://ndvw7fjva2u8"
+path="res://.godot/imported/move.png-2500091d64305e6c96d118d9abba27b4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/robots/nitro_blue.png"
-dest_files=["res://.godot/imported/nitro_blue.png-c96cdd50b00735d4af32ecbd761444d4.ctex"]
+source_file="res://assets/robots/nitro/move.png"
+dest_files=["res://.godot/imported/move.png-2500091d64305e6c96d118d9abba27b4.ctex"]
 
 [params]
 
