@@ -71,14 +71,22 @@ func _physics_process(delta):
 
   # shooting (the order of elifs matters)
   var angle = null
-  if   Input.is_action_pressed("button_south") and Input.is_action_pressed("button_east"): angle = 45
-  elif Input.is_action_pressed("button_south") and Input.is_action_pressed("button_west"): angle = 135
-  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_west"): angle = 225
-  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_east"): angle = 315
-  elif Input.is_action_pressed("button_east"):  angle = 0
-  elif Input.is_action_pressed("button_south"): angle = 90
-  elif Input.is_action_pressed("button_west"):  angle = 180
-  elif Input.is_action_pressed("button_north"): angle = 270
+  if   Input.is_action_pressed("button_south") and Input.is_action_pressed("button_east"):
+    angle = 45
+  elif Input.is_action_pressed("button_south") and Input.is_action_pressed("button_west"):
+    angle = 135
+  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_west"):
+    angle = 225
+  elif Input.is_action_pressed("button_north") and Input.is_action_pressed("button_east"):
+    angle = 315
+  elif Input.is_action_pressed("button_east"):
+    angle = 0
+  elif Input.is_action_pressed("button_south"):
+    angle = 90
+  elif Input.is_action_pressed("button_west"):
+    angle = 180
+  elif Input.is_action_pressed("button_north"):
+    angle = 270
 
   shot_animated_sprite.visible = angle != null
 

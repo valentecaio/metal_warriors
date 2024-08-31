@@ -1,6 +1,7 @@
-[gd_scene load_steps=29 format=3 uid="uid://dkka816m1muwx"]
+[gd_scene load_steps=30 format=3 uid="uid://dkka816m1muwx"]
 
 [ext_resource type="Texture2D" uid="uid://ndvw7fjva2u8" path="res://assets/robots/nitro/move.png" id="1_0fjtm"]
+[ext_resource type="Script" path="res://scripts/robots/nitro.gd" id="1_gh4w8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sqnd3"]
 atlas = ExtResource("1_0fjtm")
@@ -62,9 +63,9 @@ region = Rect2(48, 6, 42, 46)
 atlas = ExtResource("1_0fjtm")
 region = Rect2(92, 6, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bkanr"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ho8u"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(136, 6, 42, 46)
+region = Rect2(133, 6, 42, 46)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pon8n"]
 atlas = ExtResource("1_0fjtm")
@@ -99,7 +100,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"fly",
-"speed": 10.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -146,7 +147,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_28frx")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bkanr")
+"texture": SubResource("AtlasTexture_7ho8u")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pon8n")
@@ -180,69 +181,72 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Animation" id="Animation_06104"]
-resource_name = "cannon_walk"
-length = 0.500003
-loop_mode = 1
-step = 0.03125
+[sub_resource type="Animation" id="Animation_cip85"]
+length = 0.133337
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("CannonAnimatedSprite2D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [Vector2(12, -4), Vector2(11, -3), Vector2(12, -4), Vector2(13, -3), Vector2(12, -4)]
-}
-
-[sub_resource type="Animation" id="Animation_ea542"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CannonAnimatedSprite2D:position")
+tracks/0/path = NodePath("CannonRotation/CannonAnimatedSprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2(13, -2)]
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_377c4"]
+[sub_resource type="Animation" id="Animation_qjsvr"]
+resource_name = "cannon_walk"
+length = 0.125003
+loop_mode = 1
+step = 0.03125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CannonRotation/CannonAnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0625),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2(0, 0), Vector2(0, -1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7lejm"]
 _data = {
-"RESET": SubResource("Animation_ea542"),
-"cannon_walk": SubResource("Animation_06104")
+"RESET": SubResource("Animation_cip85"),
+"cannon_walk": SubResource("Animation_qjsvr")
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xfchl"]
-radius = 11.0
+radius = 12.0
 height = 42.0
 
 [node name="Nitro" type="CharacterBody2D"]
+z_index = 10
+script = ExtResource("1_gh4w8")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sc3kb")
 animation = &"walk"
-autoplay = "walk"
-frame_progress = 0.599664
 
-[node name="CannonAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(13, -2)
+[node name="Cannon" type="Node2D" parent="."]
+position = Vector2(2, -8)
+
+[node name="CannonRotation" type="Node2D" parent="Cannon"]
+position = Vector2(11, 4)
+
+[node name="CannonAnimatedSprite2D" type="AnimatedSprite2D" parent="Cannon/CannonRotation"]
 sprite_frames = SubResource("SpriteFrames_t168q")
 animation = &"idle"
 
-[node name="CannonAnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="CannonAnimationPlayer" type="AnimationPlayer" parent="Cannon"]
 libraries = {
-"": SubResource("AnimationLibrary_377c4")
+"": SubResource("AnimationLibrary_7lejm")
 }
-autoplay = "cannon_walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_xfchl")

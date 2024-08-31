@@ -1,13 +1,8 @@
-[gd_scene load_steps=29 format=3 uid="uid://0vhoym1v8uqs"]
+[gd_scene load_steps=28 format=3 uid="uid://0vhoym1v8uqs"]
 
-[ext_resource type="Texture2D" path="res://assets/robots/drache_red.png" id="1_shs52"]
 [ext_resource type="Script" path="res://scripts/robots/drache.gd" id="1_xq8l0"]
 [ext_resource type="Texture2D" uid="uid://muv7axd7pm2e" path="res://assets/robots/drache/move.png" id="3_aum04"]
 [ext_resource type="Texture2D" uid="uid://dt2n38b74amr7" path="res://assets/robots/drache/drache_red.png" id="4_gnnj2"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_py2so"]
-atlas = ExtResource("1_shs52")
-region = Rect2(230, 216, 75, 45)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bsda8"]
 atlas = ExtResource("3_aum04")
@@ -20,6 +15,10 @@ region = Rect2(80, 2, 70, 42)
 [sub_resource type="AtlasTexture" id="AtlasTexture_kqfld"]
 atlas = ExtResource("3_aum04")
 region = Rect2(155, 2, 70, 42)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccyct"]
+atlas = ExtResource("3_aum04")
+region = Rect2(230, 2, 70, 42)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b3mfu"]
 atlas = ExtResource("3_aum04")
@@ -81,9 +80,6 @@ region = Rect2(52, 423, 47, 54)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_py2so")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_bsda8")
 }, {
 "duration": 1.0,
@@ -91,10 +87,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kqfld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccyct")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 15.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -111,7 +110,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"move_down",
-"speed": 15.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -128,7 +127,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"move_right",
-"speed": 15.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -145,7 +144,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"move_up",
-"speed": 20.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -156,7 +155,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"power_dive",
-"speed": 10.0
+"speed": 8.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vjvnp"]
@@ -190,13 +189,14 @@ radius = 14.0
 height = 42.0
 
 [node name="Drache" type="CharacterBody2D"]
+z_index = 10
 collision_layer = 2
 script = ExtResource("1_xq8l0")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 2)
 sprite_frames = SubResource("SpriteFrames_4e41d")
-animation = &"power_dive"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="ShotAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
