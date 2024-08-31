@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dkka816m1muwx"]
+[gd_scene load_steps=29 format=3 uid="uid://dkka816m1muwx"]
 
 [ext_resource type="Texture2D" uid="uid://ndvw7fjva2u8" path="res://assets/robots/nitro/move.png" id="1_0fjtm"]
 
@@ -50,37 +50,37 @@ region = Rect2(140, 126, 44, 48)
 atlas = ExtResource("1_0fjtm")
 region = Rect2(182, 126, 44, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_d1iiu"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_brnrq"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(4, 5, 44, 48)
+region = Rect2(4, 6, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_twvlo"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_evhfs"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(48, 5, 44, 48)
+region = Rect2(48, 6, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_niloj"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_28frx"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(92, 5, 44, 48)
+region = Rect2(92, 6, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ccvdw"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkanr"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(136, 5, 44, 48)
+region = Rect2(136, 6, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_kw8wq"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pon8n"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(180, 5, 44, 48)
+region = Rect2(180, 7, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xyvlh"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqlef"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(224, 5, 44, 48)
+region = Rect2(224, 6, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bdpc2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvg0a"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(268, 5, 44, 48)
+region = Rect2(268, 6, 42, 46)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_84n0o"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_qw07k"]
 atlas = ExtResource("1_0fjtm")
-region = Rect2(312, 5, 44, 48)
+region = Rect2(312, 6, 42, 46)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sc3kb"]
 animations = [{
@@ -133,37 +133,91 @@ animations = [{
 }],
 "loop": false,
 "name": &"land",
-"speed": 10.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_d1iiu")
+"texture": SubResource("AtlasTexture_brnrq")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_twvlo")
+"texture": SubResource("AtlasTexture_evhfs")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_niloj")
+"texture": SubResource("AtlasTexture_28frx")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ccvdw")
+"texture": SubResource("AtlasTexture_bkanr")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_kw8wq")
+"texture": SubResource("AtlasTexture_pon8n")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xyvlh")
+"texture": SubResource("AtlasTexture_lqlef")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bdpc2")
+"texture": SubResource("AtlasTexture_cvg0a")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_84n0o")
+"texture": SubResource("AtlasTexture_qw07k")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 15.0
+"speed": 16.0
 }]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o5w0t"]
+atlas = ExtResource("1_0fjtm")
+region = Rect2(120, 189, 39, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t168q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o5w0t")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_06104"]
+resource_name = "cannon_walk"
+length = 0.500003
+loop_mode = 1
+step = 0.03125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CannonAnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(12, -4), Vector2(11, -3), Vector2(12, -4), Vector2(13, -3), Vector2(12, -4)]
+}
+
+[sub_resource type="Animation" id="Animation_ea542"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CannonAnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(13, -2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_377c4"]
+_data = {
+"RESET": SubResource("Animation_ea542"),
+"cannon_walk": SubResource("Animation_06104")
+}
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xfchl"]
 radius = 11.0
@@ -171,12 +225,24 @@ height = 42.0
 
 [node name="Nitro" type="CharacterBody2D"]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sc3kb")
-animation = &"jump"
+animation = &"walk"
+autoplay = "walk"
+frame_progress = 0.599664
+
+[node name="CannonAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(13, -2)
+sprite_frames = SubResource("SpriteFrames_t168q")
+animation = &"idle"
+
+[node name="CannonAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_377c4")
+}
+autoplay = "cannon_walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2(0, 2)
+position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_xfchl")
-debug_color = Color(0.982465, 0.0571811, 0.305316, 0.42)
