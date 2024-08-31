@@ -34,20 +34,20 @@ animations = [{
 }],
 "loop": false,
 "name": &"hit",
-"speed": 5.0
+"speed": 8.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ac0iw"]
 radius = 2.5
 
 [node name="BulletDrache" type="Area2D"]
+z_index = 20
 collision_layer = 4
 script = ExtResource("1_xu1og")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-0.5, -0.5)
 sprite_frames = SubResource("SpriteFrames_foap3")
-animation = &"hit"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

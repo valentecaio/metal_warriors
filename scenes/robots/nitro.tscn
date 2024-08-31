@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dkka816m1muwx"]
+[gd_scene load_steps=32 format=3 uid="uid://dkka816m1muwx"]
 
 [ext_resource type="Texture2D" uid="uid://ndvw7fjva2u8" path="res://assets/robots/nitro/move.png" id="1_0fjtm"]
 [ext_resource type="Script" path="res://scripts/robots/nitro.gd" id="1_gh4w8"]
@@ -170,6 +170,14 @@ animations = [{
 atlas = ExtResource("1_0fjtm")
 region = Rect2(120, 189, 39, 18)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_dgww1"]
+atlas = ExtResource("1_0fjtm")
+region = Rect2(119, 189, 41, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_th30q"]
+atlas = ExtResource("1_0fjtm")
+region = Rect2(120, 234, 41, 18)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_t168q"]
 animations = [{
 "frames": [{
@@ -178,7 +186,18 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dgww1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_th30q")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 16.0
 }]
 
 [sub_resource type="Animation" id="Animation_cip85"]
