@@ -2,9 +2,9 @@ extends CharacterBody2D
 
 
 @export var aim_speed := 250
-@export var max_walk_speed := 250
-@export var max_fly_speed := 350
-@export var acceleration := 3.0
+@export var max_walk_speed := 200
+@export var max_fly_speed := 300
+@export var acceleration := 2.0
 @export var friction := 2000
 @export var jump_speed := -350
 
@@ -113,19 +113,18 @@ func process_fly(delta, dir):
   print("process_fly()")
   move_and_gravity(delta, dir, max_fly_speed)
 
-  # check flying boost active
-  var fly_button_pressed = Input.is_action_pressed("button_south")
-  if fly_button_pressed:
+  # state is locked while button is pressed
+  if Input.is_action_pressed("button_south"):
     velocity -= get_gravity() * delta # no gravity when flying
     velocity.y = eval_velocity(velocity.y, -1, delta, max_fly_speed)
+  else:
+    # check falling
+    if velocity.y >= 0:
+      return set_state(State.FALL)
 
-  # check falling
-  if velocity.y >= 0 and not fly_button_pressed:
-    return set_state(State.FALL)
-
-  # check landing
-  if is_on_floor():
-    return set_state(State.LAND)
+    # check landing
+    if is_on_floor():
+      return set_state(State.LAND)
 
 
 func process_land(delta, dir):
