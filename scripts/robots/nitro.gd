@@ -9,6 +9,7 @@ extends CharacterBody2D
 @export var jump_speed := -350
 
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
+@onready var shield_collision_shape = $ShieldCollisionShape2D
 @onready var cannon = $Cannon
 @onready var cannon_rotation_node = $Cannon/CannonRotation
 @onready var cannon_animated_sprite = $Cannon/CannonRotation/CannonAnimatedSprite2D
@@ -25,10 +26,7 @@ var flipped := false
 
 
 func _ready():
-  # set initial state
-  state = State.WALK
-  body_animated_sprite.play("walk")
-  body_animated_sprite.pause()
+  print("nitro ready")
   # body_animated_sprite.connect("animation_finished", self, _on_animation_finished)
 
 
@@ -46,8 +44,8 @@ func _physics_process(delta):
       process_fly(delta, dir)
     State.LAND:
       process_land(delta, dir)
-    # State.SHIELD:
-    #   process_shield(delta, dir)
+    State.SHIELD:
+      process_shield(delta, dir)
     # State.SWORD:
     #   process_sword(delta, dir)
 
@@ -77,8 +75,12 @@ func process_walk(delta, dir):
   # check jump button
   if Input.is_action_just_pressed("button_south"):
     cannon_animation.pause()
-    velocity.y = jump_speed
     return set_state(State.JUMP)
+
+  # check shield
+  if Input.is_action_just_pressed("shoulder_right"):
+    cannon_animation.pause()
+    return set_state(State.SHIELD)
 
 
 func process_jump(delta, dir):
@@ -132,6 +134,22 @@ func process_land(delta, dir):
   set_state(State.WALK)
 
 
+func process_shield(delta, dir):
+  # print("process_shield()")
+  velocity.x = move_toward(velocity.x, 0.5, friction * delta)
+
+  # flip sprites when facing left
+  if dir.x:
+    flip_body_and_cannon(dir.x < 0)
+
+  # flip shield collision shape when facing left
+  shield_collision_shape.position.x = -15 if flipped else 15
+
+  # check shield button
+  if not Input.is_action_pressed("shoulder_right"):
+    return set_state(State.WALK)
+
+
 func process_aim(delta, dir):
   if dir == Vector2.ZERO:
     return
@@ -162,7 +180,6 @@ func process_aim(delta, dir):
 # TODO
 func _on_animation_finished(anim_name: String):
   print("_on_animation_finished() ", anim_name)
-  pass
 
 
 
@@ -179,25 +196,31 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
 
 # flip body and cannon horizontally when facing left
 func flip_body_and_cannon(flip):
+  # save flipped state
+  flipped = flip
+
   # flip sprites
   body_animated_sprite.flip_h = flip
   cannon_animated_sprite.flip_h = flip
 
   # flip positions
   if flip:
-    cannon.position = Vector2(-2, -8)
-    cannon_rotation_node.position = Vector2(-11, 4)
+    cannon.position.x = -2
+    cannon_rotation_node.position.x = -11
   else:
-    cannon.position = Vector2(2, -8)
-    cannon_rotation_node.position = Vector2(11, 4)
+    cannon.position.x = 2
+    cannon_rotation_node.position.x = 11
 
 
 func set_state(new_state):
   state = new_state
   match state:
     State.WALK:
+      shield_collision_shape.disabled = true
+      cannon.show()
       body_animated_sprite.play("idle")
     State.JUMP:
+      velocity.y = jump_speed
       body_animated_sprite.play("jump")
     State.FALL:
       body_animated_sprite.play("fall")
@@ -206,7 +229,9 @@ func set_state(new_state):
     State.LAND:
       body_animated_sprite.play("land")
     State.SHIELD:
-      body_animated_sprite.play("shield")
+      shield_collision_shape.disabled = false
+      cannon.hide()
+      body_animated_sprite.play("shield_start")
     # State.SWORD:
     #   body_animated_sprite.play("sword")
 
@@ -214,7 +239,6 @@ func set_state(new_state):
 # evaluate horizontal velocity and flip sprites if necessary
 func move_and_gravity(delta, dir, max_speed):
   if dir.x:
-    flipped = dir.x < 0
-    flip_body_and_cannon(flipped)
+    flip_body_and_cannon(dir.x < 0)
   velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
   velocity += get_gravity() * delta

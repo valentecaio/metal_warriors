@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy4nbv7ok37bw"
-path="res://.godot/imported/Drache Red.png-1879f7e8ea5df58d97c38fc38a09d4b8.ctex"
+uid="uid://peevf74r33lf"
+path="res://.godot/imported/grid_128x128.png-93db3f28fb24cfa4958b7ae938dfe636.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Drache Red.png"
-dest_files=["res://.godot/imported/Drache Red.png-1879f7e8ea5df58d97c38fc38a09d4b8.ctex"]
+source_file="res://assets/grid_128x128.png"
+dest_files=["res://.godot/imported/grid_128x128.png-93db3f28fb24cfa4958b7ae938dfe636.ctex"]
 
 [params]
 

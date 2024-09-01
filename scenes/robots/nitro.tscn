@@ -1,7 +1,8 @@
-[gd_scene load_steps=32 format=3 uid="uid://dkka816m1muwx"]
+[gd_scene load_steps=37 format=3 uid="uid://dkka816m1muwx"]
 
 [ext_resource type="Texture2D" uid="uid://ndvw7fjva2u8" path="res://assets/robots/nitro/move.png" id="1_0fjtm"]
 [ext_resource type="Script" path="res://scripts/robots/nitro.gd" id="1_gh4w8"]
+[ext_resource type="Texture2D" uid="uid://bo2fh4bhvj5m4" path="res://assets/robots/nitro/attacks.png" id="3_hahua"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l73k5"]
 atlas = ExtResource("1_0fjtm")
@@ -54,6 +55,18 @@ region = Rect2(140, 126, 44, 48)
 [sub_resource type="AtlasTexture" id="AtlasTexture_usbwc"]
 atlas = ExtResource("1_0fjtm")
 region = Rect2(182, 126, 44, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ok1uo"]
+atlas = ExtResource("3_hahua")
+region = Rect2(518, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_motri"]
+atlas = ExtResource("3_hahua")
+region = Rect2(260, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpkss"]
+atlas = ExtResource("3_hahua")
+region = Rect2(131, 389, 126, 126)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_evhfs"]
 atlas = ExtResource("1_0fjtm")
@@ -154,6 +167,33 @@ animations = [{
 "loop": false,
 "name": &"land",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ok1uo")
+}],
+"loop": false,
+"name": &"shield_hit",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_motri")
+}],
+"loop": false,
+"name": &"shield_idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpkss")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_motri")
+}],
+"loop": false,
+"name": &"shield_start",
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -262,13 +302,17 @@ _data = {
 radius = 12.0
 height = 42.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sb244"]
+radius = 5.0
+height = 42.0
+
 [node name="Nitro" type="CharacterBody2D"]
 z_index = 10
 script = ExtResource("1_gh4w8")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sc3kb")
-animation = &"idle"
+animation = &"shield_hit"
 autoplay = "idle"
 
 [node name="Cannon" type="Node2D" parent="."]
@@ -279,15 +323,21 @@ position = Vector2(11, 4)
 
 [node name="CannonAnimatedSprite2D" type="AnimatedSprite2D" parent="Cannon/CannonRotation"]
 sprite_frames = SubResource("SpriteFrames_t168q")
-animation = &"idle"
+animation = &"shoot"
 
 [node name="CannonAnimationPlayer" type="AnimationPlayer" parent="Cannon"]
 libraries = {
 "": SubResource("AnimationLibrary_7lejm")
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_xfchl")
+
+[node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15, -1)
+shape = SubResource("CapsuleShape2D_sb244")
+disabled = true
+debug_color = Color(0.968627, 0, 0.0117647, 0.419608)
 
 [connection signal="animation_finished" from="BodyAnimatedSprite2D" to="." method="_on_animation_finished" binds= [""]]
