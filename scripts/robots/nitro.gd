@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-@export var aim_speed := 250
+@export var aim_speed := 150
 @export var max_walk_speed := 200
 @export var max_fly_speed := 300
 @export var acceleration := 2.0
@@ -51,16 +51,14 @@ func _physics_process(delta):
     # State.SWORD:
     #   process_sword(delta, dir)
 
-  # cannon aiming is always active
-  cannon_angle += dir.y * aim_speed * delta
-  cannon_angle = clamp(cannon_angle, -90, 90)
-  rotate_cannon(-cannon_angle if flipped else cannon_angle)
+  # cannon aiming is always enabled
+  process_aim(delta, dir)
 
   move_and_slide()
 
 
 func process_walk(delta, dir):
-  print("process_walk()")
+  # print("process_walk()")
   move_and_gravity(delta, dir, max_walk_speed)
 
   # walk animation
@@ -84,7 +82,7 @@ func process_walk(delta, dir):
 
 
 func process_jump(delta, dir):
-  print("process_jump()")
+  # print("process_jump()")
   move_and_gravity(delta, dir, max_walk_speed)
 
   # check if should go to fall of fly state
@@ -97,7 +95,7 @@ func process_jump(delta, dir):
 
 
 func process_fall(delta, dir):
-  print("process_fall()")
+  # print("process_fall()")
   move_and_gravity(delta, dir, max_walk_speed)
 
   # check fly button
@@ -110,7 +108,7 @@ func process_fall(delta, dir):
 
 
 func process_fly(delta, dir):
-  print("process_fly()")
+  # print("process_fly()")
   move_and_gravity(delta, dir, max_fly_speed)
 
   # state is locked while button is pressed
@@ -128,10 +126,34 @@ func process_fly(delta, dir):
 
 
 func process_land(delta, dir):
-  print("process_land()")
+  # print("process_land()")
   move_and_gravity(delta, dir, max_fly_speed)
   # TODO: should be done at animation end callback
   set_state(State.WALK)
+
+
+func process_aim(delta, dir):
+  if dir == Vector2.ZERO:
+    return
+
+  # update cannon angle according to input
+  var pressed_angle := 0.0
+  if dir.x and dir.y:
+    pressed_angle = 45 if dir.y > 0 else -45
+  elif dir.y:
+    pressed_angle = 90 if dir.y > 0 else -90
+  elif dir.x:
+    pressed_angle = 0
+  cannon_angle = move_toward(cannon_angle, pressed_angle, aim_speed * delta)
+
+  # cannon rotation is inverted when facing left
+  var angle = -cannon_angle if flipped else cannon_angle
+
+  # round to a multiple of 22.5 degrees
+  angle = round(angle / 22.5) * 22.5
+
+  # rotate cannon sprite
+  cannon.rotation = deg_to_rad(angle)
 
 
 
@@ -168,13 +190,6 @@ func flip_body_and_cannon(flip):
   else:
     cannon.position = Vector2(2, -8)
     cannon_rotation_node.position = Vector2(11, 4)
-
-
-# rotate cannon relative to the body
-func rotate_cannon(angle):
-  # round to one of [-90, -45, 0, 45, 90]
-  angle = round(angle / 45) * 45
-  cannon.rotation = deg_to_rad(angle)
 
 
 func set_state(new_state):
