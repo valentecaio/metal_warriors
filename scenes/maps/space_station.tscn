@@ -142,7 +142,7 @@ sources/0 = SubResource("TileSetAtlasSource_hwpc8")
 [node name="MapSpaceStation" type="Node2D"]
 
 [node name="Nitro" parent="." instance=ExtResource("2_7y4d2")]
-position = Vector2(867, 315)
+position = Vector2(867, 320)
 
 [node name="Camera2D" type="Camera2D" parent="Nitro"]
 position = Vector2(0, -16)

@@ -3,6 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://ndvw7fjva2u8" path="res://assets/robots/nitro/move.png" id="1_0fjtm"]
 [ext_resource type="Script" path="res://scripts/robots/nitro.gd" id="1_gh4w8"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_l73k5"]
+atlas = ExtResource("1_0fjtm")
+region = Rect2(4, 126, 44, 48)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_sqnd3"]
 atlas = ExtResource("1_0fjtm")
 region = Rect2(165, 61, 44, 50)
@@ -19,6 +23,10 @@ region = Rect2(257, 61, 44, 50)
 atlas = ExtResource("1_0fjtm")
 region = Rect2(308, 61, 44, 50)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_brnrq"]
+atlas = ExtResource("1_0fjtm")
+region = Rect2(4, 6, 42, 46)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_vimjl"]
 atlas = ExtResource("1_0fjtm")
 region = Rect2(4, 64, 46, 50)
@@ -30,10 +38,6 @@ region = Rect2(52, 64, 46, 50)
 [sub_resource type="AtlasTexture" id="AtlasTexture_elv7i"]
 atlas = ExtResource("1_0fjtm")
 region = Rect2(105, 64, 46, 50)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l73k5"]
-atlas = ExtResource("1_0fjtm")
-region = Rect2(4, 126, 44, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8l8is"]
 atlas = ExtResource("1_0fjtm")
@@ -50,10 +54,6 @@ region = Rect2(140, 126, 44, 48)
 [sub_resource type="AtlasTexture" id="AtlasTexture_usbwc"]
 atlas = ExtResource("1_0fjtm")
 region = Rect2(182, 126, 44, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_brnrq"]
-atlas = ExtResource("1_0fjtm")
-region = Rect2(4, 6, 42, 46)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_evhfs"]
 atlas = ExtResource("1_0fjtm")
@@ -87,6 +87,14 @@ region = Rect2(312, 6, 42, 46)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_l73k5")
+}],
+"loop": false,
+"name": &"fall",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_sqnd3")
 }, {
 "duration": 1.0,
@@ -104,6 +112,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_brnrq")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_vimjl")
 }, {
 "duration": 1.0,
@@ -114,7 +130,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"jump",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -131,10 +147,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_usbwc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_brnrq")
 }],
 "loop": false,
 "name": &"land",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -249,7 +268,7 @@ script = ExtResource("1_gh4w8")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sc3kb")
-animation = &"walk"
+animation = &"fall"
 
 [node name="Cannon" type="Node2D" parent="."]
 position = Vector2(2, -8)
@@ -269,3 +288,5 @@ libraries = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_xfchl")
+
+[connection signal="animation_finished" from="BodyAnimatedSprite2D" to="." method="_on_animation_finished" binds= [""]]
