@@ -38,9 +38,9 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ac0iw"]
-radius = 2.5
+radius = 3.0
 
-[node name="BulletDrache" type="Area2D"]
+[node name="EnergyCannon" type="Area2D"]
 z_index = 20
 collision_layer = 4
 script = ExtResource("1_xu1og")
@@ -52,6 +52,3 @@ autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ac0iw")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

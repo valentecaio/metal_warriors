@@ -17,6 +17,8 @@ extends CharacterBody2D
 
 enum State {WALK, JUMP, FALL, FLY, LAND, SHIELD, SWORD}
 
+const bullet_scene = preload("res://scenes/bullets/energy_rifle.tscn")
+var time_to_next_shot := 0.0
 
 # state variables
 var state := State.WALK
@@ -59,6 +61,8 @@ func process_walk(delta, dir):
   # print("process_walk()")
   move_and_gravity(delta, dir, max_walk_speed)
 
+  process_shoot(delta)
+
   # walk animation
   if dir.x:
     body_animated_sprite.play("walk")
@@ -87,6 +91,8 @@ func process_jump(delta, dir):
   # print("process_jump()")
   move_and_gravity(delta, dir, max_walk_speed)
 
+  process_shoot(delta)
+
   # check if should go to fall of fly state
   # TODO: should be done at animation end callback
   if velocity.y >= 0:
@@ -100,6 +106,8 @@ func process_fall(delta, dir):
   # print("process_fall()")
   move_and_gravity(delta, dir, max_walk_speed)
 
+  process_shoot(delta)
+
   # check fly button
   if Input.is_action_pressed("button_south"):
     return set_state(State.FLY)
@@ -112,6 +120,8 @@ func process_fall(delta, dir):
 func process_fly(delta, dir):
   # print("process_fly()")
   move_and_gravity(delta, dir, max_fly_speed)
+
+  process_shoot(delta)
 
   # state is locked while button is pressed
   if Input.is_action_pressed("button_south"):
@@ -130,6 +140,9 @@ func process_fly(delta, dir):
 func process_land(delta, dir):
   # print("process_land()")
   move_and_gravity(delta, dir, max_fly_speed)
+
+  process_shoot(delta)
+
   # TODO: should be done at animation end callback
   set_state(State.WALK)
 
@@ -150,6 +163,28 @@ func process_shield(delta, dir):
     return set_state(State.WALK)
 
 
+func process_shoot(delta):
+  print("process_shoot()")
+
+  # update time to next shot
+  time_to_next_shot -= delta
+  if time_to_next_shot > 0:
+    return
+
+  # check shoot button
+  if Input.is_action_pressed("button_west"):
+    cannon_animated_sprite.play("shoot")
+    var angle = eval_cannon_angle()
+
+    var bullet = bullet_scene.instantiate()
+    bullet.direction = Vector2(-1 if flipped else 1, 0).rotated(angle).normalized()
+    bullet.position = global_position + Vector2(-23 if flipped else 23, -3).rotated(angle)
+    get_parent().add_child(bullet)
+    time_to_next_shot = 1.0/bullet.fire_frequency
+  else:
+    cannon_animated_sprite.play("idle")
+
+
 func process_aim(delta, dir):
   if dir == Vector2.ZERO:
     return
@@ -164,14 +199,8 @@ func process_aim(delta, dir):
     pressed_angle = 0
   cannon_angle = move_toward(cannon_angle, pressed_angle, aim_speed * delta)
 
-  # cannon rotation is inverted when facing left
-  var angle = -cannon_angle if flipped else cannon_angle
-
-  # round to a multiple of 22.5 degrees
-  angle = round(angle / 22.5) * 22.5
-
   # rotate cannon sprite
-  cannon.rotation = deg_to_rad(angle)
+  cannon.rotation = eval_cannon_angle()
 
 
 
@@ -194,6 +223,19 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
     return move_toward(initial_velocity, 0, friction * delta)
 
 
+# return cannon angle in radians, rounded to a multiple of 22.5 degrees
+# and flipped when facing left
+func eval_cannon_angle():
+  # cannon rotation is inverted when facing left
+  var angle = -cannon_angle if flipped else cannon_angle
+
+  # round to a multiple of 22.5 degrees
+  angle = round(angle / 22.5) * 22.5
+
+  # return angle in radians
+  return deg_to_rad(angle)
+
+
 # flip body and cannon horizontally when facing left
 func flip_body_and_cannon(flip):
   # save flipped state
@@ -206,10 +248,10 @@ func flip_body_and_cannon(flip):
   # flip positions
   if flip:
     cannon.position.x = -2
-    cannon_rotation_node.position.x = -11
+    cannon_rotation_node.position.x = -10.5
   else:
     cannon.position.x = 2
-    cannon_rotation_node.position.x = 11
+    cannon_rotation_node.position.x = 10.5
 
 
 func set_state(new_state):

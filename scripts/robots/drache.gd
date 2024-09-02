@@ -10,7 +10,6 @@ extends CharacterBody2D
 @onready var power_dive_collision_shape = $PowerDiveCollisionShape2D
 
 const bullet_scene = preload("res://scenes/bullets/energy_cannon.tscn")
-
 var time_to_next_shot := 0.0
 
 var power_dive := false:
@@ -46,9 +45,8 @@ func _physics_process(delta):
   if power_dive:
     body_animated_sprite.play("power_dive")
     shot_animated_sprite.visible = false
-    var dir = Vector2.DOWN
-    velocity.x = eval_velocity(velocity.x, dir.x, delta)
-    velocity.y = clamp(eval_velocity(velocity.y, dir.y, delta), 0, 2*speed)
+    velocity.x = eval_velocity(velocity.x, 0, delta)
+    velocity.y = clamp(eval_velocity(velocity.y, Vector2.DOWN.y, delta), 0, 2*speed)
     move_and_slide()
     return
 

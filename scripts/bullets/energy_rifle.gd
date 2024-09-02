@@ -15,9 +15,6 @@ func _ready():
   self.body_entered.connect(_on_body_entered)
   animated_sprite.animation_finished.connect(_on_animation_finished)
 
-  # add random error to bullet direction (between -10 and 10 degrees)
-  direction = direction.rotated(deg_to_rad(randf_range(-10, 10)))
-
 
 func _process(delta):
   position = position + speed * direction * delta
