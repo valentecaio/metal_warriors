@@ -280,6 +280,8 @@ height = 42.0
 
 [node name="Nitro" type="CharacterBody2D"]
 z_index = 10
+collision_layer = 32
+collision_mask = 209
 script = ExtResource("1_gh4w8")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]

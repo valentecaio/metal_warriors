@@ -43,6 +43,7 @@ radius = 3.0
 [node name="EnergyCannon" type="Area2D"]
 z_index = 20
 collision_layer = 4
+collision_mask = 225
 script = ExtResource("1_xu1og")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
