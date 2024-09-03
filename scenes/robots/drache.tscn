@@ -196,7 +196,7 @@ script = ExtResource("1_xq8l0")
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 2)
 sprite_frames = SubResource("SpriteFrames_4e41d")
-animation = &"idle"
+animation = &"move_up"
 autoplay = "idle"
 
 [node name="ShotAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -211,7 +211,8 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_gylwh")
 
 [node name="PowerDiveCollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 0.999996)
+position = Vector2(-0.5, 1)
 rotation = -3.14159
 shape = SubResource("CapsuleShape2D_o3b4k")
 disabled = true
+debug_color = Color(1, 0, 0, 0.27451)

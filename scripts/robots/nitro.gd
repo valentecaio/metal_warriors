@@ -11,24 +11,24 @@ extends CharacterBody2D
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var shield_collision_shape = $ShieldCollisionShape2D
 @onready var cannon = $Cannon
-@onready var cannon_rotation_node = $Cannon/CannonRotation
-@onready var cannon_animated_sprite = $Cannon/CannonRotation/CannonAnimatedSprite2D
-@onready var cannon_animation = $Cannon/CannonAnimationPlayer
+@onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
 
 enum State {WALK, JUMP, FALL, FLY, LAND, SHIELD, SWORD}
 
-const bullet_scene = preload("res://scenes/bullets/energy_rifle.tscn")
+const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
 var time_to_next_shot := 0.0
 
 # state variables
 var state := State.WALK
 var cannon_angle := 0.0
 var flipped := false
+var cannon_animation := "idle"
+var shooting := false
 # var flight_time := 0.0
 
 
 func _ready():
-  print("nitro ready")
+  print("Nitro ready")
   # body_animated_sprite.connect("animation_finished", self, _on_animation_finished)
 
 
@@ -54,6 +54,9 @@ func _physics_process(delta):
   # cannon aiming is always enabled
   process_aim(delta, dir)
 
+  # cannon animation is set only once per loop
+  cannon_animated_sprite.play("shoot" if shooting else cannon_animation)
+
   move_and_slide()
 
 
@@ -66,24 +69,21 @@ func process_walk(delta, dir):
   # walk animation
   if dir.x:
     body_animated_sprite.play("walk")
-    cannon_animation.play("cannon_walk")
+    cannon_animation = "walk"
   else:
     body_animated_sprite.pause()
-    cannon_animation.pause()
+    cannon_animation = "idle"
 
   # check falling
   if not is_on_floor():
-    cannon_animation.pause()
     return set_state(State.FALL)
 
   # check jump button
   if Input.is_action_just_pressed("button_south"):
-    cannon_animation.pause()
     return set_state(State.JUMP)
 
   # check shield
   if Input.is_action_just_pressed("shoulder_right"):
-    cannon_animation.pause()
     return set_state(State.SHIELD)
 
 
@@ -164,7 +164,7 @@ func process_shield(delta, dir):
 
 
 func process_shoot(delta):
-  print("process_shoot()")
+  # print("process_shoot()")
 
   # update time to next shot
   time_to_next_shot -= delta
@@ -172,17 +172,16 @@ func process_shoot(delta):
     return
 
   # check shoot button
-  if Input.is_action_pressed("button_west"):
-    cannon_animated_sprite.play("shoot")
-    var angle = eval_cannon_angle()
-
+  shooting = Input.is_action_pressed("button_west")
+  if shooting:
     var bullet = bullet_scene.instantiate()
+    var angle = eval_cannon_angle()
     bullet.direction = Vector2(-1 if flipped else 1, 0).rotated(angle).normalized()
     bullet.position = global_position + Vector2(-23 if flipped else 23, -3).rotated(angle)
     get_parent().add_child(bullet)
     time_to_next_shot = 1.0/bullet.fire_frequency
   else:
-    cannon_animated_sprite.play("idle")
+    cannon_animation = "idle"
 
 
 func process_aim(delta, dir):
@@ -248,10 +247,10 @@ func flip_body_and_cannon(flip):
   # flip positions
   if flip:
     cannon.position.x = -2
-    cannon_rotation_node.position.x = -10.5
+    cannon_animated_sprite.position.x = -10.5
   else:
     cannon.position.x = 2
-    cannon_rotation_node.position.x = 10.5
+    cannon_animated_sprite.position.x = 10.5
 
 
 func set_state(new_state):

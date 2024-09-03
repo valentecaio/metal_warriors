@@ -37,6 +37,10 @@ func eval_velocity(initial_velocity, input, delta):
     return move_toward(initial_velocity, 0, friction * delta)
 
 
+func _ready():
+  print("Drache ready")
+
+
 func _physics_process(delta):
   time_to_next_shot -= delta
 
