@@ -1,0 +1,80 @@
+[gd_scene load_steps=11 format=3 uid="uid://c2dc14stt6kje"]
+
+[ext_resource type="Script" path="res://scripts/bullets/bullet.gd" id="1_junpk"]
+[ext_resource type="Texture2D" uid="uid://daxs5cg7j4w48" path="res://assets/bullets/mega_cannon.png" id="2_eq2up"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kakjm"]
+atlas = ExtResource("2_eq2up")
+region = Rect2(2, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sutgm"]
+atlas = ExtResource("2_eq2up")
+region = Rect2(67, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xf4mi"]
+atlas = ExtResource("2_eq2up")
+region = Rect2(132, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igiwn"]
+atlas = ExtResource("2_eq2up")
+region = Rect2(197, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrxqr"]
+atlas = ExtResource("2_eq2up")
+region = Rect2(262, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76byi"]
+atlas = ExtResource("2_eq2up")
+region = Rect2(327, 2, 62, 62)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u88lx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kakjm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sutgm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xf4mi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igiwn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrxqr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76byi")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_86s26"]
+radius = 3.0
+height = 12.0
+
+[node name="MegaCannon" type="Area2D"]
+z_index = 20
+collision_layer = 512
+collision_mask = 507
+script = ExtResource("1_junpk")
+speed = 200
+fire_frequency = 2
+fragments = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_u88lx")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_86s26")

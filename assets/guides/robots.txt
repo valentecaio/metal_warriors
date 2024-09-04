@@ -31,7 +31,7 @@ Drache
         Power Dive      WEA             Extreme         Can kill in one hit
 
 Prometheus
-        Main Cannon     WEA             Very High       Infinite range
+        Mega Cannon     WEA             Very High       Infinite range
         Flame Thrower   WEA             Medium-High     Sustained damage
                         SHI             Medium          Blocks basic shots
         Air Mines       WEA             High            Float upwards

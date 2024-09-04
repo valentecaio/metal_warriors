@@ -1,6 +1,7 @@
-[gd_scene load_steps=77 format=3 uid="uid://bkogojhciuxc6"]
+[gd_scene load_steps=78 format=3 uid="uid://bkogojhciuxc6"]
 
 [ext_resource type="Texture2D" uid="uid://djk16ha3u2o0u" path="res://assets/robots/prometheus/prometheus.png" id="1_2v82f"]
+[ext_resource type="Script" path="res://scripts/robots/prometheus.gd" id="1_ng5p2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fum3w"]
 atlas = ExtResource("1_2v82f")
@@ -94,6 +95,22 @@ region = Rect2(1292, 776, 126, 126)
 atlas = ExtResource("1_2v82f")
 region = Rect2(2, 389, 126, 126)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdnrd"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(518, 1034, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2kit8"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(647, 1034, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_by5qm"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(776, 1034, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ta048"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(905, 1034, 126, 126)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_d3v2l"]
 atlas = ExtResource("1_2v82f")
 region = Rect2(2, 1163, 126, 126)
@@ -133,22 +150,6 @@ region = Rect2(131, 1034, 126, 126)
 [sub_resource type="AtlasTexture" id="AtlasTexture_stvm2"]
 atlas = ExtResource("1_2v82f")
 region = Rect2(260, 1034, 126, 126)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rdnrd"]
-atlas = ExtResource("1_2v82f")
-region = Rect2(518, 1034, 126, 126)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2kit8"]
-atlas = ExtResource("1_2v82f")
-region = Rect2(647, 1034, 126, 126)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_by5qm"]
-atlas = ExtResource("1_2v82f")
-region = Rect2(776, 1034, 126, 126)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ta048"]
-atlas = ExtResource("1_2v82f")
-region = Rect2(905, 1034, 126, 126)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_08xno"]
 atlas = ExtResource("1_2v82f")
@@ -337,7 +338,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"block_build",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -346,6 +347,23 @@ animations = [{
 "loop": false,
 "name": &"fall",
 "speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rdnrd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2kit8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_by5qm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ta048")
+}],
+"loop": false,
+"name": &"fire_end",
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -370,7 +388,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_0q34r")
 }],
 "loop": true,
-"name": &"fire",
+"name": &"fire_loop",
 "speed": 8.0
 }, {
 "frames": [{
@@ -385,24 +403,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"fire_start",
-"speed": 8.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rdnrd")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2kit8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_by5qm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ta048")
-}],
-"loop": false,
-"name": &"fire_stop",
-"speed": 8.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -585,11 +586,11 @@ height = 40.0
 z_index = 10
 collision_layer = 4
 collision_mask = 507
+script = ExtResource("1_ng5p2")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_a34u6")
-animation = &"walk_3"
-frame_progress = 0.346219
+animation = &"block_build"
 
 [node name="Cannon" type="Node2D" parent="."]
 position = Vector2(-5, -9)
@@ -597,7 +598,9 @@ position = Vector2(-5, -9)
 [node name="CannonAnimatedSprite2D" type="AnimatedSprite2D" parent="Cannon"]
 position = Vector2(12, -8)
 sprite_frames = SubResource("SpriteFrames_a765p")
-animation = &"walk"
+animation = &"shoot"
+frame = 2
+frame_progress = 1.0
 
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
