@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bxyhxlcg6yp4t"]
 
-[ext_resource type="Script" path="res://scripts/bullets/energy_cannon.gd" id="1_xu1og"]
+[ext_resource type="Script" path="res://scripts/bullets/bullet.gd" id="1_xu1og"]
 [ext_resource type="Texture2D" uid="uid://oxpmy4vxenor" path="res://assets/bullets/energy_cannon.png" id="2_w3gmu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mn1yc"]
@@ -45,6 +45,7 @@ z_index = 20
 collision_layer = 512
 collision_mask = 510
 script = ExtResource("1_xu1og")
+error = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-0.5, -0.5)
