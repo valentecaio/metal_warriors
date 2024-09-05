@@ -5,6 +5,7 @@ extends Area2D
 @export var fire_frequency = 8  # shots per second
 @export var error := false      # add error to bullet direction
 @export var fragments := false  # spawn fragments on hit
+@export var rotate := false     # rotate bullet sprite to match direction
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var collision_shape = $CollisionShape2D
@@ -23,7 +24,8 @@ func _ready():
     direction = direction.rotated(deg_to_rad(randf_range(-10, 10)))
 
   # rotate sprite to match direction
-  animated_sprite.rotation_degrees = rad_to_deg(direction.angle())
+  if rotate:
+    animated_sprite.rotation_degrees = rad_to_deg(direction.angle())
 
 
 func _process(delta):
@@ -42,6 +44,10 @@ func _on_animation_finished():
 
 
 func explode():
+  if collision_shape.disabled:
+    return # already exploded
+
+  # stop bullet, disable collision and play hit animation
   speed = 0
   collision_shape.disabled = true
   animated_sprite.play("hit")
@@ -49,11 +55,10 @@ func explode():
   # spawn fragments in 8 directions
   if fragments:
     var frag_scene = load("res://scenes/bullets/fragment.tscn")
-    var angles = [0, 45, 90, 135, 180, 225, 270, 315]
-    for angle in angles:
+    for angle in [0, 45, 90, 135, 180, 225, 270, 315]:
       var frag = frag_scene.instantiate()
       frag.direction = Vector2(1, 0).rotated(deg_to_rad(angle))
-      frag.position = global_position + frag.direction * 10
+      frag.position = global_position + frag.direction * 7
       get_parent().add_child(frag)
     # var frag = frag_scene.instantiate()
     # frag.direction = Vector2(-1, 0)

@@ -111,7 +111,6 @@ func process_flamethrower(delta, dir):
   # print("process_flamethrower()")
   velocity.x = move_toward(velocity.x, 0.5, friction * delta)
 
-  # flip sprites when facing left
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
 
@@ -136,7 +135,6 @@ func process_shield(delta, dir):
   # print("process_shield()")
   velocity.x = move_toward(velocity.x, 0.5, friction * delta)
 
-  # flip sprites when facing left
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
 
@@ -162,18 +160,18 @@ func process_shoot(delta):
   time_to_next_shot -= delta
 
   # check shoot button
-  if time_to_next_shot <= 0 and Input.is_action_just_pressed("button_west"):
+  if (time_to_next_shot <= 0) and Input.is_action_just_pressed("button_west"):
     # create and shoot bullet
     bullet = bullet_scene.instantiate()
     var angle = eval_cannon_angle()
     bullet.direction = Vector2(-1 if flipped else 1, 0).rotated(angle).normalized()
-    bullet.position = global_position + Vector2(-23 if flipped else 23, -3).rotated(angle)
+    bullet.position = global_position + Vector2(-32 if flipped else 32, -18).rotated(angle)
     get_parent().add_child(bullet)
     time_to_next_shot = 1.0/bullet.fire_frequency
 
     # play animation
     cannon_animation = "shoot"
-  elif bullet and !Input.is_action_pressed("button_west"):
+  elif (bullet != null) and !Input.is_action_pressed("button_west"):
     bullet.explode()
     bullet = null
 
@@ -214,6 +212,14 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
     return clamp(vel, -max_speed, max_speed)
   else:
     return move_toward(initial_velocity, 0, friction * delta)
+
+
+# evaluate horizontal velocity and flip sprites if necessary
+func move_and_gravity(delta, dir, max_speed):
+  if dir.x:
+    flip_body_and_cannon(dir.x < 0)
+  velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
+  velocity += get_gravity() * delta
 
 
 # return cannon angle in radians, rounded to a multiple of 22.5 degrees
@@ -265,11 +271,3 @@ func set_state(new_state):
     State.BLOCKBUILD:
       cannon.hide()
       body_animated_sprite.play("block_build")
-
-
-# evaluate horizontal velocity and flip sprites if necessary
-func move_and_gravity(delta, dir, max_speed):
-  if dir.x:
-    flip_body_and_cannon(dir.x < 0)
-  velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
-  velocity += get_gravity() * delta

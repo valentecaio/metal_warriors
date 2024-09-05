@@ -151,7 +151,6 @@ func process_shield(delta, dir):
   # print("process_shield()")
   velocity.x = move_toward(velocity.x, 0.5, friction * delta)
 
-  # flip sprites when facing left
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
 
@@ -222,6 +221,14 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
     return move_toward(initial_velocity, 0, friction * delta)
 
 
+# evaluate horizontal velocity and flip sprites if necessary
+func move_and_gravity(delta, dir, max_speed):
+  if dir.x:
+    flip_body_and_cannon(dir.x < 0)
+  velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
+  velocity += get_gravity() * delta
+
+
 # return cannon angle in radians, rounded to a multiple of 22.5 degrees
 # and flipped when facing left
 func eval_cannon_angle():
@@ -275,11 +282,3 @@ func set_state(new_state):
       body_animated_sprite.play("shield_start")
     # State.SWORD:
     #   body_animated_sprite.play("sword")
-
-
-# evaluate horizontal velocity and flip sprites if necessary
-func move_and_gravity(delta, dir, max_speed):
-  if dir.x:
-    flip_body_and_cannon(dir.x < 0)
-  velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
-  velocity += get_gravity() * delta
