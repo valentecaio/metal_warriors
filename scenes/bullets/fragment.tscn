@@ -45,6 +45,7 @@ z_index = 21
 collision_layer = 512
 collision_mask = 507
 script = ExtResource("1_2alsu")
+type = 3
 speed = 300
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

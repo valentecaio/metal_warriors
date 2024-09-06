@@ -45,7 +45,7 @@ z_index = 20
 collision_layer = 512
 collision_mask = 510
 script = ExtResource("1_xu1og")
-error = true
+type = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-0.5, -0.5)

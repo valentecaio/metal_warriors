@@ -20,10 +20,14 @@ const bullet_scene = preload("res://scenes/bullets/mega_cannon.tscn")
 var bullet = null
 var time_to_next_shot := 0.0
 
+const mine_scene = preload("res://scenes/bullets/aerial_mine.tscn")
+var time_to_next_mine := 0.0
+
 # state variables
 var cannon_angle := 0.0
 var cannon_animation := "idle"
 var flipped := false
+
 
 func _ready():
   print("Prometheus ready")
@@ -58,6 +62,7 @@ func process_walk(delta, dir):
   move_and_gravity(delta, dir, max_walk_speed)
 
   process_shoot(delta)
+  process_aerial_mine(delta)
 
   # update body animation
   var animation
@@ -101,6 +106,7 @@ func process_fall(delta, dir):
   move_and_gravity(delta, dir, max_walk_speed)
 
   process_shoot(delta)
+  process_aerial_mine(delta)
 
   # check landing
   if is_on_floor():
@@ -154,8 +160,6 @@ func process_block_build(delta, dir):
 
 
 func process_shoot(delta):
-  # print("process_shoot()")
-
   # update time to next shot
   time_to_next_shot -= delta
 
@@ -174,6 +178,20 @@ func process_shoot(delta):
   elif (bullet != null) and !Input.is_action_pressed("button_west"):
     bullet.explode()
     bullet = null
+
+
+func process_aerial_mine(delta):
+  time_to_next_mine -= delta
+  if time_to_next_mine > 0:
+    return
+
+  # if north button is pressed, create and drop an aerial mine
+  if Input.is_action_pressed("button_north"):
+    var mine = mine_scene.instantiate()
+    mine.direction = Vector2(0, -1)
+    mine.position = global_position + Vector2(0, -25)
+    get_parent().add_child(mine)
+    time_to_next_mine = 1.0/mine.fire_frequency
 
 
 func process_aim(delta, dir):
@@ -258,7 +276,6 @@ func set_state(new_state):
   match state:
     State.WALK:
       cannon.show()
-      body_animated_sprite.play("idle")
     State.FALL:
       body_animated_sprite.play("fall")
     State.FLAMETHROWER:

@@ -163,8 +163,6 @@ func process_shield(delta, dir):
 
 
 func process_shoot(delta):
-  # print("process_shoot()")
-
   # update time to next shot
   time_to_next_shot -= delta
   if time_to_next_shot > 0:

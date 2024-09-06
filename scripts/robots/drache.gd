@@ -24,7 +24,6 @@ func fire(angle):
   var direction = Vector2(1.0, 0.0).rotated(deg_to_rad(angle)).normalized()
   var bullet = bullet_scene.instantiate()
   bullet.direction = direction
-  bullet.error = true
   bullet.position = global_position + Vector2(0,5)
   get_parent().add_child(bullet)
   time_to_next_shot = 1.0/bullet.fire_frequency

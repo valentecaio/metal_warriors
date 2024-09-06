@@ -67,10 +67,9 @@ z_index = 20
 collision_layer = 512
 collision_mask = 507
 script = ExtResource("1_junpk")
+type = 5
 speed = 200
 fire_frequency = 2
-fragments = true
-rotate = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_u88lx")

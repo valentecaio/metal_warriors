@@ -1,0 +1,79 @@
+[gd_scene load_steps=11 format=3 uid="uid://c5cbb3h2ro16n"]
+
+[ext_resource type="Script" path="res://scripts/bullets/bullet.gd" id="1_3h8ak"]
+[ext_resource type="Texture2D" uid="uid://d0t1ebpd1y5b" path="res://assets/bullets/aerial_mine.png" id="2_wxtue"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2gnww"]
+atlas = ExtResource("2_wxtue")
+region = Rect2(2, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mohye"]
+atlas = ExtResource("2_wxtue")
+region = Rect2(67, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvum7"]
+atlas = ExtResource("2_wxtue")
+region = Rect2(132, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31pjg"]
+atlas = ExtResource("2_wxtue")
+region = Rect2(197, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47siy"]
+atlas = ExtResource("2_wxtue")
+region = Rect2(262, 2, 62, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n3m3e"]
+atlas = ExtResource("2_wxtue")
+region = Rect2(327, 2, 62, 62)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_toyc5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2gnww")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mohye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xvum7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31pjg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_47siy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n3m3e")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5i0yq"]
+radius = 3.0
+
+[node name="AerialMine" type="Area2D"]
+z_index = 20
+collision_layer = 512
+collision_mask = 507
+script = ExtResource("1_3h8ak")
+type = 1
+speed = 80
+fire_frequency = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_toyc5")
+autoplay = "default"
+offset = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5i0yq")

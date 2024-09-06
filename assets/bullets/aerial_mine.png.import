@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2o0e4eok1x3b"
-path="res://.godot/imported/mega_cannon_frag.png-00d81e141a5a0e39094015eeec91554c.ctex"
+uid="uid://d0t1ebpd1y5b"
+path="res://.godot/imported/aerial_mine.png-a11b33007ab80da9a38177eb746e7e9e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bullets/mega_cannon_frag.png"
-dest_files=["res://.godot/imported/mega_cannon_frag.png-00d81e141a5a0e39094015eeec91554c.ctex"]
+source_file="res://assets/bullets/aerial_mine.png"
+dest_files=["res://.godot/imported/aerial_mine.png-a11b33007ab80da9a38177eb746e7e9e.ctex"]
 
 [params]
 
