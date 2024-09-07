@@ -1,17 +1,20 @@
 extends CharacterBody2D
 
-@export var speed := 250
-@export var acceleration := 3.0
-@export var friction := 600
-
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var shot_animated_sprite = $ShotAnimatedSprite2D
 @onready var default_collision_shape = $DefaultCollisionShape2D
 @onready var power_dive_collision_shape = $PowerDiveCollisionShape2D
 
+# properties defined in the editor
+@export var speed := 250
+@export var acceleration := 3.0
+@export var friction := 600
+
+# bullets
 const bullet_scene = preload("res://scenes/bullets/energy_cannon.tscn")
 var time_to_next_shot := 0.0
 
+# state variables
 var power_dive := false:
   set(value):
     power_dive = value

@@ -1,6 +1,12 @@
 extends CharacterBody2D
 
 
+@onready var body_animated_sprite = $BodyAnimatedSprite2D
+@onready var shield_collision_shape = $ShieldCollisionShape2D
+@onready var cannon = $Cannon
+@onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
+
+# properties defined in the editor
 @export var aim_speed := 150
 @export var max_walk_speed := 200
 @export var max_fly_speed := 300
@@ -8,18 +14,15 @@ extends CharacterBody2D
 @export var friction := 2000
 @export var jump_speed := -350
 
-@onready var body_animated_sprite = $BodyAnimatedSprite2D
-@onready var shield_collision_shape = $ShieldCollisionShape2D
-@onready var cannon = $Cannon
-@onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
-
+# main state machine
 enum State {WALK, JUMP, FALL, FLY, LAND, SHIELD, SWORD}
+var state := State.WALK
 
+# bullets
 const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
 var time_to_next_shot := 0.0
 
 # state variables
-var state := State.WALK
 var cannon_angle := 0.0
 var flipped := false
 var cannon_animation := "idle"

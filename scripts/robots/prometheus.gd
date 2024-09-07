@@ -1,25 +1,29 @@
 extends CharacterBody2D
 
+@onready var body_animated_sprite = $BodyAnimatedSprite2D
+@onready var cannon = $Cannon
+@onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
 
+# properties defined in the editor
 @export var aim_speed := 150
 @export var max_walk_speed := 80
 @export var acceleration := 2.0
 @export var friction := 4000
 
-@onready var body_animated_sprite = $BodyAnimatedSprite2D
-@onready var cannon = $Cannon
-@onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
-
+# main state machine
 enum State {WALK, FALL, FLAMETHROWER, BLOCKBUILD, SHIELD}
 var state := State.WALK
 
+# state machine for fire animation: START -> LOOP -> END
 enum FireState {START, LOOP, END}
 var fire_state := FireState.START
 
+# bullets
 const bullet_scene = preload("res://scenes/bullets/mega_cannon.tscn")
-var bullet = null
 var time_to_next_shot := 0.0
+var bullet = null
 
+# air mines
 const mine_scene = preload("res://scenes/bullets/aerial_mine.tscn")
 var time_to_next_mine := 0.0
 
@@ -28,6 +32,9 @@ var cannon_angle := 0.0
 var flipped := false
 var shooting := false
 
+
+
+### GAME LOOP ###
 
 func _ready():
   print("Prometheus ready")
@@ -243,8 +250,6 @@ func move_and_gravity(delta, dir, max_speed):
 # and flipped when facing left
 func eval_cannon_angle():
   var angle = -cannon_angle if flipped else cannon_angle
-
-  # round to a multiple of 22.5 degrees and return in radians
   return deg_to_rad(round(angle / 22.5) * 22.5)
 
 
