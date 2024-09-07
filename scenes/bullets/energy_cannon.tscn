@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bxyhxlcg6yp4t"]
 
-[ext_resource type="Script" path="res://scripts/bullets/bullet.gd" id="1_xu1og"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_xu1og"]
 [ext_resource type="Texture2D" uid="uid://oxpmy4vxenor" path="res://assets/bullets/energy_cannon.png" id="2_w3gmu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mn1yc"]

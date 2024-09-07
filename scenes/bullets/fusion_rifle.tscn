@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bq6hjbsybw4qq"]
 
-[ext_resource type="Script" path="res://scripts/bullets/bullet.gd" id="1_qrxrb"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_qrxrb"]
 [ext_resource type="Texture2D" uid="uid://bdvgw65n4k1bc" path="res://assets/bullets/fusion_rifle.png" id="3_2icw1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_co48v"]

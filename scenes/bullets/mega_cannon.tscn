@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://c2dc14stt6kje"]
 
-[ext_resource type="Script" path="res://scripts/bullets/bullet.gd" id="1_junpk"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_junpk"]
 [ext_resource type="Texture2D" uid="uid://daxs5cg7j4w48" path="res://assets/bullets/mega_cannon.png" id="2_eq2up"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kakjm"]

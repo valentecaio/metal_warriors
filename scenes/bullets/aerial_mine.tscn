@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://c5cbb3h2ro16n"]
 
-[ext_resource type="Script" path="res://scripts/bullets/bullet.gd" id="1_3h8ak"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_3h8ak"]
 [ext_resource type="Texture2D" uid="uid://d0t1ebpd1y5b" path="res://assets/bullets/aerial_mine.png" id="2_wxtue"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2gnww"]
