@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://ndmu4y4a5qri"]
+[gd_scene load_steps=9 format=4 uid="uid://ndmu4y4a5qri"]
 
 [ext_resource type="PackedScene" uid="uid://0vhoym1v8uqs" path="res://scenes/robots/drache.tscn" id="1_fra3j"]
 [ext_resource type="Texture2D" uid="uid://ddipvsf5sjwtl" path="res://assets/maps/space_station.png" id="2_7p05h"]
 [ext_resource type="PackedScene" uid="uid://dkka816m1muwx" path="res://scenes/robots/nitro.tscn" id="2_7y4d2"]
 [ext_resource type="PackedScene" uid="uid://bkogojhciuxc6" path="res://scenes/robots/prometheus.tscn" id="3_a3a4b"]
 [ext_resource type="AudioStream" uid="uid://bwfl1nb6tjaiq" path="res://assets/music/08 The Enemy Commander.mp3" id="3_kdisv"]
+[ext_resource type="PackedScene" uid="uid://dr1pag2aac1t5" path="res://scenes/pilot.tscn" id="6_cpfsb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwpc8"]
 texture = ExtResource("2_7p05h")
@@ -142,11 +143,14 @@ sources/0 = SubResource("TileSetAtlasSource_hwpc8")
 
 [node name="MapSpaceStation" type="Node2D"]
 
+[node name="Pilot" parent="." instance=ExtResource("6_cpfsb")]
+position = Vector2(160, 326)
+
+[node name="Camera2D" type="Camera2D" parent="Pilot"]
+zoom = Vector2(3, 3)
+
 [node name="Prometheus" parent="." instance=ExtResource("3_a3a4b")]
 position = Vector2(218, 320)
-
-[node name="Camera2D" type="Camera2D" parent="Prometheus"]
-zoom = Vector2(3, 3)
 
 [node name="Background" type="TextureRect" parent="."]
 show_behind_parent = true

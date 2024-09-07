@@ -286,7 +286,7 @@ script = ExtResource("1_gh4w8")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sc3kb")
-animation = &"idle"
+animation = &"walk"
 autoplay = "idle"
 
 [node name="Cannon" type="Node2D" parent="."]
