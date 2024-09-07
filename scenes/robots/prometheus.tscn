@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://bkogojhciuxc6"]
+[gd_scene load_steps=93 format=3 uid="uid://bkogojhciuxc6"]
 
 [ext_resource type="Texture2D" uid="uid://djk16ha3u2o0u" path="res://assets/robots/prometheus/prometheus.png" id="1_2v82f"]
 [ext_resource type="Script" path="res://scripts/robots/prometheus.gd" id="1_ng5p2"]
@@ -90,6 +90,62 @@ region = Rect2(1163, 776, 126, 126)
 [sub_resource type="AtlasTexture" id="AtlasTexture_v4ag6"]
 atlas = ExtResource("1_2v82f")
 region = Rect2(1292, 776, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y84vp"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(2, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkm6c"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(131, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx4eq"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(260, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pcxpl"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(389, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mqnj5"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(518, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enmko"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(647, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpfo2"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(776, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_laegq"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(905, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ur7hw"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(1034, 1421, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j6end"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(2, 1292, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f54cs"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(131, 1292, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wr3a5"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(260, 1292, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_334bj"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(389, 1292, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mn1gh"]
+atlas = ExtResource("1_2v82f")
+region = Rect2(518, 1292, 126, 126)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dx1jg"]
 atlas = ExtResource("1_2v82f")
@@ -342,6 +398,66 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_y84vp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkm6c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sx4eq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pcxpl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mqnj5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enmko")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kpfo2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_laegq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ur7hw")
+}],
+"loop": false,
+"name": &"board",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j6end")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f54cs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wr3a5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_334bj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mn1gh")
+}],
+"loop": false,
+"name": &"eject",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mn1gh")
+}],
+"loop": false,
+"name": &"ejected",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_dx1jg")
 }],
 "loop": false,
@@ -585,6 +701,9 @@ animations = [{
 radius = 15.0
 height = 40.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pydbi"]
+size = Vector2(36, 33)
+
 [node name="Prometheus" type="CharacterBody2D"]
 z_index = 11
 collision_layer = 4
@@ -593,7 +712,7 @@ script = ExtResource("1_ng5p2")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_a34u6")
-animation = &"block_build"
+animation = &"eject"
 
 [node name="Cannon" type="Node2D" parent="."]
 position = Vector2(-5, -9)
@@ -607,3 +726,10 @@ autoplay = "idle"
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
 shape = SubResource("CapsuleShape2D_is0i4")
+
+[node name="BoardingArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoardingArea2D"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_pydbi")
+debug_color = Color(0, 1, 0, 0.117647)

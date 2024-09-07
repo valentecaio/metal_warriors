@@ -1,8 +1,11 @@
 extends CharacterBody2D
 
+class_name Prometheus
+
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var cannon = $Cannon
 @onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
+@onready var boarding_area = $BoardingArea2D
 
 # properties defined in the editor
 @export var aim_speed := 150
@@ -11,12 +14,16 @@ extends CharacterBody2D
 @export var friction := 4000
 
 # main state machine
-enum State {WALK, FALL, FLAMETHROWER, BLOCKBUILD, SHIELD}
-var state := State.WALK
+@export var state := State.WALK
+enum State {WALK, FALL, FLAMETHROWER, BLOCKBUILD, SHIELD, EJECT}
 
-# state machine for fire animation: START -> LOOP -> END
+# state machine for flamethrower animations: START -> LOOP -> END
 enum FireState {START, LOOP, END}
 var fire_state := FireState.START
+
+# state machine for ejecting/boarding animations: EJECT -> READY_TO_BOARD -> BOARD
+enum BoardState {EJECT, READY_TO_BOARD, BOARD}
+var board_state := BoardState.READY_TO_BOARD
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/mega_cannon.tscn")
@@ -31,6 +38,7 @@ var time_to_next_mine := 0.0
 var cannon_angle := 0.0
 var flipped := false
 var shooting := false
+var pilot = null
 
 
 
@@ -38,6 +46,14 @@ var shooting := false
 
 func _ready():
   print("Prometheus ready")
+
+  if state == State.EJECT:
+    cannon.hide()
+    body_animated_sprite.play("ejected")
+  else:
+    cannon.show()
+    body_animated_sprite.play("walk_1")
+
 
 
 func _physics_process(delta):
@@ -54,6 +70,8 @@ func _physics_process(delta):
       process_shield(delta, dir)
     State.BLOCKBUILD:
       process_block_build(delta, dir)
+    State.EJECT:
+      process_eject(delta, dir)
 
   # cannon aiming and shoot ending are enabled in all states
   process_aim(delta, dir)
@@ -64,7 +82,8 @@ func _physics_process(delta):
 
 func process_walk(delta, dir):
   # print("process_walk()")
-  move_and_gravity(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir, max_walk_speed)
+  apply_gravity(delta)
 
   process_shoot_start(delta)
   process_aerial_mine(delta)
@@ -107,10 +126,15 @@ func process_walk(delta, dir):
   if Input.is_action_just_pressed("shoulder_right"):
     return set_state(State.SHIELD)
 
+  # check eject
+  if Input.is_action_just_pressed("button_select"):
+    return set_state(State.EJECT)
+
 
 func process_fall(delta, dir):
   # print("process_fall()")
-  move_and_gravity(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir, max_walk_speed)
+  apply_gravity(delta)
 
   process_shoot_start(delta)
   process_aerial_mine(delta)
@@ -122,7 +146,9 @@ func process_fall(delta, dir):
 
 func process_flamethrower(delta, dir):
   # print("process_flamethrower()")
-  velocity.x = move_toward(velocity.x, 0.5, friction * delta)
+  stop_with_inertia(delta)
+  apply_gravity(delta)
+
 
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
@@ -146,7 +172,8 @@ func process_flamethrower(delta, dir):
 
 func process_shield(delta, dir):
   # print("process_shield()")
-  velocity.x = move_toward(velocity.x, 0.5, friction * delta)
+  stop_with_inertia(delta)
+  apply_gravity(delta)
 
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
@@ -158,12 +185,35 @@ func process_shield(delta, dir):
 
 func process_block_build(delta, dir):
   # print("process_block_build()")
-  velocity.x = 0
+  stop_with_inertia(delta)
+  apply_gravity(delta)
 
   # wait until block_build finishes, then return to walk state
   if not body_animated_sprite.is_playing():
     # TODO: create block
     return set_state(State.WALK)
+
+
+func process_eject(delta, dir):
+  stop_with_inertia(delta)
+  apply_gravity(delta)
+
+  match board_state:
+    BoardState.EJECT:
+      # wait until eject animation finishes, then eject pilot
+      if not body_animated_sprite.is_playing():
+        body_animated_sprite.play("ejected")
+        if pilot != null:
+          pilot.eject()
+          pilot = null
+        board_state = BoardState.READY_TO_BOARD
+    BoardState.READY_TO_BOARD:
+      # wait until a pilot script triggers boarding
+      pass
+    BoardState.BOARD:
+      # wait until board animation finishes, then return to walk state
+      if not body_animated_sprite.is_playing():
+        return set_state(State.WALK)
 
 
 func process_shoot_start(delta):
@@ -186,8 +236,9 @@ func process_shoot_end():
   if shooting and !Input.is_action_pressed("button_west"):
     # button released, explode bullet
     shooting = false
-    bullet.explode()
-    bullet = null
+    if (bullet != null):
+      bullet.explode()
+      bullet = null
 
 
 func process_aerial_mine(delta):
@@ -229,6 +280,16 @@ func process_aim(delta, dir):
 func _on_animation_finished(anim_name: String):
   print("_on_animation_finished() ", anim_name)
 
+# called by pilot script to init robot
+func board(new_pilot):
+  # print("Boarding Prometheus")
+  if pilot != null:
+    return # robot already occupied
+
+  pilot = new_pilot
+  board_state = BoardState.BOARD
+  body_animated_sprite.play("board")
+
 
 
 ### HELPERS ###
@@ -243,10 +304,17 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
 
 
 # evaluate horizontal velocity and flip sprites if necessary
-func move_and_gravity(delta, dir, max_speed):
+func move_with_inertia(delta, dir, max_speed):
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
   velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
+
+
+func stop_with_inertia(delta):
+  move_toward(velocity.x, 0, friction * delta)
+
+
+func apply_gravity(delta):
   velocity += get_gravity() * delta
 
 
@@ -277,18 +345,17 @@ func flip_body_and_cannon(flip):
 
 func set_state(new_state):
   state = new_state
+  cannon.visible = (state in [State.WALK, State.FALL])
   match state:
-    State.WALK:
-      cannon.show()
     State.FALL:
       body_animated_sprite.play("fall")
     State.FLAMETHROWER:
-      cannon.hide()
       fire_state = FireState.START
       body_animated_sprite.play("fire_start")
     State.SHIELD:
-      cannon.hide()
       body_animated_sprite.play("shield")
     State.BLOCKBUILD:
-      cannon.hide()
       body_animated_sprite.play("block_build")
+    State.EJECT:
+      board_state = BoardState.EJECT
+      body_animated_sprite.play("eject")
