@@ -534,13 +534,13 @@ region = Rect2(260, 518, 126, 126)
 atlas = ExtResource("1_2v82f")
 region = Rect2(389, 518, 126, 126)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_grd33"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgooq"]
 atlas = ExtResource("1_2v82f")
-region = Rect2(2, 518, 124, 124)
+region = Rect2(3, 519, 124, 124)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_h527m"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_8srpa"]
 atlas = ExtResource("1_2v82f")
-region = Rect2(2, 519, 124, 124)
+region = Rect2(3, 518, 124, 124)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a765p"]
 animations = [{
@@ -550,7 +550,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 6.0
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -561,17 +561,20 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cvqxa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryb2w")
 }],
 "loop": false,
 "name": &"shoot",
-"speed": 6.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_grd33")
+"texture": SubResource("AtlasTexture_cgooq")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_h527m")
+"texture": SubResource("AtlasTexture_8srpa")
 }],
 "loop": true,
 "name": &"walk",
@@ -599,6 +602,7 @@ position = Vector2(-5, -9)
 position = Vector2(12, -8)
 sprite_frames = SubResource("SpriteFrames_a765p")
 animation = &"idle"
+autoplay = "idle"
 
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)

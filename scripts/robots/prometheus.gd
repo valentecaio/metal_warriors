@@ -25,8 +25,8 @@ var time_to_next_mine := 0.0
 
 # state variables
 var cannon_angle := 0.0
-var cannon_animation := "idle"
 var flipped := false
+var shooting := false
 
 
 func _ready():
@@ -50,9 +50,6 @@ func _physics_process(delta):
 
   # cannon aiming is always enabled
   process_aim(delta, dir)
-
-  # cannon animation is set only once per loop
-  cannon_animated_sprite.play(cannon_animation)
 
   move_and_slide()
 
@@ -79,10 +76,12 @@ func process_walk(delta, dir):
   # play animation when walking
   if dir.x:
     body_animated_sprite.play()
-    cannon_animation = "walk"
+    if !shooting:
+      cannon_animated_sprite.play("walk")
   else:
     body_animated_sprite.pause()
-    cannon_animation = "idle"
+    if !shooting:
+      cannon_animated_sprite.play("idle")
 
   # check falling
   if not is_on_floor():
@@ -163,19 +162,19 @@ func process_shoot(delta):
   # update time to next shot
   time_to_next_shot -= delta
 
-  # check shoot button
   if (time_to_next_shot <= 0) and Input.is_action_just_pressed("button_west"):
-    # create and shoot bullet
-    bullet = bullet_scene.instantiate()
+    # button pressed, create and shoot bullet
+    shooting = true
     var angle = eval_cannon_angle()
+    bullet = bullet_scene.instantiate()
     bullet.direction = Vector2(-1 if flipped else 1, 0).rotated(angle).normalized()
     bullet.position = global_position + Vector2(-32 if flipped else 32, -18).rotated(angle)
     get_parent().add_child(bullet)
     time_to_next_shot = 1.0/bullet.fire_frequency
-
-    # play animation
-    cannon_animation = "shoot"
+    cannon_animated_sprite.play("shoot")
   elif (bullet != null) and !Input.is_action_pressed("button_west"):
+    # button released, explode bullet
+    shooting = false
     bullet.explode()
     bullet = null
 
@@ -200,11 +199,11 @@ func process_aim(delta, dir):
 
   # update cannon angle according to input
   var pressed_angle := 0.0
-  if dir.x and dir.y:
-    pressed_angle = 45 if dir.y > 0 else -45
-  elif dir.y:
-    pressed_angle = 90 if dir.y > 0 else -90
-  elif dir.x:
+  if dir.x and dir.y: # diagonal
+    pressed_angle = -45 if dir.y < 0 else 45
+  elif dir.y: # up (-90) or down (77.5)
+    pressed_angle = -90 if dir.y < 0 else 77.5
+  elif dir.x: # left or right
     pressed_angle = 0
   cannon_angle = move_toward(cannon_angle, pressed_angle, aim_speed * delta)
 
@@ -243,14 +242,10 @@ func move_and_gravity(delta, dir, max_speed):
 # return cannon angle in radians, rounded to a multiple of 22.5 degrees
 # and flipped when facing left
 func eval_cannon_angle():
-  # cannon rotation is inverted when facing left
   var angle = -cannon_angle if flipped else cannon_angle
 
-  # round to a multiple of 22.5 degrees
-  angle = round(angle / 22.5) * 22.5
-
-  # return angle in radians
-  return deg_to_rad(angle)
+  # round to a multiple of 22.5 degrees and return in radians
+  return deg_to_rad(round(angle / 22.5) * 22.5)
 
 
 # flip body and cannon horizontally when facing left
@@ -264,11 +259,11 @@ func flip_body_and_cannon(flip):
 
   # flip positions
   if flip:
-    cannon.position.x = -2
-    cannon_animated_sprite.position.x = -5
+    cannon.position.x = 5
+    cannon_animated_sprite.position.x = -12
   else:
-    cannon.position.x = 2
-    cannon_animated_sprite.position.x = 5
+    cannon.position.x = -5
+    cannon_animated_sprite.position.x = 12
 
 
 func set_state(new_state):
