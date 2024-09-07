@@ -55,8 +55,9 @@ func _physics_process(delta):
     State.BLOCKBUILD:
       process_block_build(delta, dir)
 
-  # cannon aiming is always enabled
+  # cannon aiming and shoot ending are enabled in all states
   process_aim(delta, dir)
+  process_shoot_end()
 
   move_and_slide()
 
@@ -65,7 +66,7 @@ func process_walk(delta, dir):
   # print("process_walk()")
   move_and_gravity(delta, dir, max_walk_speed)
 
-  process_shoot(delta)
+  process_shoot_start(delta)
   process_aerial_mine(delta)
 
   # update body animation
@@ -111,7 +112,7 @@ func process_fall(delta, dir):
   # print("process_fall()")
   move_and_gravity(delta, dir, max_walk_speed)
 
-  process_shoot(delta)
+  process_shoot_start(delta)
   process_aerial_mine(delta)
 
   # check landing
@@ -165,7 +166,7 @@ func process_block_build(delta, dir):
     return set_state(State.WALK)
 
 
-func process_shoot(delta):
+func process_shoot_start(delta):
   # update time to next shot
   time_to_next_shot -= delta
 
@@ -179,7 +180,10 @@ func process_shoot(delta):
     get_parent().add_child(bullet)
     time_to_next_shot = 1.0/bullet.fire_frequency
     cannon_animated_sprite.play("shoot")
-  elif (bullet != null) and !Input.is_action_pressed("button_west"):
+
+
+func process_shoot_end():
+  if shooting and !Input.is_action_pressed("button_west"):
     # button released, explode bullet
     shooting = false
     bullet.explode()
