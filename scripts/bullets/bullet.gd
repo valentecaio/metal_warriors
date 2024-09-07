@@ -74,12 +74,6 @@ func explode():
   if collision_shape.disabled:
     return # already exploded
 
-  # stop bullet, disable collision and play hit animation
-  speed = 0
-  type = Type.NULL
-  collision_shape.disabled = true
-  animated_sprite.play("hit")
-
   # spawn fragments in 8 directions
   if type == Type.MEGA_CANNON:
     var frag_scene = load("res://scenes/bullets/fragment.tscn")
@@ -88,3 +82,10 @@ func explode():
       frag.direction = Vector2(1, 0).rotated(deg_to_rad(angle))
       frag.position = global_position + frag.direction * 7
       get_parent().add_child(frag)
+
+  # stop bullet, disable collision and play hit animation
+  speed = 0
+  type = Type.NULL
+  collision_shape.disabled = true
+  animated_sprite.play("hit")
+
