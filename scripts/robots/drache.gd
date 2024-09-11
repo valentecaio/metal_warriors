@@ -27,7 +27,7 @@ func fire(angle):
   var direction = Vector2(1.0, 0.0).rotated(deg_to_rad(angle)).normalized()
   var bullet = bullet_scene.instantiate()
   bullet.direction = direction
-  bullet.position = global_position + Vector2(0,5)
+  bullet.position = global_position + Vector2(0, 3)
   get_parent().add_child(bullet)
   time_to_next_shot = 1.0/bullet.fire_frequency
 
@@ -96,6 +96,6 @@ func _physics_process(delta):
   shot_animated_sprite.visible = angle != null
 
   if shot_animated_sprite.visible and time_to_next_shot < 0:
-    shot_animated_sprite.position = Vector2(0, 5) + Vector2(12, 0).rotated(deg_to_rad(angle))
-    shot_animated_sprite.rotation = deg_to_rad(angle + 90) # add 90 because base sprite points upwards
+    shot_animated_sprite.position = Vector2(0, 0) + Vector2(5, 0).rotated(deg_to_rad(angle))
+    shot_animated_sprite.rotation = deg_to_rad(angle)
     fire(angle)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dt2n38b74amr7"
-path="res://.godot/imported/drache_red.png-5b2e6195e944cf82db259a41c7b588c9.ctex"
+uid="uid://skao7pm1u88e"
+path="res://.godot/imported/drache.png-aced1a32a374fba18341638848fd2261.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/robots/drache/drache_red.png"
-dest_files=["res://.godot/imported/drache_red.png-5b2e6195e944cf82db259a41c7b588c9.ctex"]
+source_file="res://assets/robots/drache.png"
+dest_files=["res://.godot/imported/drache.png-aced1a32a374fba18341638848fd2261.ctex"]
 
 [params]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://dkka816m1muwx"]
+[gd_scene load_steps=49 format=3 uid="uid://dkka816m1muwx"]
 
 [ext_resource type="Script" path="res://scripts/robots/nitro.gd" id="1_gh4w8"]
 [ext_resource type="Texture2D" uid="uid://bo2fh4bhvj5m4" path="res://assets/robots/nitro.png" id="3_hahua"]
@@ -324,23 +324,31 @@ animations = [{
 "speed": 16.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wxrme"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_qnohq"]
 atlas = ExtResource("3_hahua")
-region = Rect2(1034, 389, 126, 126)
+region = Rect2(776, 518, 126, 126)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5xkje"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjq3t"]
 atlas = ExtResource("3_hahua")
-region = Rect2(1163, 389, 126, 126)
+region = Rect2(776, 518, 126, 126)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_cgh0r"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_2c4yw"]
 atlas = ExtResource("3_hahua")
-region = Rect2(1292, 389, 126, 126)
+region = Rect2(905, 518, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nu878"]
+atlas = ExtResource("3_hahua")
+region = Rect2(776, 518, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83bqi"]
+atlas = ExtResource("3_hahua")
+region = Rect2(1034, 518, 126, 126)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_t168q"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wxrme")
+"texture": SubResource("AtlasTexture_qnohq")
 }],
 "loop": false,
 "name": &"idle",
@@ -348,10 +356,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wxrme")
+"texture": SubResource("AtlasTexture_mjq3t")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5xkje")
+"texture": SubResource("AtlasTexture_2c4yw")
 }],
 "loop": true,
 "name": &"shoot",
@@ -359,10 +367,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wxrme")
+"texture": SubResource("AtlasTexture_nu878")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_cgh0r")
+"texture": SubResource("AtlasTexture_83bqi")
 }],
 "loop": true,
 "name": &"walk",
@@ -388,24 +396,22 @@ script = ExtResource("1_gh4w8")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sc3kb")
-animation = &"power_off"
+animation = &"idle_on"
 autoplay = "idle_on"
 
 [node name="Cannon" type="Node2D" parent="."]
-visible = false
 position = Vector2(2, -8)
 
 [node name="CannonAnimatedSprite2D" type="AnimatedSprite2D" parent="Cannon"]
 position = Vector2(10.5, 4)
 sprite_frames = SubResource("SpriteFrames_t168q")
-animation = &"idle"
+animation = &"walk"
 
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_xfchl")
 
 [node name="BoardingArea2D" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BoardingArea2D"]
 position = Vector2(0, 8)
@@ -413,7 +419,6 @@ shape = SubResource("RectangleShape2D_vl6o3")
 debug_color = Color(0, 1, 0, 0.117647)
 
 [node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(15, -1)
 shape = SubResource("CapsuleShape2D_sb244")
 disabled = true
