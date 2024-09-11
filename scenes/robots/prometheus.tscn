@@ -658,7 +658,7 @@ radius = 15.0
 height = 40.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pydbi"]
-size = Vector2(36, 33)
+size = Vector2(34, 33)
 
 [node name="Prometheus" type="CharacterBody2D"]
 z_index = 11

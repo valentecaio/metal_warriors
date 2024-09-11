@@ -144,13 +144,13 @@ sources/0 = SubResource("TileSetAtlasSource_hwpc8")
 [node name="MapSpaceStation" type="Node2D"]
 
 [node name="Pilot" parent="." instance=ExtResource("6_cpfsb")]
-position = Vector2(160, 326)
+position = Vector2(285, 329)
 
 [node name="Camera2D" type="Camera2D" parent="Pilot"]
 zoom = Vector2(3, 3)
 
 [node name="Prometheus" parent="." instance=ExtResource("3_a3a4b")]
-position = Vector2(218, 320)
+position = Vector2(190, 320)
 
 [node name="Background" type="TextureRect" parent="."]
 show_behind_parent = true
@@ -177,3 +177,4 @@ position = Vector2(180, 247)
 
 [node name="Nitro" parent="." instance=ExtResource("2_7y4d2")]
 position = Vector2(365, 317)
+state = 7

@@ -199,7 +199,7 @@ func process_unboarded(delta, _dir):
 
   match power_state:
     PowerState.STOPPING:
-      # wait until "stop" animation finishes, then go to OFF state
+      # wait until "power_off" animation finishes, then go to OFF state
       if not body_animated_sprite.is_playing():
         body_animated_sprite.play("idle_off")
         power_state = PowerState.OFF
@@ -207,7 +207,7 @@ func process_unboarded(delta, _dir):
       # wait until a pilot script triggers drive()
       pass
     PowerState.STARTING:
-      # wait until "start" animation finishes, then go to WALK state
+      # wait until "power_on" animation finishes, then go to WALK state
       if not body_animated_sprite.is_playing():
         return set_state(State.WALK)
 

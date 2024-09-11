@@ -5,6 +5,7 @@ extends CharacterBody2D
 @onready var shield_collision_shape = $ShieldCollisionShape2D
 @onready var cannon = $Cannon
 @onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
+@onready var boarding_area = $BoardingArea2D
 
 # properties defined in the editor
 @export var aim_speed := 150
@@ -15,8 +16,12 @@ extends CharacterBody2D
 @export var jump_speed := -350
 
 # main state machine
-enum State {WALK, JUMP, FALL, FLY, LAND, SHIELD, SWORD}
-var state := State.WALK
+@export var state := State.WALK
+enum State {WALK, JUMP, FALL, FLY, LAND, SHIELD, SWORD, UNBOARDED}
+
+# state machine for start/stop animations: STOPPING -> OFF -> STARTING
+enum PowerState {STOPPING, OFF, STARTING}
+var power_state := PowerState.OFF
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
@@ -27,12 +32,20 @@ var cannon_angle := 0.0
 var flipped := false
 var cannon_animation := "idle"
 var shooting := false
+var pilot = null
 # var flight_time := 0.0
 
 
 func _ready():
   print("Nitro ready")
   # body_animated_sprite.connect("animation_finished", self, _on_animation_finished)
+
+  if state == State.UNBOARDED:
+    cannon.hide()
+    body_animated_sprite.play("idle_off")
+  else:
+    cannon.show()
+    body_animated_sprite.play("idle_on")
 
 
 func _physics_process(delta):
@@ -53,6 +66,8 @@ func _physics_process(delta):
       process_shield(delta, dir)
     # State.SWORD:
     #   process_sword(delta, dir)
+    State.UNBOARDED:
+      process_unboarded(delta, dir)
 
   # cannon aiming is always enabled
   process_aim(delta, dir)
@@ -65,7 +80,8 @@ func _physics_process(delta):
 
 func process_walk(delta, dir):
   # print("process_walk()")
-  move_and_gravity(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir, max_walk_speed)
+  apply_gravity(delta)
 
   process_shoot(delta)
 
@@ -77,7 +93,7 @@ func process_walk(delta, dir):
     body_animated_sprite.pause()
     cannon_animation = "idle"
 
-  # check falling
+  # check if falling
   if not is_on_floor():
     return set_state(State.FALL)
 
@@ -85,14 +101,19 @@ func process_walk(delta, dir):
   if Input.is_action_just_pressed("button_south"):
     return set_state(State.JUMP)
 
-  # check shield
+  # check shield button
   if Input.is_action_just_pressed("shoulder_right"):
     return set_state(State.SHIELD)
+
+  # check eject button
+  if Input.is_action_just_pressed("button_select"):
+    return set_state(State.UNBOARDED)
 
 
 func process_jump(delta, dir):
   # print("process_jump()")
-  move_and_gravity(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir, max_walk_speed)
+  apply_gravity(delta)
 
   process_shoot(delta)
 
@@ -107,7 +128,8 @@ func process_jump(delta, dir):
 
 func process_fall(delta, dir):
   # print("process_fall()")
-  move_and_gravity(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir, max_walk_speed)
+  apply_gravity(delta)
 
   process_shoot(delta)
 
@@ -122,7 +144,8 @@ func process_fall(delta, dir):
 
 func process_fly(delta, dir):
   # print("process_fly()")
-  move_and_gravity(delta, dir, max_fly_speed)
+  move_with_inertia(delta, dir, max_fly_speed)
+  apply_gravity(delta)
 
   process_shoot(delta)
 
@@ -142,7 +165,8 @@ func process_fly(delta, dir):
 
 func process_land(delta, dir):
   # print("process_land()")
-  move_and_gravity(delta, dir, max_fly_speed)
+  move_with_inertia(delta, dir, max_fly_speed)
+  apply_gravity(delta)
 
   process_shoot(delta)
 
@@ -152,7 +176,8 @@ func process_land(delta, dir):
 
 func process_shield(delta, dir):
   # print("process_shield()")
-  velocity.x = move_toward(velocity.x, 0.5, friction * delta)
+  stop_with_inertia(delta)
+  apply_gravity(delta)
 
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
@@ -163,6 +188,25 @@ func process_shield(delta, dir):
   # check shield button
   if not Input.is_action_pressed("shoulder_right"):
     return set_state(State.WALK)
+
+
+func process_unboarded(delta, _dir):
+  stop_with_inertia(delta)
+  apply_gravity(delta)
+
+  match power_state:
+    PowerState.STOPPING:
+      # wait until "power_off" animation finishes, then go to OFF state
+      if not body_animated_sprite.is_playing():
+        body_animated_sprite.play("idle_off")
+        power_state = PowerState.OFF
+    PowerState.OFF:
+      # wait until a pilot script triggers drive()
+      pass
+    PowerState.STARTING:
+      # wait until "power_on" animation finishes, then go to WALK state
+      if not body_animated_sprite.is_playing():
+        return set_state(State.WALK)
 
 
 func process_shoot(delta):
@@ -210,6 +254,18 @@ func _on_animation_finished(anim_name: String):
   print("_on_animation_finished() ", anim_name)
 
 
+# called by pilot script to after boarding robot
+func drive(new_pilot):
+  print("Nitro boarded")
+  if (pilot != null) or (power_state != PowerState.OFF):
+    return # robot already occupied
+
+  # start robot
+  pilot = new_pilot
+  power_state = PowerState.STARTING
+  body_animated_sprite.play("power_on")
+
+
 
 ### HELPERS ###
 
@@ -223,10 +279,17 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
 
 
 # evaluate horizontal velocity and flip sprites if necessary
-func move_and_gravity(delta, dir, max_speed):
+func move_with_inertia(delta, dir, max_speed):
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
   velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
+
+
+func stop_with_inertia(delta):
+  velocity.x = move_toward(velocity.x, 0, friction * delta)
+
+
+func apply_gravity(delta):
   velocity += get_gravity() * delta
 
 
@@ -263,11 +326,12 @@ func flip_body_and_cannon(flip):
 
 func set_state(new_state):
   state = new_state
+  cannon.visible = (state not in [State.SHIELD, State.UNBOARDED])
   match state:
     State.WALK:
       shield_collision_shape.disabled = true
       cannon.show()
-      body_animated_sprite.play("idle")
+      body_animated_sprite.play("idle_on")
     State.JUMP:
       velocity.y = jump_speed
       body_animated_sprite.play("jump")
@@ -283,3 +347,9 @@ func set_state(new_state):
       body_animated_sprite.play("shield_start")
     # State.SWORD:
     #   body_animated_sprite.play("sword")
+    State.UNBOARDED:
+      if pilot != null:
+        pilot.eject()
+        pilot = null
+      power_state = PowerState.STOPPING
+      body_animated_sprite.play("power_off")
