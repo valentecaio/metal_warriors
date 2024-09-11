@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var body_collision_shape = $BodyCollisionShape2D
+@onready var animation_player = $AnimationPlayer
 @onready var area_2d = $Area2D
 
 # properties defined in the editor
@@ -15,6 +16,10 @@ extends CharacterBody2D
 # main state machine
 enum State {WALK, FLY, ROBOT}
 var state := State.WALK
+
+# robot pilotting state machine
+enum RobotState {BOARDING, DRIVE, EJECTING}
+var robot_state := RobotState.BOARDING
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
@@ -66,7 +71,6 @@ func process_walk(delta, dir):
   if Input.is_action_just_pressed("button_select"):
     for area in area_2d.get_overlapping_areas():
       robot = area.get_parent()
-      robot.board(self)
       return set_state(State.ROBOT)
 
 
@@ -84,12 +88,27 @@ func process_fly(delta, dir):
     set_state(State.WALK)
 
 
-func process_robot(delta, dir):
-  if robot == null: # pilot ejected
-    return set_state(State.WALK)
+func process_robot(_delta, _dir):
+  if robot != null:
+    # follow robot's position
+    global_position = robot.global_position# + Vector2(0, 10)
 
-  # else: follow robot's position
-  global_position = robot.global_position
+  match robot_state:
+    RobotState.BOARDING:
+      # wait until board animation finishes, then start driving
+      if !animation_player.is_playing():
+        robot_state = RobotState.DRIVE
+        robot.drive(self)
+    RobotState.DRIVE:
+      # wait until robot script triggers eject()
+      pass
+    RobotState.EJECTING:
+      # wait until eject animation finishes, then go to walk state
+      if !animation_player.is_playing():
+        robot = null
+        body_collision_shape.disabled = false
+        return set_state(State.WALK)
+
 
 
 func process_shoot(delta):
@@ -130,12 +149,12 @@ func process_aim(delta, dir):
 func _on_animation_finished(anim_name: String):
   print("_on_animation_finished() ", anim_name)
 
+
 # called by robot script after ejecting pilot
 func eject():
-  print("Pilot ejected")
-  body_animated_sprite.visible = true
-  body_collision_shape.disabled = false
-  robot = null
+  robot_state = RobotState.EJECTING
+  animation_player.play("eject")
+
 
 
 ### HELPERS ###
@@ -187,7 +206,8 @@ func set_state(new_state):
     State.FLY:
       body_animated_sprite.play("fly")
     State.ROBOT:
-      body_animated_sprite.visible = false
       body_collision_shape.disabled = true
+      robot_state = RobotState.BOARDING
+      animation_player.play("board")
       
       # body_animated_sprite.play("board")

@@ -15,15 +15,15 @@ class_name Prometheus
 
 # main state machine
 @export var state := State.WALK
-enum State {WALK, FALL, FLAMETHROWER, BLOCKBUILD, SHIELD, EJECT}
+enum State {WALK, FALL, FLAMETHROWER, BLOCKBUILD, SHIELD, UNBOARDED}
 
 # state machine for flamethrower animations: START -> LOOP -> END
 enum FireState {START, LOOP, END}
 var fire_state := FireState.START
 
-# state machine for ejecting/boarding animations: EJECT -> READY_TO_BOARD -> BOARD
-enum BoardState {EJECT, READY_TO_BOARD, BOARD}
-var board_state := BoardState.READY_TO_BOARD
+# state machine for start/stop animations: STOPPING -> OFF -> STARTING
+enum PowerState {STOPPING, OFF, STARTING}
+var power_state := PowerState.OFF
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/mega_cannon.tscn")
@@ -47,12 +47,12 @@ var pilot = null
 func _ready():
   print("Prometheus ready")
 
-  if state == State.EJECT:
+  if state == State.UNBOARDED:
     cannon.hide()
-    body_animated_sprite.play("ejected")
+    body_animated_sprite.play("idle_off")
   else:
     cannon.show()
-    body_animated_sprite.play("walk_1")
+    body_animated_sprite.play("idle_on")
 
 
 
@@ -70,8 +70,8 @@ func _physics_process(delta):
       process_shield(delta, dir)
     State.BLOCKBUILD:
       process_block_build(delta, dir)
-    State.EJECT:
-      process_eject(delta, dir)
+    State.UNBOARDED:
+      process_unboarded(delta, dir)
 
   # cannon aiming and shoot ending are enabled in all states
   process_aim(delta, dir)
@@ -110,25 +110,25 @@ func process_walk(delta, dir):
     if !shooting:
       cannon_animated_sprite.play("idle")
 
-  # check falling
+  # check if falling
   if not is_on_floor():
     return set_state(State.FALL)
 
-  # check flame thrower
+  # check flame thrower button
   if Input.is_action_just_pressed("button_east"):
     return set_state(State.FLAMETHROWER)
 
-  # check block building
+  # check block building button
   if Input.is_action_just_pressed("button_south"):
     return set_state(State.BLOCKBUILD)
 
-  # check shield
+  # check shield button
   if Input.is_action_just_pressed("shoulder_right"):
     return set_state(State.SHIELD)
 
-  # check eject
+  # check eject button
   if Input.is_action_just_pressed("button_select"):
-    return set_state(State.EJECT)
+    return set_state(State.UNBOARDED)
 
 
 func process_fall(delta, dir):
@@ -148,7 +148,6 @@ func process_flamethrower(delta, dir):
   # print("process_flamethrower()")
   stop_with_inertia(delta)
   apply_gravity(delta)
-
 
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
@@ -183,7 +182,7 @@ func process_shield(delta, dir):
     return set_state(State.WALK)
 
 
-func process_block_build(delta, dir):
+func process_block_build(delta, _dir):
   # print("process_block_build()")
   stop_with_inertia(delta)
   apply_gravity(delta)
@@ -194,24 +193,21 @@ func process_block_build(delta, dir):
     return set_state(State.WALK)
 
 
-func process_eject(delta, dir):
+func process_unboarded(delta, _dir):
   stop_with_inertia(delta)
   apply_gravity(delta)
 
-  match board_state:
-    BoardState.EJECT:
-      # wait until eject animation finishes, then eject pilot
+  match power_state:
+    PowerState.STOPPING:
+      # wait until "stop" animation finishes, then go to OFF state
       if not body_animated_sprite.is_playing():
-        body_animated_sprite.play("ejected")
-        if pilot != null:
-          pilot.eject()
-          pilot = null
-        board_state = BoardState.READY_TO_BOARD
-    BoardState.READY_TO_BOARD:
-      # wait until a pilot script triggers boarding
+        body_animated_sprite.play("idle_off")
+        power_state = PowerState.OFF
+    PowerState.OFF:
+      # wait until a pilot script triggers drive()
       pass
-    BoardState.BOARD:
-      # wait until board animation finishes, then return to walk state
+    PowerState.STARTING:
+      # wait until "start" animation finishes, then go to WALK state
       if not body_animated_sprite.is_playing():
         return set_state(State.WALK)
 
@@ -280,15 +276,17 @@ func process_aim(delta, dir):
 func _on_animation_finished(anim_name: String):
   print("_on_animation_finished() ", anim_name)
 
-# called by pilot script to init robot
-func board(new_pilot):
-  # print("Boarding Prometheus")
-  if pilot != null:
+
+# called by pilot script to after boarding robot
+func drive(new_pilot):
+  print("Prometheus boarded")
+  if (pilot != null) or (power_state != PowerState.OFF):
     return # robot already occupied
 
+  # start robot
   pilot = new_pilot
-  board_state = BoardState.BOARD
-  body_animated_sprite.play("board")
+  power_state = PowerState.STARTING
+  body_animated_sprite.play("power_on")
 
 
 
@@ -311,7 +309,7 @@ func move_with_inertia(delta, dir, max_speed):
 
 
 func stop_with_inertia(delta):
-  move_toward(velocity.x, 0, friction * delta)
+  velocity.x = move_toward(velocity.x, 0, friction * delta)
 
 
 func apply_gravity(delta):
@@ -356,6 +354,9 @@ func set_state(new_state):
       body_animated_sprite.play("shield")
     State.BLOCKBUILD:
       body_animated_sprite.play("block_build")
-    State.EJECT:
-      board_state = BoardState.EJECT
-      body_animated_sprite.play("eject")
+    State.UNBOARDED:
+      if pilot != null:
+        pilot.eject()
+        pilot = null
+      power_state = PowerState.STOPPING
+      body_animated_sprite.play("power_off")
