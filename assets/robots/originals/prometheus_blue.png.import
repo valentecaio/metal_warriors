@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://br68se7vi4syj"
-path="res://.godot/imported/spider_red.png-73326f9178039611532eab57d4cc7266.ctex"
+uid="uid://l6s4dgndxdyr"
+path="res://.godot/imported/prometheus_blue.png-42a2c51b468dc47bcd7b42067b7ce40a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/robots/spider/spider_red.png"
-dest_files=["res://.godot/imported/spider_red.png-73326f9178039611532eab57d4cc7266.ctex"]
+source_file="res://assets/robots/originals/prometheus_blue.png"
+dest_files=["res://.godot/imported/prometheus_blue.png-42a2c51b468dc47bcd7b42067b7ce40a.ctex"]
 
 [params]
 

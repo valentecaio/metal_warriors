@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djk16ha3u2o0u"
-path="res://.godot/imported/prometheus.png-2eb536cfa4b5946d09c2e8bc33778951.ctex"
+uid="uid://d0xkqgsc3vfxf"
+path="res://.godot/imported/nitro_blue.png-92bb054421087c29289ec49a7722a973.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/robots/prometheus/prometheus.png"
-dest_files=["res://.godot/imported/prometheus.png-2eb536cfa4b5946d09c2e8bc33778951.ctex"]
+source_file="res://assets/robots/originals/nitro_blue.png"
+dest_files=["res://.godot/imported/nitro_blue.png-92bb054421087c29289ec49a7722a973.ctex"]
 
 [params]
 

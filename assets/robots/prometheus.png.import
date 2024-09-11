@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjhi3ixdwef4d"
-path="res://.godot/imported/ballistic_blue.png-a92fb4123ea34bca7783fbc84d65a335.ctex"
+uid="uid://djk16ha3u2o0u"
+path="res://.godot/imported/prometheus.png-357d472c1d7303d974ad7508e6746192.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/robots/ballistic/ballistic_blue.png"
-dest_files=["res://.godot/imported/ballistic_blue.png-a92fb4123ea34bca7783fbc84d65a335.ctex"]
+source_file="res://assets/robots/prometheus.png"
+dest_files=["res://.godot/imported/prometheus.png-357d472c1d7303d974ad7508e6746192.ctex"]
 
 [params]
 

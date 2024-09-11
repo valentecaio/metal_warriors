@@ -1,6 +1,6 @@
 [gd_scene load_steps=86 format=3 uid="uid://bkogojhciuxc6"]
 
-[ext_resource type="Texture2D" uid="uid://djk16ha3u2o0u" path="res://assets/robots/prometheus/prometheus.png" id="1_2v82f"]
+[ext_resource type="Texture2D" uid="uid://djk16ha3u2o0u" path="res://assets/robots/prometheus.png" id="1_2v82f"]
 [ext_resource type="Script" path="res://scripts/robots/prometheus.gd" id="1_ng5p2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fum3w"]
@@ -669,7 +669,7 @@ state = 5
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_a34u6")
-animation = &"power_off"
+animation = &"idle_on"
 autoplay = "idle_on"
 
 [node name="Cannon" type="Node2D" parent="."]

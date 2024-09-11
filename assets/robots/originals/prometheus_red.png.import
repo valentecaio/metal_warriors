@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8rdxj8rwor4h"
-path="res://.godot/imported/prometheus_red.png-5692d9655b280a68d5ec8f9da341722b.ctex"
+path="res://.godot/imported/prometheus_red.png-b731f9df44536ff0365e9bba76c33342.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/robots/prometheus/prometheus_red.png"
-dest_files=["res://.godot/imported/prometheus_red.png-5692d9655b280a68d5ec8f9da341722b.ctex"]
+source_file="res://assets/robots/originals/prometheus_red.png"
+dest_files=["res://.godot/imported/prometheus_red.png-b731f9df44536ff0365e9bba76c33342.ctex"]
 
 [params]
 
