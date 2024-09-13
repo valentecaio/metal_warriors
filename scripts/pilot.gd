@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+# imports
+var Utils = preload("res://scripts/utils.gd")
+
+# references
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var body_collision_shape = $BodyCollisionShape2D
 @onready var animation_player = $AnimationPlayer

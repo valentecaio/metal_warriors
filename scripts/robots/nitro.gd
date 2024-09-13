@@ -254,7 +254,7 @@ func _on_animation_finished(anim_name: String):
   print("_on_animation_finished() ", anim_name)
 
 
-# called by pilot script to after boarding robot
+# called by pilot script after boarding robot
 func drive(new_pilot):
   print("Nitro boarded")
   if (pilot != null) or (power_state != PowerState.OFF):

@@ -91,7 +91,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_kk05t")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"idle_on",
 "speed": 16.0
 }, {
 "frames": [{
@@ -185,7 +185,7 @@ height = 46.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3b4k"]
 radius = 14.0
-height = 40.0
+height = 38.0
 
 [node name="Drache" type="CharacterBody2D"]
 z_index = 10
@@ -194,8 +194,8 @@ script = ExtResource("1_xq8l0")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4e41d")
-animation = &"power_dive"
-autoplay = "idle"
+animation = &"idle_on"
+autoplay = "idle_on"
 
 [node name="ShotAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_g5o30")
@@ -205,7 +205,7 @@ autoplay = "default"
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_gylwh")
 
-[node name="PowerDiveCollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -3.14159
 shape = SubResource("CapsuleShape2D_o3b4k")
 disabled = true
