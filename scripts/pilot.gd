@@ -1,9 +1,5 @@
 extends CharacterBody2D
 
-# imports
-var Utils = preload("res://scripts/utils.gd")
-
-# references
 @onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var body_collision_shape = $BodyCollisionShape2D
 @onready var animation_player = $AnimationPlayer
@@ -57,7 +53,8 @@ func _physics_process(delta):
 
 func process_walk(delta, dir):
   # print("process_walk()")
-  move_and_gravity(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir, max_walk_speed)
+  apply_gravity(delta)
 
   process_shoot(delta)
 
@@ -80,7 +77,8 @@ func process_walk(delta, dir):
 
 func process_fly(delta, dir):
   # print("process_fly()")
-  move_and_gravity(delta, dir, max_fly_speed)
+  move_with_inertia(delta, dir, max_fly_speed)
+  apply_gravity(delta)
 
   process_shoot(delta)
 
@@ -173,10 +171,13 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
 
 
 # evaluate horizontal velocity and flip sprites if necessary
-func move_and_gravity(delta, dir, max_speed):
+func move_with_inertia(delta, dir, max_speed = max_walk_speed):
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
   velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
+
+
+func apply_gravity(delta):
   velocity += get_gravity() * delta
 
 

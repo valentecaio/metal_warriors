@@ -82,7 +82,7 @@ func _physics_process(delta):
 
 func process_walk(delta, dir):
   # print("process_walk()")
-  move_with_inertia(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir)
   apply_gravity(delta)
 
   process_shoot_start(delta)
@@ -133,7 +133,7 @@ func process_walk(delta, dir):
 
 func process_fall(delta, dir):
   # print("process_fall()")
-  move_with_inertia(delta, dir, max_walk_speed)
+  move_with_inertia(delta, dir)
   apply_gravity(delta)
 
   process_shoot_start(delta)
@@ -146,7 +146,7 @@ func process_fall(delta, dir):
 
 func process_flamethrower(delta, dir):
   # print("process_flamethrower()")
-  stop_with_inertia(delta)
+  move_with_inertia(delta, Vector2.ZERO)
   apply_gravity(delta)
 
   if dir.x:
@@ -171,7 +171,7 @@ func process_flamethrower(delta, dir):
 
 func process_shield(delta, dir):
   # print("process_shield()")
-  stop_with_inertia(delta)
+  move_with_inertia(delta, Vector2.ZERO)
   apply_gravity(delta)
 
   if dir.x:
@@ -184,7 +184,7 @@ func process_shield(delta, dir):
 
 func process_block_build(delta, _dir):
   # print("process_block_build()")
-  stop_with_inertia(delta)
+  move_with_inertia(delta, Vector2.ZERO)
   apply_gravity(delta)
 
   # wait until block_build finishes, then return to walk state
@@ -194,7 +194,7 @@ func process_block_build(delta, _dir):
 
 
 func process_unboarded(delta, _dir):
-  stop_with_inertia(delta)
+  move_with_inertia(delta, Vector2.ZERO)
   apply_gravity(delta)
 
   match power_state:
@@ -297,14 +297,10 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
 
 
 # evaluate horizontal velocity and flip sprites if necessary
-func move_with_inertia(delta, dir, max_speed):
+func move_with_inertia(delta, dir, max_speed = max_walk_speed):
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
   velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
-
-
-func stop_with_inertia(delta):
-  velocity.x = move_toward(velocity.x, 0, friction * delta)
 
 
 func apply_gravity(delta):

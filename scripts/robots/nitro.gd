@@ -176,7 +176,7 @@ func process_land(delta, dir):
 
 func process_shield(delta, dir):
   # print("process_shield()")
-  stop_with_inertia(delta)
+  move_with_inertia(delta, Vector2.ZERO)
   apply_gravity(delta)
 
   if dir.x:
@@ -191,7 +191,7 @@ func process_shield(delta, dir):
 
 
 func process_unboarded(delta, _dir):
-  stop_with_inertia(delta)
+  move_with_inertia(delta, Vector2.ZERO)
   apply_gravity(delta)
 
   match power_state:
@@ -279,14 +279,10 @@ func eval_velocity(initial_velocity, input, delta, max_speed):
 
 
 # evaluate horizontal velocity and flip sprites if necessary
-func move_with_inertia(delta, dir, max_speed):
+func move_with_inertia(delta, dir, max_speed = max_walk_speed):
   if dir.x:
     flip_body_and_cannon(dir.x < 0)
   velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
-
-
-func stop_with_inertia(delta):
-  velocity.x = move_toward(velocity.x, 0, friction * delta)
 
 
 func apply_gravity(delta):
