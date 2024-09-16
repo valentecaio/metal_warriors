@@ -393,13 +393,6 @@ z_index = 10
 collision_layer = 2
 collision_mask = 509
 script = ExtResource("1_gh4w8")
-aim_speed = null
-max_walk_speed = null
-max_fly_speed = null
-jump_speed = null
-state = null
-acceleration = null
-friction = null
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sc3kb")

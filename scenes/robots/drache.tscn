@@ -210,8 +210,6 @@ size = Vector2(38, 19)
 z_index = 10
 collision_mask = 510
 script = ExtResource("1_xq8l0")
-max_fly_speed = null
-state = null
 acceleration = 3.0
 friction = 600
 
