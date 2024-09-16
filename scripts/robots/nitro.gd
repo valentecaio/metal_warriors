@@ -1,43 +1,62 @@
-extends CharacterBody2D
+class_name Nitro extends "res://scripts/abstract/robot.gd"
+func custom_class_name(): return "Nitro"
 
 
-@onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var shield_collision_shape = $ShieldCollisionShape2D
 @onready var cannon = $Cannon
 @onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
-@onready var boarding_area = $BoardingArea2D
 
 # properties defined in the editor
 @export var aim_speed := 150
 @export var max_walk_speed := 200
 @export var max_fly_speed := 300
-@export var acceleration := 2.0
-@export var friction := 2000
 @export var jump_speed := -350
+# @export var acceleration := 2.0
+# @export var friction := 2000
 
 # main state machine
 @export var state := State.WALK
 enum State {WALK, JUMP, FALL, FLY, LAND, SHIELD, SWORD, UNBOARDED}
-
-# state machine for start/stop animations: STOPPING -> OFF -> STARTING
-enum PowerState {STOPPING, OFF, STARTING}
-var power_state := PowerState.OFF
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
 var time_to_next_shot := 0.0
 
 # state variables
-var cannon_angle := 0.0
-var flipped := false
 var cannon_animation := "idle"
 var shooting := false
-var pilot = null
-# var flight_time := 0.0
 
+
+
+### OVERRIDDEN FROM ROBOT ###
+
+func default_state():
+  set_state(State.WALK)
+
+
+# flip body and cannon horizontally when facing left
+func flip_sprites(flip):
+  # save flipped state
+  flipped = flip
+
+  # flip sprites
+  body_animated_sprite.flip_h = flip
+  cannon_animated_sprite.flip_h = flip
+
+  # flip positions
+  if flip:
+    cannon.position.x = -2
+    cannon_animated_sprite.position.x = -10.5
+  else:
+    cannon.position.x = 2
+    cannon_animated_sprite.position.x = 10.5
+
+
+
+### GAME LOOP ###
 
 func _ready():
-  print("Nitro ready")
+  super()
   # body_animated_sprite.connect("animation_finished", self, _on_animation_finished)
 
   if state == State.UNBOARDED:
@@ -98,15 +117,15 @@ func process_walk(delta, dir):
     return set_state(State.FALL)
 
   # check jump button
-  if Input.is_action_just_pressed("button_south"):
+  if Input.is_action_pressed("button_south"):
     return set_state(State.JUMP)
 
   # check shield button
-  if Input.is_action_just_pressed("shoulder_right"):
+  if Input.is_action_pressed("shoulder_right"):
     return set_state(State.SHIELD)
 
   # check eject button
-  if Input.is_action_just_pressed("button_select"):
+  if Input.is_action_pressed("button_select"):
     return set_state(State.UNBOARDED)
 
 
@@ -176,11 +195,11 @@ func process_land(delta, dir):
 
 func process_shield(delta, dir):
   # print("process_shield()")
-  move_with_inertia(delta, Vector2.ZERO)
+  move_with_inertia(delta, Vector2.ZERO, max_walk_speed)
   apply_gravity(delta)
 
   if dir.x:
-    flip_body_and_cannon(dir.x < 0)
+    flip_sprites(dir.x < 0)
 
   # flip shield collision shape when facing left
   shield_collision_shape.position.x = -15 if flipped else 15
@@ -188,25 +207,6 @@ func process_shield(delta, dir):
   # check shield button
   if not Input.is_action_pressed("shoulder_right"):
     return set_state(State.WALK)
-
-
-func process_unboarded(delta, _dir):
-  move_with_inertia(delta, Vector2.ZERO)
-  apply_gravity(delta)
-
-  match power_state:
-    PowerState.STOPPING:
-      # wait until "power_off" animation finishes, then go to OFF state
-      if not body_animated_sprite.is_playing():
-        body_animated_sprite.play("idle_off")
-        power_state = PowerState.OFF
-    PowerState.OFF:
-      # wait until a pilot script triggers drive()
-      pass
-    PowerState.STARTING:
-      # wait until "power_on" animation finishes, then go to WALK state
-      if not body_animated_sprite.is_playing():
-        return set_state(State.WALK)
 
 
 func process_shoot(delta):
@@ -246,87 +246,12 @@ func process_aim(delta, dir):
   cannon.rotation = eval_cannon_angle()
 
 
-
-### CALLBACKS ###
-
-# TODO
-func _on_animation_finished(anim_name: String):
-  print("_on_animation_finished() ", anim_name)
-
-
-# called by pilot script after boarding robot
-func drive(new_pilot):
-  print("Nitro boarded")
-  if (pilot != null) or (power_state != PowerState.OFF):
-    return # robot already occupied
-
-  # start robot
-  pilot = new_pilot
-  power_state = PowerState.STARTING
-  body_animated_sprite.play("power_on")
-
-
-
-### HELPERS ###
-
-# evaluate velocity with inertia
-func eval_velocity(initial_velocity, input, delta, max_speed):
-  if input:
-    var vel = initial_velocity + (input * max_speed * delta * acceleration)
-    return clamp(vel, -max_speed, max_speed)
-  else:
-    return move_toward(initial_velocity, 0, friction * delta)
-
-
-# evaluate horizontal velocity and flip sprites if necessary
-func move_with_inertia(delta, dir, max_speed = max_walk_speed):
-  if dir.x:
-    flip_body_and_cannon(dir.x < 0)
-  velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
-
-
-func apply_gravity(delta):
-  velocity += get_gravity() * delta
-
-
-# return cannon angle in radians, rounded to a multiple of 22.5 degrees
-# and flipped when facing left
-func eval_cannon_angle():
-  # cannon rotation is inverted when facing left
-  var angle = -cannon_angle if flipped else cannon_angle
-
-  # round to a multiple of 22.5 degrees
-  angle = round(angle / 22.5) * 22.5
-
-  # return angle in radians
-  return deg_to_rad(angle)
-
-
-# flip body and cannon horizontally when facing left
-func flip_body_and_cannon(flip):
-  # save flipped state
-  flipped = flip
-
-  # flip sprites
-  body_animated_sprite.flip_h = flip
-  cannon_animated_sprite.flip_h = flip
-
-  # flip positions
-  if flip:
-    cannon.position.x = -2
-    cannon_animated_sprite.position.x = -10.5
-  else:
-    cannon.position.x = 2
-    cannon_animated_sprite.position.x = 10.5
-
-
 func set_state(new_state):
   state = new_state
   cannon.visible = (state not in [State.SHIELD, State.UNBOARDED])
   match state:
     State.WALK:
       shield_collision_shape.disabled = true
-      cannon.show()
       body_animated_sprite.play("idle_on")
     State.JUMP:
       velocity.y = jump_speed
@@ -339,13 +264,17 @@ func set_state(new_state):
       body_animated_sprite.play("land")
     State.SHIELD:
       shield_collision_shape.disabled = false
-      cannon.hide()
       body_animated_sprite.play("shield_start")
     # State.SWORD:
     #   body_animated_sprite.play("sword")
     State.UNBOARDED:
-      if pilot != null:
-        pilot.eject()
-        pilot = null
+      eject_pilot()
       power_state = PowerState.STOPPING
-      body_animated_sprite.play("power_off")
+
+
+
+### CALLBACKS ###
+
+# TODO
+func _on_animation_finished(anim_name: String):
+  print("_on_animation_finished() ", anim_name)

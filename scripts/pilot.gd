@@ -1,7 +1,7 @@
-extends CharacterBody2D
+class_name Pilot extends "res://scripts/abstract/playable.gd"
+func custom_class_name(): return "Pilot"
 
-@onready var body_animated_sprite = $BodyAnimatedSprite2D
-@onready var body_collision_shape = $BodyCollisionShape2D
+
 @onready var animation_player = $AnimationPlayer
 @onready var area_2d = $Area2D
 
@@ -9,9 +9,9 @@ extends CharacterBody2D
 @export var aim_speed := 150
 @export var max_walk_speed := 100
 @export var max_fly_speed := 200
-@export var acceleration := 2.0
-@export var friction := 2000
 @export var jump_speed := -350
+# @export var acceleration := 2.0
+# @export var friction := 2000
 
 # main state machine
 enum State {WALK, FLY, ROBOT}
@@ -26,13 +26,11 @@ const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
 var time_to_next_shot := 0.0
 
 # state variables
-var cannon_angle := 0.0
-var flipped := false
 var robot = null
 
-func _ready():
-  print("Pilot ready")
 
+
+### GAME LOOP ###
 
 func _physics_process(delta):
   var dir = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()
@@ -65,7 +63,7 @@ func process_walk(delta, dir):
     body_animated_sprite.pause()
 
   # check jump button
-  if Input.is_action_just_pressed("button_south"):
+  if Input.is_action_pressed("button_south"):
     return set_state(State.FLY)
 
   # check if there is a robot touching the player and board it
@@ -144,65 +142,6 @@ func process_aim(delta, dir):
   cannon_angle = move_toward(cannon_angle, pressed_angle, aim_speed * delta)
 
 
-
-### CALLBACKS ###
-
-# TODO
-func _on_animation_finished(anim_name: String):
-  print("_on_animation_finished() ", anim_name)
-
-
-# called by robot script after ejecting pilot
-func eject():
-  robot_state = RobotState.EJECTING
-  animation_player.play("eject")
-
-
-
-### HELPERS ###
-
-# evaluate velocity with inertia
-func eval_velocity(initial_velocity, input, delta, max_speed):
-  if input:
-    var vel = initial_velocity + (input * max_speed * delta * acceleration)
-    return clamp(vel, -max_speed, max_speed)
-  else:
-    return move_toward(initial_velocity, 0, friction * delta)
-
-
-# evaluate horizontal velocity and flip sprites if necessary
-func move_with_inertia(delta, dir, max_speed = max_walk_speed):
-  if dir.x:
-    flip_body_and_cannon(dir.x < 0)
-  velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
-
-
-func apply_gravity(delta):
-  velocity += get_gravity() * delta
-
-
-# return cannon angle in radians, rounded to a multiple of 22.5 degrees
-# and flipped when facing left
-func eval_cannon_angle():
-  # cannon rotation is inverted when facing left
-  var angle = -cannon_angle if flipped else cannon_angle
-
-  # round to a multiple of 22.5 degrees
-  angle = round(angle / 22.5) * 22.5
-
-  # return angle in radians
-  return deg_to_rad(angle)
-
-
-# flip body and cannon horizontally when facing left
-func flip_body_and_cannon(flip):
-  # save flipped state
-  flipped = flip
-
-  # flip sprites
-  body_animated_sprite.flip_h = flip
-
-
 func set_state(new_state):
   state = new_state
   match state:
@@ -214,5 +153,12 @@ func set_state(new_state):
       body_collision_shape.disabled = true
       robot_state = RobotState.BOARDING
       animation_player.play("board")
-      
-      # body_animated_sprite.play("board")
+
+
+
+### CALLBACKS ###
+
+# called by robot script after ejecting pilot
+func eject():
+  robot_state = RobotState.EJECTING
+  animation_player.play("eject")

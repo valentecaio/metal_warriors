@@ -1,8 +1,7 @@
-extends CharacterBody2D
+class_name Prometheus extends "res://scripts/abstract/robot.gd"
+func custom_class_name(): return "Prometheus"
 
-class_name Prometheus
 
-@onready var body_animated_sprite = $BodyAnimatedSprite2D
 @onready var cannon = $Cannon
 @onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
 @onready var boarding_area = $BoardingArea2D
@@ -10,8 +9,8 @@ class_name Prometheus
 # properties defined in the editor
 @export var aim_speed := 150
 @export var max_walk_speed := 80
-@export var acceleration := 2.0
-@export var friction := 4000
+# @export var acceleration := 2.0
+# @export var friction := 4000
 
 # main state machine
 @export var state := State.WALK
@@ -20,10 +19,6 @@ enum State {WALK, FALL, FLAMETHROWER, BLOCKBUILD, SHIELD, UNBOARDED}
 # state machine for flamethrower animations: START -> LOOP -> END
 enum FireState {START, LOOP, END}
 var fire_state := FireState.START
-
-# state machine for start/stop animations: STOPPING -> OFF -> STARTING
-enum PowerState {STOPPING, OFF, STARTING}
-var power_state := PowerState.OFF
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/mega_cannon.tscn")
@@ -35,17 +30,39 @@ const mine_scene = preload("res://scenes/bullets/aerial_mine.tscn")
 var time_to_next_mine := 0.0
 
 # state variables
-var cannon_angle := 0.0
-var flipped := false
 var shooting := false
-var pilot = null
+
+
+
+### OVERRIDDEN FROM ROBOT ###
+
+func default_state():
+  set_state(State.WALK)
+
+
+# flip body and cannon horizontally when facing left
+func flip_sprites(flip):
+  # save flipped state
+  flipped = flip
+
+  # flip sprites
+  body_animated_sprite.flip_h = flip
+  cannon_animated_sprite.flip_h = flip
+
+  # flip positions
+  if flip:
+    cannon.position.x = 5
+    cannon_animated_sprite.position.x = -12
+  else:
+    cannon.position.x = -5
+    cannon_animated_sprite.position.x = 12
 
 
 
 ### GAME LOOP ###
 
 func _ready():
-  print("Prometheus ready")
+  print(custom_class_name() + " ready")
 
   if state == State.UNBOARDED:
     cannon.hide()
@@ -82,7 +99,7 @@ func _physics_process(delta):
 
 func process_walk(delta, dir):
   # print("process_walk()")
-  move_with_inertia(delta, dir)
+  move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
 
   process_shoot_start(delta)
@@ -115,25 +132,25 @@ func process_walk(delta, dir):
     return set_state(State.FALL)
 
   # check flame thrower button
-  if Input.is_action_just_pressed("button_east"):
+  if Input.is_action_pressed("button_east"):
     return set_state(State.FLAMETHROWER)
 
   # check block building button
-  if Input.is_action_just_pressed("button_south"):
+  if Input.is_action_pressed("button_south"):
     return set_state(State.BLOCKBUILD)
 
   # check shield button
-  if Input.is_action_just_pressed("shoulder_right"):
+  if Input.is_action_pressed("shoulder_right"):
     return set_state(State.SHIELD)
 
   # check eject button
-  if Input.is_action_just_pressed("button_select"):
+  if Input.is_action_pressed("button_select"):
     return set_state(State.UNBOARDED)
 
 
 func process_fall(delta, dir):
   # print("process_fall()")
-  move_with_inertia(delta, dir)
+  move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
 
   process_shoot_start(delta)
@@ -146,11 +163,11 @@ func process_fall(delta, dir):
 
 func process_flamethrower(delta, dir):
   # print("process_flamethrower()")
-  move_with_inertia(delta, Vector2.ZERO)
+  move_with_inertia(delta, Vector2.ZERO, max_walk_speed)
   apply_gravity(delta)
 
   if dir.x:
-    flip_body_and_cannon(dir.x < 0)
+    flip_sprites(dir.x < 0)
 
   match fire_state:
     FireState.START:
@@ -171,11 +188,11 @@ func process_flamethrower(delta, dir):
 
 func process_shield(delta, dir):
   # print("process_shield()")
-  move_with_inertia(delta, Vector2.ZERO)
+  move_with_inertia(delta, Vector2.ZERO, max_walk_speed)
   apply_gravity(delta)
 
   if dir.x:
-    flip_body_and_cannon(dir.x < 0)
+    flip_sprites(dir.x < 0)
 
   # check shield button
   if not Input.is_action_pressed("shoulder_right"):
@@ -184,32 +201,13 @@ func process_shield(delta, dir):
 
 func process_block_build(delta, _dir):
   # print("process_block_build()")
-  move_with_inertia(delta, Vector2.ZERO)
+  move_with_inertia(delta, Vector2.ZERO, max_walk_speed)
   apply_gravity(delta)
 
   # wait until block_build finishes, then return to walk state
   if not body_animated_sprite.is_playing():
     # TODO: create block
     return set_state(State.WALK)
-
-
-func process_unboarded(delta, _dir):
-  move_with_inertia(delta, Vector2.ZERO)
-  apply_gravity(delta)
-
-  match power_state:
-    PowerState.STOPPING:
-      # wait until "power_off" animation finishes, then go to OFF state
-      if not body_animated_sprite.is_playing():
-        body_animated_sprite.play("idle_off")
-        power_state = PowerState.OFF
-    PowerState.OFF:
-      # wait until a pilot script triggers drive()
-      pass
-    PowerState.STARTING:
-      # wait until "power_on" animation finishes, then go to WALK state
-      if not body_animated_sprite.is_playing():
-        return set_state(State.WALK)
 
 
 func process_shoot_start(delta):
@@ -268,68 +266,6 @@ func process_aim(delta, dir):
   # rotate cannon sprite
   cannon.rotation = eval_cannon_angle()
 
-
-
-### CALLBACKS ###
-
-# called by pilot script after boarding robot
-func drive(new_pilot):
-  print("Prometheus boarded")
-  if (pilot != null) or (power_state != PowerState.OFF):
-    return # robot already occupied
-
-  # start robot
-  pilot = new_pilot
-  power_state = PowerState.STARTING
-  body_animated_sprite.play("power_on")
-
-
-
-### HELPERS ###
-
-# evaluate velocity with inertia
-func eval_velocity(initial_velocity, input, delta, max_speed):
-  if input:
-    var vel = initial_velocity + (input * max_speed * delta * acceleration)
-    return clamp(vel, -max_speed, max_speed)
-  else:
-    return move_toward(initial_velocity, 0, friction * delta)
-
-
-# evaluate horizontal velocity and flip sprites if necessary
-func move_with_inertia(delta, dir, max_speed = max_walk_speed):
-  if dir.x:
-    flip_body_and_cannon(dir.x < 0)
-  velocity.x = eval_velocity(velocity.x, dir.x, delta, max_speed)
-
-
-func apply_gravity(delta):
-  velocity += get_gravity() * delta
-
-
-# return cannon angle in radians, rounded to a multiple of 22.5 degrees
-# and flipped when facing left
-func eval_cannon_angle():
-  var angle = -cannon_angle if flipped else cannon_angle
-  return deg_to_rad(round(angle / 22.5) * 22.5)
-
-
-# flip body and cannon horizontally when facing left
-func flip_body_and_cannon(flip):
-  # save flipped state
-  flipped = flip
-
-  # flip sprites
-  body_animated_sprite.flip_h = flip
-  cannon_animated_sprite.flip_h = flip
-
-  # flip positions
-  if flip:
-    cannon.position.x = 5
-    cannon_animated_sprite.position.x = -12
-  else:
-    cannon.position.x = -5
-    cannon_animated_sprite.position.x = 12
 
 
 func set_state(new_state):
