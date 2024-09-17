@@ -5,16 +5,14 @@ extends Area2D
 
 # bullet type needs to be defined in the editor
 enum Type {
-  NULL,
-  AERIAL_MINE,
-  ENERGY_CANNON,
-  FRAGMENT,
-  FUSION_RIFLE,
-  MEGA_CANNON,
+  DEFAULT,       ## gun, fusion_rifle, fragment
+  AERIAL_MINE,   ## upward moving bullet with random horizontal movement
+  ENERGY_CANNON, ## bullet with random error (-10 to 10 degrees)
+  MEGA_CANNON,   ## strong bullet with 8 fragments
 }
+@export var type := Type.DEFAULT
 
 # properties defined in the editor
-@export var type := Type.NULL
 @export var speed = 400         # movement speed
 @export var fire_frequency = 8  # shots per second
 
@@ -27,8 +25,8 @@ var init_pos := Vector2.ZERO
 
 
 func _ready():
-  if type == Type.NULL or direction == Vector2.ZERO:
-    print("BULLET: invalid type of direction")
+  if direction == Vector2.ZERO:
+    print("BULLET: invalid direction")
     queue_free()
     return
 
@@ -85,7 +83,5 @@ func explode():
 
   # stop bullet, disable collision and play hit animation
   speed = 0
-  type = Type.NULL
   collision_shape.disabled = true
   animated_sprite.play("hit")
-

@@ -26,7 +26,7 @@ enum RobotState {BOARDING, DRIVE, EJECTING}
 var robot_state := RobotState.BOARDING
 
 # bullets
-const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
+const bullet_scene = preload("res://scenes/bullets/gun.tscn")
 var time_to_next_shot := 0.0
 
 # state variables
@@ -139,7 +139,7 @@ func process_shoot(delta):
     var bullet = bullet_scene.instantiate()
     var angle = eval_cannon_angle()
     bullet.direction = Vector2(-1 if flipped else 1, 0).rotated(angle).normalized()
-    bullet.position = global_position + Vector2(-23 if flipped else 23, -3).rotated(angle)
+    bullet.position = global_position + Vector2(-10 if flipped else 10, -1).rotated(angle)
     get_parent().add_child(bullet)
     time_to_next_shot = 1.0/bullet.fire_frequency
 
@@ -167,6 +167,7 @@ func set_state(new_state):
     State.ROBOT:
       body_collision_shape.disabled = true
       robot_state = RobotState.BOARDING
+      body_animated_sprite.play("fly")
       animation_player.play("board")
 
 
