@@ -36,32 +36,6 @@ var shooting := false
 
 
 
-### OVERRIDDEN FROM ROBOT ###
-
-# show/hide cannon
-func cannon_visible(visible):
-  cannon.visible = visible
-
-
-# flip body and cannon horizontally when facing left
-func flip_sprites(flip):
-  # save flipped state
-  flipped = flip
-
-  # flip sprites
-  body_animated_sprite.flip_h = flip
-  cannon_animated_sprite.flip_h = flip
-
-  # flip positions
-  if flip:
-    cannon.position.x = -2
-    cannon_animated_sprite.position.x = -10.5
-  else:
-    cannon.position.x = 2
-    cannon_animated_sprite.position.x = 10.5
-
-
-
 ### GAME LOOP ###
 
 func _physics_process(delta):
@@ -244,9 +218,30 @@ func process_aim(delta, dir):
   cannon.rotation = eval_cannon_angle()
 
 
+
+### OVERRIDDEN FROM ROBOT ###
+
+# flip body and cannon horizontally when facing left
+func flip_sprites(flip):
+  # save flipped state
+  flipped = flip
+
+  # flip sprites
+  body_animated_sprite.flip_h = flip
+  cannon_animated_sprite.flip_h = flip
+
+  # flip positions
+  if flip:
+    cannon.position.x = -2
+    cannon_animated_sprite.position.x = -10.5
+  else:
+    cannon.position.x = 2
+    cannon_animated_sprite.position.x = 10.5
+
+
 func set_state(new_state):
   state = new_state
-  cannon_visible(state not in [State.SHIELD, State.UNBOARDED])
+  cannon.visible = state not in [State.SHIELD, State.UNBOARDED]
   match state:
     State.WALK:
       shield_collision_shape.disabled = true

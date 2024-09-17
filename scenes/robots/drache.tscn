@@ -322,6 +322,10 @@ animations = [{
 "speed": 14.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gylwh"]
+radius = 14.0
+height = 46.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8ibv"]
 atlas = ExtResource("2_eevej")
 region = Rect2(1421, 131, 126, 126)
@@ -344,10 +348,6 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gylwh"]
-radius = 13.0
-height = 46.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3b4k"]
 radius = 14.0
 height = 38.0
@@ -367,15 +367,16 @@ sprite_frames = SubResource("SpriteFrames_4e41d")
 animation = &"idle_on"
 autoplay = "idle_on"
 
+[node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_gylwh")
+
 [node name="ShotAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 visible = false
 position = Vector2(0, -28)
 sprite_frames = SubResource("SpriteFrames_g5o30")
 autoplay = "default"
-
-[node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.5708
-shape = SubResource("CapsuleShape2D_gylwh")
 
 [node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -3.14159

@@ -62,7 +62,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"fly",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -274,9 +274,8 @@ script = ExtResource("1_3uei5")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_n16of")
-animation = &"shoot_1"
+animation = &"fly"
 autoplay = "idle"
-frame_progress = 1.0
 
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_dyllj")

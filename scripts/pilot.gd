@@ -143,7 +143,7 @@ func process_aim(delta, dir):
     pressed_angle = 90 if dir.y > 0 else -90
   elif dir.x:
     pressed_angle = 0
-  cannon_angle = move_toward(cannon_angle, pressed_angle, aim_speed * delta)
+  cannon_angle = pressed_angle
 
 
 func set_state(new_state):

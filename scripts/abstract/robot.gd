@@ -19,8 +19,7 @@ var power_state := PowerState.OFF
 
 ### VIRTUALS ###
 
-# show/hide cannon
-func cannon_visible(_visible): pass
+func set_state(state): pass
 
 
 
@@ -29,13 +28,10 @@ func cannon_visible(_visible): pass
 func _ready():
   super()
   if init_boarded:
-    body_animated_sprite.play("idle_on")
-    state = 0 # WALK or FLY
-    cannon_visible(true)
+    set_state(0) # default state: WALK or FLY (drache)
   else:
     body_animated_sprite.play("idle_off")
-    state = 1 # UNBOARDED
-    cannon_visible(false)
+    set_state(1) # UNBOARDED
 
 
 # all robots have UNBOARDED state
@@ -55,9 +51,8 @@ func process_unboarded(delta, _dir):
     PowerState.STARTING:
       # wait until "power_on" animation finishes, then go to default state
       if not body_animated_sprite.is_playing():
-        cannon_visible(true)
         body_animated_sprite.play("idle_on")
-        state = 0
+        set_state(0)
 
 
 

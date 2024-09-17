@@ -132,6 +132,9 @@ func process_shoot(delta):
     time_to_next_shot = 1.0/bullet.fire_frequency
 
 
+
+### OVERRIDDEN FROM ROBOT ###
+
 func set_state(new_state):
   state = new_state
   body_collision_shape.disabled   = (state == State.SHIELD)
