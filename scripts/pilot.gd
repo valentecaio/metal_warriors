@@ -31,7 +31,16 @@ var time_to_next_shot := 0.0
 
 # state variables
 var robot = null
+var shooting:= false
 
+# constants
+var dict_animation_by_angle = {
+  "-90": "shoot_1",
+  "-45": "shoot_2",
+    "0": "shoot_3",
+   "45": "shoot_4",
+   "90": "shoot_5",
+}
 
 
 ### GAME LOOP ###
@@ -61,10 +70,11 @@ func process_walk(delta, dir):
   process_shoot(delta)
 
   # walk animation
-  if dir.x:
-    body_animated_sprite.play("walk")
-  else:
-    body_animated_sprite.pause()
+  if !shooting:
+    if dir.x:
+      body_animated_sprite.play("walk")
+    else:
+      body_animated_sprite.pause()
 
   # check jump button
   if Input.is_action_pressed("button_south"):
@@ -83,6 +93,8 @@ func process_fly(delta, dir):
   apply_gravity(delta)
 
   process_shoot(delta)
+  if !shooting:
+    body_animated_sprite.play("fly")
 
   # state is locked while button is pressed
   if Input.is_action_pressed("button_south"):
@@ -114,7 +126,6 @@ func process_robot(_delta, _dir):
         return set_state(State.WALK)
 
 
-
 func process_shoot(delta):
   # update time to next shot
   time_to_next_shot -= delta
@@ -122,7 +133,9 @@ func process_shoot(delta):
     return
 
   # check shoot button
-  if Input.is_action_pressed("button_west"):
+  shooting = Input.is_action_pressed("button_west")
+  if shooting:
+    body_animated_sprite.play(dict_animation_by_angle[str(cannon_angle)])
     var bullet = bullet_scene.instantiate()
     var angle = eval_cannon_angle()
     bullet.direction = Vector2(-1 if flipped else 1, 0).rotated(angle).normalized()
@@ -136,14 +149,12 @@ func process_aim(delta, dir):
     return
 
   # update cannon angle according to input
-  var pressed_angle := 0.0
   if dir.x and dir.y:
-    pressed_angle = 45 if dir.y > 0 else -45
+    cannon_angle = 45 if dir.y > 0 else -45
   elif dir.y:
-    pressed_angle = 90 if dir.y > 0 else -90
+    cannon_angle = 90 if dir.y > 0 else -90
   elif dir.x:
-    pressed_angle = 0
-  cannon_angle = pressed_angle
+    cannon_angle = 0
 
 
 func set_state(new_state):

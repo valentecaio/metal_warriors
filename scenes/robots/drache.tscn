@@ -384,9 +384,9 @@ shape = SubResource("CapsuleShape2D_o3b4k")
 disabled = true
 debug_color = Color(1, 0, 0, 0.27451)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="BoardingArea2D" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0, 3.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoardingArea2D"]
+position = Vector2(0, 5.5)
 shape = SubResource("RectangleShape2D_it6ch")
 debug_color = Color(0, 1, 0, 0.117647)
