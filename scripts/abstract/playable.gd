@@ -19,10 +19,6 @@ var flipped := false
 
 ### VIRTUALS ###
 
-# used to set the player to its default state
-func default_state():
-  print(custom_class_name() + " default_state() not implemented")
-
 # flip all necessary sprites horizontally when facing left
 func flip_sprites(flip):
   flipped = flip

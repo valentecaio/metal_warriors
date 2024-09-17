@@ -11,8 +11,11 @@ func custom_class_name(): return "Drache"
 # @export var friction := 600
 
 # main state machine
-@export var state := State.FLY
-enum State {FLY, SHIELD, UNBOARDED}
+enum State {
+  FLY,       # default state: floating
+  UNBOARDED, # waiting for pilot to board
+  SHIELD,    # power dive (shield) while holding shield button
+}
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/energy_cannon.tscn")
@@ -20,23 +23,7 @@ var time_to_next_shot := 0.0
 
 
 
-### OVERRIDDEN FROM ROBOT ###
-
-func default_state():
-  set_state(State.FLY)
-
-
-
 ### GAME LOOP ###
-
-func _ready():
-  super()
-
-  if state == State.UNBOARDED:
-    body_animated_sprite.play("idle_off")
-  else:
-    body_animated_sprite.play("idle_on")
-
 
 func _physics_process(delta):
   var dir = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()
@@ -76,6 +63,7 @@ func process_fly(delta, dir):
 
   # check eject button
   if Input.is_action_just_pressed("button_select"):
+    eject_pilot()
     return set_state(State.UNBOARDED)
 
 
@@ -91,7 +79,6 @@ func process_unboarded(delta, _dir):
   velocity.x = eval_velocity(velocity.x, 0, delta, max_fly_speed)
   apply_gravity(delta)
 
-  print(power_state)
   match power_state:
     PowerState.STOPPING:
       # wait until "power_off" animation finishes, then go to OFF state
@@ -153,8 +140,4 @@ func set_state(new_state):
     State.SHIELD:
       body_animated_sprite.play("power_dive")
     State.UNBOARDED:
-      if pilot != null:
-        pilot.eject()
-        pilot = null
       power_state = PowerState.STOPPING
-      body_animated_sprite.play("power_off")

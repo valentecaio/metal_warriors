@@ -14,7 +14,11 @@ func custom_class_name(): return "Pilot"
 # @export var friction := 2000
 
 # main state machine
-enum State {WALK, FLY, ROBOT}
+enum State {
+  WALK,  # default state: walking on the ground
+  FLY,   # flying with jetpack
+  ROBOT, # piloting a robot
+}
 var state := State.WALK
 
 # robot pilotting state machine

@@ -364,10 +364,8 @@ friction = 600
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4e41d")
-animation = &"power_off"
+animation = &"idle_on"
 autoplay = "idle_on"
-frame = 10
-frame_progress = 1.0
 
 [node name="ShotAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 visible = false

@@ -4,13 +4,38 @@ class_name Robot extends "res://scripts/abstract/playable.gd"
 func custom_class_name(): return "Robot"
 
 
+# start with a pilot
+@export var init_boarded := false
+
+# state variables
+var pilot = null
+var state := 0
+
 # state machine for start/stop animations: STOPPING -> OFF -> STARTING
 enum PowerState {STOPPING, OFF, STARTING}
 var power_state := PowerState.OFF
 
-# state variables
-var pilot = null
 
+
+### VIRTUALS ###
+
+# show/hide cannon
+func cannon_visible(_visible): pass
+
+
+
+### GAME LOOP ###
+
+func _ready():
+  super()
+  if init_boarded:
+    body_animated_sprite.play("idle_on")
+    state = 0 # WALK or FLY
+    cannon_visible(true)
+  else:
+    body_animated_sprite.play("idle_off")
+    state = 1 # UNBOARDED
+    cannon_visible(false)
 
 
 # all robots have UNBOARDED state
@@ -30,7 +55,9 @@ func process_unboarded(delta, _dir):
     PowerState.STARTING:
       # wait until "power_on" animation finishes, then go to default state
       if not body_animated_sprite.is_playing():
-        default_state()
+        cannon_visible(true)
+        body_animated_sprite.play("idle_on")
+        state = 0
 
 
 
@@ -57,3 +84,4 @@ func eject_pilot():
     pilot.eject()
     pilot = null
   body_animated_sprite.play("power_off")
+

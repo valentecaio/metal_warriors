@@ -15,8 +15,16 @@ func custom_class_name(): return "Nitro"
 # @export var friction := 2000
 
 # main state machine
-@export var state := State.WALK
-enum State {WALK, JUMP, FALL, FLY, LAND, SHIELD, SWORD, UNBOARDED}
+enum State {
+  WALK,      # default state: walking on the ground
+  UNBOARDED, # waiting for pilot to board
+  JUMP,      # jumping animation after pressing jump button
+  FLY,       # flying in the air while holding jump button
+  FALL,      # falling
+  LAND,      # landing animation after hitting the ground
+  SHIELD,    # shielding while holding shield button
+  SWORD,     # sword attack
+}
 
 # bullets
 const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
@@ -30,8 +38,9 @@ var shooting := false
 
 ### OVERRIDDEN FROM ROBOT ###
 
-func default_state():
-  set_state(State.WALK)
+# show/hide cannon
+func cannon_visible(visible):
+  cannon.visible = visible
 
 
 # flip body and cannon horizontally when facing left
@@ -54,18 +63,6 @@ func flip_sprites(flip):
 
 
 ### GAME LOOP ###
-
-func _ready():
-  super()
-  # body_animated_sprite.connect("animation_finished", self, _on_animation_finished)
-
-  if state == State.UNBOARDED:
-    cannon.hide()
-    body_animated_sprite.play("idle_off")
-  else:
-    cannon.show()
-    body_animated_sprite.play("idle_on")
-
 
 func _physics_process(delta):
   var dir = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()
@@ -126,6 +123,7 @@ func process_walk(delta, dir):
 
   # check eject button
   if Input.is_action_pressed("button_select"):
+    eject_pilot()
     return set_state(State.UNBOARDED)
 
 
@@ -248,7 +246,7 @@ func process_aim(delta, dir):
 
 func set_state(new_state):
   state = new_state
-  cannon.visible = (state not in [State.SHIELD, State.UNBOARDED])
+  cannon_visible(state not in [State.SHIELD, State.UNBOARDED])
   match state:
     State.WALK:
       shield_collision_shape.disabled = true
@@ -268,13 +266,4 @@ func set_state(new_state):
     # State.SWORD:
     #   body_animated_sprite.play("sword")
     State.UNBOARDED:
-      eject_pilot()
       power_state = PowerState.STOPPING
-
-
-
-### CALLBACKS ###
-
-# TODO
-func _on_animation_finished(anim_name: String):
-  print("_on_animation_finished() ", anim_name)

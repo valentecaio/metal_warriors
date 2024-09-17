@@ -13,8 +13,14 @@ func custom_class_name(): return "Prometheus"
 # @export var friction := 4000
 
 # main state machine
-@export var state := State.WALK
-enum State {WALK, FALL, FLAMETHROWER, BLOCKBUILD, SHIELD, UNBOARDED}
+enum State {
+  WALK,         # default state: walking on the ground
+  UNBOARDED,    # waiting for pilot to board
+  FALL,         # falling
+  SHIELD,       # shielding while holding shield button
+  FLAMETHROWER, # flamethrower animations
+  BLOCKBUILD,   # block building animation
+}
 
 # state machine for flamethrower animations: START -> LOOP -> END
 enum FireState {START, LOOP, END}
@@ -36,9 +42,9 @@ var shooting := false
 
 ### OVERRIDDEN FROM ROBOT ###
 
-func default_state():
-  set_state(State.WALK)
-
+# show/hide cannon
+func cannon_visible(visible):
+  cannon.visible = visible
 
 # flip body and cannon horizontally when facing left
 func flip_sprites(flip):
@@ -60,18 +66,6 @@ func flip_sprites(flip):
 
 
 ### GAME LOOP ###
-
-func _ready():
-  super()
-
-  if state == State.UNBOARDED:
-    cannon.hide()
-    body_animated_sprite.play("idle_off")
-  else:
-    cannon.show()
-    body_animated_sprite.play("idle_on")
-
-
 
 func _physics_process(delta):
   var dir = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()
@@ -145,6 +139,7 @@ func process_walk(delta, dir):
 
   # check eject button
   if Input.is_action_pressed("button_select"):
+    eject_pilot()
     return set_state(State.UNBOARDED)
 
 
@@ -270,7 +265,7 @@ func process_aim(delta, dir):
 
 func set_state(new_state):
   state = new_state
-  cannon.visible = (state in [State.WALK, State.FALL])
+  cannon_visible(state in [State.WALK, State.FALL])
   match state:
     State.FALL:
       body_animated_sprite.play("fall")
@@ -282,8 +277,4 @@ func set_state(new_state):
     State.BLOCKBUILD:
       body_animated_sprite.play("block_build")
     State.UNBOARDED:
-      if pilot != null:
-        pilot.eject()
-        pilot = null
       power_state = PowerState.STOPPING
-      body_animated_sprite.play("power_off")
