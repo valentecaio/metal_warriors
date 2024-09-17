@@ -62,7 +62,7 @@ func flip_sprites(flip):
 ### GAME LOOP ###
 
 func _ready():
-  print(custom_class_name() + " ready")
+  super()
 
   if state == State.UNBOARDED:
     cannon.hide()

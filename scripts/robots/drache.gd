@@ -30,7 +30,7 @@ func default_state():
 ### GAME LOOP ###
 
 func _ready():
-  print(custom_class_name() + " ready")
+  super()
 
   if state == State.UNBOARDED:
     body_animated_sprite.play("idle_off")
