@@ -71,8 +71,9 @@ func process_walk(delta, dir):
 
   # walk animation
   if !shooting:
+    body_animated_sprite.animation = "walk"
     if dir.x:
-      body_animated_sprite.play("walk")
+      body_animated_sprite.play()
     else:
       body_animated_sprite.pause()
 
