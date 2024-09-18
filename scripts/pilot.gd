@@ -26,7 +26,7 @@ enum RobotState {BOARDING, DRIVE, EJECTING}
 var robot_state := RobotState.BOARDING
 
 # bullets
-const bullet_scene = preload("res://scenes/bullets/gun.tscn")
+const bullet_scene = preload("res://scenes/bullets/pistol.tscn")
 var time_to_next_shot := 0.0
 
 # state variables
