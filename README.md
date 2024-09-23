@@ -1,1 +1,1 @@
-[Play it here !](https://valentecaio.itch.io/metalwarriors)
+[Play it here !](https://valentecaio.itch.io/metal-warriors)
