@@ -149,14 +149,14 @@ position = Vector2(285, 329)
 [node name="Camera2D" type="Camera2D" parent="Pilot"]
 zoom = Vector2(3, 3)
 
-[node name="Prometheus" parent="." instance=ExtResource("3_a3a4b")]
-position = Vector2(466, 320)
-
 [node name="Drache" parent="." instance=ExtResource("1_fra3j")]
 position = Vector2(335, 321)
 
 [node name="Nitro" parent="." instance=ExtResource("2_7y4d2")]
 position = Vector2(400, 317)
+
+[node name="Prometheus" parent="." instance=ExtResource("3_a3a4b")]
+position = Vector2(466, 320)
 
 [node name="Background" type="TextureRect" parent="."]
 show_behind_parent = true

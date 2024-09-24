@@ -21,10 +21,6 @@ enum State {
 }
 var state := State.WALK
 
-# robot pilotting state machine
-enum RobotState {BOARDING, DRIVE, EJECTING}
-var robot_state := RobotState.BOARDING
-
 # bullets
 const bullet_scene = preload("res://scenes/bullets/pistol.tscn")
 var time_to_next_shot := 0.0
@@ -105,26 +101,11 @@ func process_fly(delta, dir):
     set_state(State.WALK)
 
 
+# wait until robot script triggers eject()
 func process_robot(_delta, _dir):
   if robot != null:
     # follow robot's position
-    global_position = robot.global_position# + Vector2(0, 10)
-
-  match robot_state:
-    RobotState.BOARDING:
-      # wait until board animation finishes, then start driving
-      if !animation_player.is_playing():
-        robot_state = RobotState.DRIVE
-        robot.drive(self)
-    RobotState.DRIVE:
-      # wait until robot script triggers eject()
-      pass
-    RobotState.EJECTING:
-      # wait until eject animation finishes, then go to walk state
-      if !animation_player.is_playing():
-        robot = null
-        body_collision_shape.disabled = false
-        return set_state(State.WALK)
+    global_position = robot.global_position
 
 
 func process_shoot(delta):
@@ -145,7 +126,7 @@ func process_shoot(delta):
     time_to_next_shot = 1.0/bullet.fire_frequency
 
 
-func process_aim(delta, dir):
+func process_aim(_delta, dir):
   if dir == Vector2.ZERO:
     return
 
@@ -166,16 +147,29 @@ func set_state(new_state):
     State.FLY:
       body_animated_sprite.play("fly")
     State.ROBOT:
-      body_collision_shape.disabled = true
-      robot_state = RobotState.BOARDING
-      body_animated_sprite.play("fly")
-      animation_player.play("board")
+      board()
 
 
 
 ### CALLBACKS ###
 
 # called by robot script after ejecting pilot
+# play eject animation and return to walk state
 func eject():
-  robot_state = RobotState.EJECTING
   animation_player.play("eject")
+  await animation_player.animation_finished
+  robot = null
+  body_collision_shape.disabled = false
+  return set_state(State.WALK)
+
+
+
+### HELPERS ###
+
+# board robot animation
+func board():
+  body_collision_shape.disabled = true
+  body_animated_sprite.play("fly")
+  animation_player.play("board")
+  await animation_player.animation_finished
+  robot.drive(self)

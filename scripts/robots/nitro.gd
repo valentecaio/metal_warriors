@@ -258,7 +258,8 @@ func set_state(new_state):
     State.SHIELD:
       shield_collision_shape.disabled = false
       body_animated_sprite.play("shield_start")
-    # State.SWORD:
-    #   body_animated_sprite.play("sword")
+    State.SWORD:
+      # body_animated_sprite.play("sword")
+      pass
     State.UNBOARDED:
-      power_state = PowerState.STOPPING
+      pass

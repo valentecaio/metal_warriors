@@ -22,10 +22,6 @@ enum State {
   BLOCKBUILD,   # block building animation
 }
 
-# state machine for flamethrower animations: START -> LOOP -> END
-enum FireState {START, LOOP, END}
-var fire_state := FireState.START
-
 # bullets
 const bullet_scene = preload("res://scenes/bullets/mega_cannon.tscn")
 var time_to_next_shot := 0.0
@@ -139,21 +135,11 @@ func process_flamethrower(delta, dir):
   if dir.x:
     flip_sprites(dir.x < 0)
 
-  match fire_state:
-    FireState.START:
-      # wait until fire_start finishes, then start fire_loop
-      if not body_animated_sprite.is_playing():
-        fire_state = FireState.LOOP
-        body_animated_sprite.play("fire_loop")
-    FireState.LOOP:
-      # loop animation until button is released, then start fire_end
-      if not Input.is_action_pressed("button_east"):
-        fire_state = FireState.END
-        body_animated_sprite.play("fire_end")
-    FireState.END:
-      # wait until fire_end finishes, then return to walk state
-      if not body_animated_sprite.is_playing():
-        return set_state(State.WALK)
+  # stop flamethrower when button is released
+  if body_animated_sprite.animation == 'fire_loop' and !Input.is_action_pressed("button_east"):
+    body_animated_sprite.play("fire_end")
+    await body_animated_sprite.animation_finished
+    return set_state(State.WALK)
 
 
 func process_shield(delta, dir):
@@ -226,9 +212,9 @@ func process_aim(delta, dir):
   # update cannon angle according to input
   var pressed_angle := 0.0
   if dir.x and dir.y: # diagonal
-    pressed_angle = -45 if dir.y < 0 else 45
+    pressed_angle = -45.0 if dir.y < 0 else 45.0
   elif dir.y: # up (-90) or down (77.5)
-    pressed_angle = -90 if dir.y < 0 else 77.5
+    pressed_angle = -90.0 if dir.y < 0 else 77.5
   elif dir.x: # left or right
     pressed_angle = 0
   cannon_angle = move_toward(cannon_angle, pressed_angle, aim_speed * delta)
@@ -265,11 +251,20 @@ func set_state(new_state):
     State.FALL:
       body_animated_sprite.play("fall")
     State.FLAMETHROWER:
-      fire_state = FireState.START
-      body_animated_sprite.play("fire_start")
+      start_flamethrower()
     State.SHIELD:
       body_animated_sprite.play("shield")
     State.BLOCKBUILD:
       body_animated_sprite.play("block_build")
     State.UNBOARDED:
-      power_state = PowerState.STOPPING
+      pass
+
+
+
+### HELPERS ###
+
+# play flamethrower animations
+func start_flamethrower():
+  body_animated_sprite.play("fire_start")
+  await body_animated_sprite.animation_finished
+  body_animated_sprite.play("fire_loop")

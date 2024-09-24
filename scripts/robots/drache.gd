@@ -75,25 +75,6 @@ func process_shield(delta, _dir):
     set_state(State.FLY)
 
 
-func process_unboarded(delta, _dir):
-  velocity.x = eval_velocity(velocity.x, 0, delta, max_fly_speed)
-  apply_gravity(delta)
-
-  match power_state:
-    PowerState.STOPPING:
-      # wait until "power_off" animation finishes, then go to OFF state
-      if not body_animated_sprite.is_playing():
-        body_animated_sprite.play("idle_off")
-        power_state = PowerState.OFF
-    PowerState.OFF:
-      # wait until a pilot script triggers drive()
-      pass
-    PowerState.STARTING:
-      # wait until "power_on" animation finishes, then go to FLY state
-      if not body_animated_sprite.is_playing():
-        return set_state(State.FLY)
-
-
 func process_shoot(delta):
   time_to_next_shot -= delta
 
@@ -146,4 +127,4 @@ func set_state(new_state):
     State.SHIELD:
       body_animated_sprite.play("power_dive")
     State.UNBOARDED:
-      power_state = PowerState.STOPPING
+      pass
