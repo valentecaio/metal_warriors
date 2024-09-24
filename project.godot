@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="metal_warriors"
+config/name="Metal Warriors"
 run/main_scene="res://scenes/maps/space_station.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assets/icon.png"
