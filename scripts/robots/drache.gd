@@ -139,6 +139,9 @@ func set_state(new_state):
   state = new_state
   body_collision_shape.disabled   = (state == State.SHIELD)
   shield_collision_shape.disabled = (state != State.SHIELD)
+  if state != State.FLY:
+    shot_animated_sprite.visible = false
+
   match state:
     State.SHIELD:
       body_animated_sprite.play("power_dive")

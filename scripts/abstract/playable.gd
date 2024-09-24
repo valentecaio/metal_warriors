@@ -61,4 +61,3 @@ func apply_gravity(delta):
 func eval_cannon_angle():
   var angle = -cannon_angle if flipped else cannon_angle
   return deg_to_rad(round(angle / 22.5) * 22.5)
-
