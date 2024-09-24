@@ -5,7 +5,7 @@ extends Area2D
 
 # bullet type needs to be defined in the editor
 enum Type {
-  DEFAULT,       ## pistol, fusion_rifle, fragment
+  DEFAULT,       ## gun, fusion_rifle, fragment
   AERIAL_MINE,   ## upward moving bullet with random horizontal movement
   ENERGY_CANNON, ## bullet with random error (-10 to 10 degrees)
   MEGA_CANNON,   ## strong bullet with 8 fragments

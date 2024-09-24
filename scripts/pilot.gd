@@ -22,7 +22,7 @@ enum State {
 var state := State.WALK
 
 # bullets
-const bullet_scene = preload("res://scenes/bullets/pistol.tscn")
+const bullet_scene = preload("res://scenes/bullets/gun.tscn")
 var time_to_next_shot := 0.0
 
 # state variables
