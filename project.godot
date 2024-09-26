@@ -15,6 +15,10 @@ run/main_scene="res://scenes/maps/space_station.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assets/icon.png"
 
+[autoload]
+
+Global="*res://scripts/global.gd"
+
 [input]
 
 left={
@@ -82,6 +86,7 @@ button_select={
 2d_physics/layer_9="walls"
 2d_physics/layer_10="bullets"
 2d_physics/layer_11="pilots"
+2d_physics/layer_12="blocks"
 
 [rendering]
 

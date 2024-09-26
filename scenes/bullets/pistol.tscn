@@ -43,7 +43,7 @@ radius = 1.0
 [node name="Pistol" type="Area2D"]
 z_index = 20
 collision_layer = 512
-collision_mask = 1535
+collision_mask = 3583
 script = ExtResource("1_0uc0f")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

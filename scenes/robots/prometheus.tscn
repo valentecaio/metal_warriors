@@ -663,7 +663,7 @@ size = Vector2(30, 28.5)
 [node name="Prometheus" type="CharacterBody2D"]
 z_index = 11
 collision_layer = 4
-collision_mask = 507
+collision_mask = 2555
 script = ExtResource("1_ng5p2")
 friction = 4000
 

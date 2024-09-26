@@ -3,18 +3,11 @@ extends Area2D
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var collision_shape = $CollisionShape2D
 
-# bullet type needs to be defined in the editor
-enum Type {
-  DEFAULT,       ## gun, fusion_rifle, fragment
-  AERIAL_MINE,   ## upward moving bullet with random horizontal movement
-  ENERGY_CANNON, ## bullet with random error (-10 to 10 degrees)
-  MEGA_CANNON,   ## strong bullet with 8 fragments
-}
-@export var type := Type.DEFAULT
-
 # properties defined in the editor
-@export var speed = 400         # movement speed
-@export var fire_frequency = 8  # shots per second
+@export var type := Global.BulletType.DEFAULT
+@export var speed := 400        # movement speed
+@export var fire_frequency := 8 # shots per second
+@export var damage := 50        # damage dealt on hit
 
 # properties defined on instantiation
 var direction := Vector2.ZERO
@@ -37,11 +30,11 @@ func _ready():
   animated_sprite.animation_finished.connect(_on_animation_finished)
 
   # add random error to bullet direction (between -10 and 10 degrees)
-  if type == Type.ENERGY_CANNON:
+  if type == Global.BulletType.ENERGY_CANNON:
     direction = direction.rotated(deg_to_rad(randf_range(-10, 10)))
 
   # rotate sprite to match direction
-  if type == Type.MEGA_CANNON:
+  if type == Global.BulletType.MEGA_CANNON:
     animated_sprite.rotation_degrees = rad_to_deg(direction.angle())
 
 
@@ -49,7 +42,7 @@ func _physics_process(delta):
   position += speed * direction * delta
 
   # add a random movement in the orthogonal direction
-  if type == Type.AERIAL_MINE:
+  if type == Global.BulletType.AERIAL_MINE:
     var ort_dir = Vector2(direction.y, -direction.x)
     velocity += ort_dir * speed * delta * randf_range(-15, 15)
     position += velocity * delta
@@ -58,8 +51,10 @@ func _physics_process(delta):
 
 
 # collision detection
-func _on_body_entered(_body):
-  # print("BULLET _on_body_entered() ", _body)
+func _on_body_entered(body):
+  # print("BULLET _on_body_entered() ", body)
+  if body.has_method("bullet_hit"):
+    body.bullet_hit(self)
   explode()
 
 
@@ -73,7 +68,7 @@ func explode():
     return # already exploded
 
   # spawn fragments in 8 directions
-  if type == Type.MEGA_CANNON:
+  if type == Global.BulletType.MEGA_CANNON:
     var frag_scene = load("res://scenes/bullets/fragment.tscn")
     for angle in [0, 45, 90, 135, 180, 225, 270, 315]:
       var frag = frag_scene.instantiate()

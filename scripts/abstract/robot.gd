@@ -4,8 +4,9 @@ class_name Robot extends "res://scripts/abstract/playable.gd"
 func custom_class_name(): return "Robot"
 
 
-# start with a pilot
-@export var init_boarded := false
+# properties defined in the editor
+@export var init_boarded := false  # start boarded, for debug
+@export var hp := 1000
 
 # state variables
 var pilot = null
@@ -53,6 +54,13 @@ func drive(new_pilot):
   await body_animated_sprite.animation_finished
   set_state(0) # DEFAULT
 
+# called by bullet on hit
+func bullet_hit(bullet):
+  hp -= bullet.damage
+  if hp <= 0:
+    # TODO: explode robot
+    body_animated_sprite.play("explode")
+    queue_free()
 
 
 ### HELPERS ###
