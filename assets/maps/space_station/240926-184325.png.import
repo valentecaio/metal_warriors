@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ddipvsf5sjwtl"
-path="res://.godot/imported/space_station.png-339345f7a3f6a9f4646266349c7a7f92.ctex"
+uid="uid://btxnnjguomnu6"
+path="res://.godot/imported/240926-184325.png-c3329efa3e8e99d3e71a1834019b1d5b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maps/space_station.png"
-dest_files=["res://.godot/imported/space_station.png-339345f7a3f6a9f4646266349c7a7f92.ctex"]
+source_file="res://assets/maps/space_station/240926-184325.png"
+dest_files=["res://.godot/imported/240926-184325.png-c3329efa3e8e99d3e71a1834019b1d5b.ctex"]
 
 [params]
 

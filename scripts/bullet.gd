@@ -52,7 +52,7 @@ func _physics_process(delta):
 
 # collision detection
 func _on_body_entered(body):
-  # print("BULLET _on_body_entered() ", body)
+  print("BULLET _on_body_entered() ", body)
   if body.has_method("bullet_hit"):
     body.bullet_hit(self)
   explode()
