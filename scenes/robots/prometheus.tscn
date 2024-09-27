@@ -590,6 +590,10 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_is0i4"]
+radius = 15.0
+height = 40.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_ryb2w"]
 atlas = ExtResource("1_2v82f")
 region = Rect2(2, 518, 126, 126)
@@ -653,10 +657,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_is0i4"]
-radius = 15.0
-height = 40.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pydbi"]
 size = Vector2(30, 28.5)
 
@@ -675,6 +675,10 @@ sprite_frames = SubResource("SpriteFrames_a34u6")
 animation = &"idle_on"
 autoplay = "idle_on"
 
+[node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("CapsuleShape2D_is0i4")
+
 [node name="Cannon" type="Node2D" parent="."]
 position = Vector2(-5, -9)
 
@@ -683,10 +687,6 @@ position = Vector2(12, -8)
 sprite_frames = SubResource("SpriteFrames_a765p")
 animation = &"idle"
 autoplay = "idle"
-
-[node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3)
-shape = SubResource("CapsuleShape2D_is0i4")
 
 [node name="BoardingArea2D" type="Area2D" parent="."]
 

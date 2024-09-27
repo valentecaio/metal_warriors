@@ -181,19 +181,24 @@ func process_shoot_start(delta):
   # update time to next shot
   time_to_next_shot -= delta
 
-  if (time_to_next_shot <= 0) and Input.is_action_just_pressed("button_west"):
+  if (time_to_next_shot <= 0) and !shooting and Input.is_action_pressed("button_west"):
     # button pressed, create and shoot bullet
     shooting = true
+    # create bullet
     var angle = eval_cannon_angle()
     bullet = bullet_scene.instantiate()
     bullet.direction = Vector2(-1 if flipped else 1, 0).rotated(angle).normalized()
     bullet.position = global_position + Vector2(-32 if flipped else 32, -18).rotated(angle)
     get_parent().add_child(bullet)
+    # block shooting for some time and play shoot animation
     time_to_next_shot = 1.0/bullet.fire_frequency
     cannon_animated_sprite.play("shoot")
 
 
 func process_shoot_end():
+  if bullet == null:
+    # bullet already exploded
+    shooting = false
   if shooting and !Input.is_action_pressed("button_west"):
     # button released, explode bullet
     shooting = false
