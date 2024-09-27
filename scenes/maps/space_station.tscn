@@ -3190,7 +3190,7 @@ sources/0 = SubResource("TileSetAtlasSource_lcdmr")
 [node name="MapSpaceStation" type="Node2D"]
 
 [node name="Pilot" parent="." instance=ExtResource("6_cpfsb")]
-position = Vector2(296, 328)
+position = Vector2(450, 475)
 
 [node name="Camera2D" type="Camera2D" parent="Pilot"]
 zoom = Vector2(3, 3)
@@ -3199,7 +3199,7 @@ zoom = Vector2(3, 3)
 position = Vector2(450, 626)
 
 [node name="Nitro" parent="." instance=ExtResource("2_7y4d2")]
-position = Vector2(256, 314)
+position = Vector2(645, 620)
 
 [node name="Prometheus" parent="." instance=ExtResource("3_a3a4b")]
 position = Vector2(478, 466)
@@ -3231,172 +3231,228 @@ tile_map_data = PackedByteArray("AAAHAA4AAAAXAAYAAQAHAA8AAAAXAAYAAQAHABAAAAAXAAY
 tile_set = SubResource("TileSet_4vsx2")
 script = ExtResource("8_362ry")
 
-[node name="Blocks" type="Node" parent="."]
+[node name="Blocks" type="Node2D" parent="."]
 
 [node name="Block" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(440, 344)
+type = 8
 
 [node name="Block2" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(424, 344)
+type = 7
 
 [node name="Block3" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(408, 344)
+type = 7
 
 [node name="Block4" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(392, 344)
+type = 6
 
 [node name="Block5" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(376, 344)
+type = 8
 
 [node name="Block6" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(360, 344)
+type = 7
 
 [node name="Block7" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(344, 344)
+type = 7
 
 [node name="Block8" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(328, 344)
+type = 6
 
 [node name="Block9" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(136, 344)
+type = 6
 
 [node name="Block10" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(152, 344)
+type = 7
 
 [node name="Block11" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(168, 344)
+type = 7
 
 [node name="Block12" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(184, 344)
+type = 8
 
 [node name="Block13" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(136, 488)
+type = 6
 
 [node name="Block14" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(152, 488)
+type = 7
 
 [node name="Block15" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(168, 488)
+type = 7
 
 [node name="Block16" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(184, 488)
+type = 8
 
 [node name="Block17" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(200, 488)
+type = 6
 
 [node name="Block18" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(216, 488)
+type = 7
 
 [node name="Block19" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(232, 488)
+type = 7
 
 [node name="Block20" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(248, 488)
+type = 8
 
 [node name="Block21" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(328, 488)
+type = 6
 
 [node name="Block22" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(344, 488)
+type = 7
 
 [node name="Block23" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(360, 488)
+type = 7
 
 [node name="Block24" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(376, 488)
+type = 8
 
 [node name="Block25" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(392, 488)
+type = 6
 
 [node name="Block26" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(408, 488)
+type = 7
 
 [node name="Block27" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(424, 488)
+type = 7
 
 [node name="Block28" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(440, 488)
+type = 8
 
 [node name="Block29" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(648, 488)
+type = 6
 
 [node name="Block30" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(664, 488)
+type = 7
 
 [node name="Block31" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(680, 488)
+type = 7
 
 [node name="Block32" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(696, 488)
+type = 8
 
 [node name="Block33" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(712, 488)
+type = 6
 
 [node name="Block34" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(728, 488)
+type = 7
 
 [node name="Block35" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(744, 488)
+type = 7
 
 [node name="Block36" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(760, 488)
+type = 8
 
 [node name="Block37" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(840, 488)
+type = 6
 
 [node name="Block38" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(856, 488)
+type = 7
 
 [node name="Block39" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(872, 488)
+type = 7
 
 [node name="Block40" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(888, 488)
+type = 8
 
 [node name="Block41" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(904, 488)
+type = 6
 
 [node name="Block42" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(920, 488)
+type = 7
 
 [node name="Block43" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(936, 488)
+type = 7
 
 [node name="Block44" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(952, 488)
+type = 8
 
 [node name="Block45" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(904, 344)
+type = 6
 
 [node name="Block46" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(920, 344)
+type = 7
 
 [node name="Block47" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(936, 344)
+type = 7
 
 [node name="Block48" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(952, 344)
+type = 8
 
 [node name="Block49" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(648, 344)
+type = 6
 
 [node name="Block50" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(664, 344)
+type = 7
 
 [node name="Block51" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(680, 344)
+type = 7
 
 [node name="Block52" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(696, 344)
+type = 8
 
 [node name="Block53" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(712, 344)
+type = 6
 
 [node name="Block54" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(728, 344)
+type = 7
 
 [node name="Block55" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(744, 344)
+type = 7
 
 [node name="Block56" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(760, 344)
+type = 8
