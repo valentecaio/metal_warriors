@@ -2,39 +2,51 @@ extends StaticBody2D
 
 @onready var animated_sprite = $AnimatedSprite2D
 
-
 # properties defined in the editor
 @export var type: Global.BlockType = Global.BlockType.Red
-@export var hp: int = 100
+@export var hp: int = 75
 
 
 func _ready():
+  animated_sprite.pause()
   match type:
     Global.BlockType.BrownGray:
-      animated_sprite.play("brown_gray")
+      animated_sprite.animation = "brown_gray"
     Global.BlockType.BrownGreen:
-      animated_sprite.play("brown_green")
+      animated_sprite.animation = "brown_green"
     Global.BlockType.Green:
-      animated_sprite.play("green")
+      animated_sprite.animation = "green"
     Global.BlockType.Ice:
-      animated_sprite.play("ice")
+      animated_sprite.animation = "ice"
     Global.BlockType.Orange:
-      animated_sprite.play("orange")
+      animated_sprite.animation = "orange"
     Global.BlockType.Red:
-      animated_sprite.play("red")
+      animated_sprite.animation = "red"
     Global.BlockType.SpaceStationLeft:
-      animated_sprite.play("space_station_left")
+      animated_sprite.animation = "space_station_left"
     Global.BlockType.SpaceStationMiddle:
-      animated_sprite.play("space_station_middle")
+      animated_sprite.animation = "space_station_middle"
     Global.BlockType.SpaceStationRight:
-      animated_sprite.play("space_station_right")
+      animated_sprite.animation = "space_station_right"
     
 
 
-### callbacks ###
+### CALLBACKS ###
 
 # called when a bullet hits this block
 func bullet_hit(bullet):
   hp -= bullet.damage
+  animated_sprite.frame = eval_frame()
   if hp <= 0:
-    queue_free()
+    # disable collisions
+    collision_layer = 0
+
+
+
+### HELPERS ###
+
+func eval_frame():
+  if   hp > 50: return 0
+  elif hp > 25: return 1
+  elif hp > 0:  return 2
+  else:         return 3
