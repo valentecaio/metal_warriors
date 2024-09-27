@@ -18,6 +18,7 @@ func custom_class_name(): return "Nitro"
 enum State {
   WALK,      # default state: walking on the ground
   UNBOARDED, # waiting for pilot to board
+  DEAD,      # exploding
   JUMP,      # jumping animation after pressing jump button
   FLY,       # flying in the air while holding jump button
   FALL,      # falling
@@ -44,6 +45,10 @@ func _physics_process(delta):
   match state:
     State.WALK:
       process_walk(delta, dir)
+    State.UNBOARDED:
+      process_unboarded(delta, dir)
+    State.DEAD:
+      pass
     State.JUMP:
       process_jump(delta, dir)
     State.FALL:
@@ -56,8 +61,6 @@ func _physics_process(delta):
       process_shield(delta, dir)
     # State.SWORD:
     #   process_sword(delta, dir)
-    State.UNBOARDED:
-      process_unboarded(delta, dir)
 
   # cannon aiming is always enabled
   process_aim(delta, dir)
@@ -219,7 +222,7 @@ func process_aim(delta, dir):
 
 
 
-### OVERRIDDEN FROM ROBOT ###
+### OVERRIDDEN FROM ROBOT / PLAYABLE ###
 
 # flip body and cannon horizontally when facing left
 func flip_sprites(flip):
@@ -241,7 +244,7 @@ func flip_sprites(flip):
 
 func set_state(new_state):
   state = new_state
-  cannon.visible = state not in [State.SHIELD, State.UNBOARDED]
+  cannon.visible = state not in [State.SHIELD, State.UNBOARDED, State.DEAD]
   match state:
     State.WALK:
       shield_collision_shape.disabled = true
@@ -260,6 +263,4 @@ func set_state(new_state):
       body_animated_sprite.play("shield_start")
     State.SWORD:
       # body_animated_sprite.play("sword")
-      pass
-    State.UNBOARDED:
       pass

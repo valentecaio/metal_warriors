@@ -1,7 +1,39 @@
-[gd_scene load_steps=49 format=3 uid="uid://0vhoym1v8uqs"]
+[gd_scene load_steps=57 format=3 uid="uid://0vhoym1v8uqs"]
 
 [ext_resource type="Script" path="res://scripts/robots/drache.gd" id="1_xq8l0"]
 [ext_resource type="Texture2D" uid="uid://skao7pm1u88e" path="res://assets/robots/drache.png" id="2_eevej"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_btrgd"]
+atlas = ExtResource("2_eevej")
+region = Rect2(2, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ps50"]
+atlas = ExtResource("2_eevej")
+region = Rect2(131, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qyb6t"]
+atlas = ExtResource("2_eevej")
+region = Rect2(260, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4elp"]
+atlas = ExtResource("2_eevej")
+region = Rect2(389, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdcmd"]
+atlas = ExtResource("2_eevej")
+region = Rect2(647, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jvm0"]
+atlas = ExtResource("2_eevej")
+region = Rect2(776, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuxu8"]
+atlas = ExtResource("2_eevej")
+region = Rect2(905, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wl1bp"]
+atlas = ExtResource("2_eevej")
+region = Rect2(1034, 389, 126, 126)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e47ts"]
 atlas = ExtResource("2_eevej")
@@ -161,6 +193,40 @@ region = Rect2(1163, 260, 126, 126)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4e41d"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btrgd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ps50")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qyb6t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x4elp")
+}],
+"loop": false,
+"name": &"explode_off",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fdcmd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3jvm0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kuxu8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wl1bp")
+}],
+"loop": false,
+"name": &"explode_on",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_e47ts")

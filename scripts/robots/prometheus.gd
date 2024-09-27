@@ -17,6 +17,7 @@ func custom_class_name(): return "Prometheus"
 enum State {
   WALK,         # default state: walking on the ground
   UNBOARDED,    # waiting for pilot to board
+  DEAD,         # exploding
   FALL,         # falling
   SHIELD,       # shielding while holding shield button
   FLAMETHROWER, # flamethrower animations
@@ -48,6 +49,10 @@ func _physics_process(delta):
   match state:
     State.WALK:
       process_walk(delta, dir)
+    State.UNBOARDED:
+      process_unboarded(delta, dir)
+    State.DEAD:
+      pass
     State.FALL:
       process_fall(delta, dir)
     State.FLAMETHROWER:
@@ -56,8 +61,6 @@ func _physics_process(delta):
       process_shield(delta, dir)
     State.BLOCKBUILD:
       process_block_build(delta, dir)
-    State.UNBOARDED:
-      process_unboarded(delta, dir)
 
   # cannon aiming and shoot ending are enabled in all states
   process_aim(delta, dir)
@@ -240,7 +243,7 @@ func process_aim(delta, dir):
 
 
 
-### OVERRIDDEN FROM ROBOT ###
+### OVERRIDDEN FROM ROBOT / PLAYABLE ###
 
 # flip body and cannon horizontally when facing left
 func flip_sprites(flip):
@@ -274,8 +277,6 @@ func set_state(new_state):
       body_animated_sprite.play("shield")
     State.BLOCKBUILD:
       body_animated_sprite.play("block_build")
-    State.UNBOARDED:
-      pass
 
 
 

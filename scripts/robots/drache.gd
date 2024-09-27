@@ -14,6 +14,7 @@ func custom_class_name(): return "Drache"
 enum State {
   FLY,       # default state: floating
   UNBOARDED, # waiting for pilot to board
+  DEAD,      # exploding
   SHIELD,    # power dive (shield) while holding shield button
 }
 
@@ -31,10 +32,12 @@ func _physics_process(delta):
   match state:
     State.FLY:
       process_fly(delta, dir)
-    State.SHIELD:
-      process_shield(delta, dir)
     State.UNBOARDED:
       process_unboarded(delta, dir)
+    State.DEAD:
+      pass
+    State.SHIELD:
+      process_shield(delta, dir)
 
   move_and_slide()
 
@@ -126,5 +129,3 @@ func set_state(new_state):
   match state:
     State.SHIELD:
       body_animated_sprite.play("power_dive")
-    State.UNBOARDED:
-      pass

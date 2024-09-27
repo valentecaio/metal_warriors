@@ -2,6 +2,12 @@
 
 extends Node
 
+enum RobotState {
+  DEFAULT,      ## walking or flying (drache)
+  UNBOARDED,    ## waiting for pilot to board
+  DEAD,         ## dead
+}
+
 enum BulletType {
   DEFAULT,       ## pistol, fusion_rifle, fragment
   AERIAL_MINE,   ## upward moving bullet with random horizontal movement

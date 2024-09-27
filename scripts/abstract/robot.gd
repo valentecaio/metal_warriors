@@ -19,17 +19,16 @@ var state := 0
 func set_state(_state): pass
 
 
-
 ### GAME LOOP ###
 
 func _ready():
   super()
   if init_boarded:
-    set_state(0) # default state: WALK or FLY (drache)
+    body_animated_sprite.play("idle_on")
+    set_state(Global.RobotState.DEFAULT)
   else:
     body_animated_sprite.play("idle_off")
-    set_state(1) # UNBOARDED
-
+    set_state(Global.RobotState.UNBOARDED)
 
 # all robots have UNBOARDED state
 # wait until a pilot script triggers drive()
@@ -51,15 +50,13 @@ func drive(new_pilot):
   pilot = new_pilot
   body_animated_sprite.play("power_on")
   await body_animated_sprite.animation_finished
-  set_state(0) # DEFAULT
+  set_state(Global.RobotState.DEFAULT)
 
 # called by bullet on hit
 func bullet_hit(bullet):
   hp -= bullet.damage
   if hp <= 0:
-    # TODO: explode robot
-    body_animated_sprite.play("explode")
-    queue_free()
+    explode()
 
 
 
@@ -71,4 +68,16 @@ func eject_pilot():
     pilot = null
   body_animated_sprite.play("power_off")
   await body_animated_sprite.animation_finished
-  set_state(1) # UNBOARDED
+  set_state(Global.RobotState.UNBOARDED)
+
+# start explosion animation, go to dead state and delete robot
+func explode():
+  if state == Global.RobotState.DEAD:
+    return # already exploding
+  if state == Global.RobotState.UNBOARDED:
+    body_animated_sprite.play("explode_off")
+  else:
+    body_animated_sprite.play("explode_on")
+  set_state(Global.RobotState.DEAD)
+  await body_animated_sprite.animation_finished
+  queue_free()
