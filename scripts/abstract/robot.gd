@@ -39,7 +39,6 @@ func process_unboarded(delta, _dir):
 
 
 
-
 ### CALLBACKS ###
 
 # called by pilot script after boarding robot
@@ -61,6 +60,7 @@ func bullet_hit(bullet):
     # TODO: explode robot
     body_animated_sprite.play("explode")
     queue_free()
+
 
 
 ### HELPERS ###

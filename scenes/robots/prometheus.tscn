@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://bkogojhciuxc6"]
+[gd_scene load_steps=87 format=3 uid="uid://bkogojhciuxc6"]
 
 [ext_resource type="Texture2D" uid="uid://djk16ha3u2o0u" path="res://assets/robots/prometheus.png" id="1_2v82f"]
 [ext_resource type="Script" path="res://scripts/robots/prometheus.gd" id="1_ng5p2"]
@@ -660,6 +660,9 @@ height = 40.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pydbi"]
 size = Vector2(30, 28.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ghc1"]
+size = Vector2(7, 7)
+
 [node name="Prometheus" type="CharacterBody2D"]
 z_index = 11
 collision_layer = 4
@@ -691,3 +694,11 @@ shape = SubResource("CapsuleShape2D_is0i4")
 position = Vector2(0, 2.25)
 shape = SubResource("RectangleShape2D_pydbi")
 debug_color = Color(0, 1, 0, 0.117647)
+
+[node name="BlockBuildingArea2D" type="Area2D" parent="."]
+position = Vector2(24, 24)
+collision_layer = 0
+collision_mask = 2304
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BlockBuildingArea2D"]
+shape = SubResource("RectangleShape2D_0ghc1")

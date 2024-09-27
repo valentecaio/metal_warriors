@@ -1,7 +1,7 @@
 extends TileMapLayer
 
 
-### callbacks ###
+### CALLBACKS ###
 
 # destroy tile at bullet position
 func bullet_hit(bullet):

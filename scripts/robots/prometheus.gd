@@ -5,6 +5,7 @@ func custom_class_name(): return "Prometheus"
 @onready var cannon = $Cannon
 @onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
 @onready var boarding_area = $BoardingArea2D
+@onready var block_building_area_2d = $BlockBuildingArea2D
 
 # properties defined in the editor
 @export var aim_speed := 150
@@ -30,6 +31,9 @@ var bullet = null
 # air mines
 const mine_scene = preload("res://scenes/bullets/aerial_mine.tscn")
 var time_to_next_mine := 0.0
+
+# blocks
+const block_scene = preload("res://scenes/block.tscn")
 
 # state variables
 var shooting := false
@@ -101,7 +105,7 @@ func process_walk(delta, dir):
     return set_state(State.FLAMETHROWER)
 
   # check block building button
-  if Input.is_action_pressed("button_south"):
+  if Input.is_action_pressed("button_south") and can_build_block():
     return set_state(State.BLOCKBUILD)
 
   # check shield button
@@ -162,7 +166,14 @@ func process_block_build(delta, _dir):
 
   # wait until block_build finishes, then return to walk state
   if not body_animated_sprite.is_playing():
-    # TODO: create block
+    # create block
+    var block = block_scene.instantiate()
+    block.position = block_building_area_2d.global_position
+    get_parent().add_child(block)
+    # clip block to multiple of 16 (with 8 offset)
+    block.position.x = 8 + int(block.position.x/16) * 16
+    block.position.y = 8 + int(block.position.y/16) * 16
+    # return to walk state
     return set_state(State.WALK)
 
 
@@ -239,9 +250,11 @@ func flip_sprites(flip):
   if flip:
     cannon.position.x = 5
     cannon_animated_sprite.position.x = -12
+    block_building_area_2d.position.x = -24
   else:
     cannon.position.x = -5
     cannon_animated_sprite.position.x = 12
+    block_building_area_2d.position.x = 24
 
 
 func set_state(new_state):
@@ -268,3 +281,7 @@ func start_flamethrower():
   body_animated_sprite.play("fire_start")
   await body_animated_sprite.animation_finished
   body_animated_sprite.play("fire_loop")
+
+# check if robot is in a valid position to build a block
+func can_build_block():
+  return not (block_building_area_2d.has_overlapping_bodies() or block_building_area_2d.has_overlapping_areas())
