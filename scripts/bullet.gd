@@ -7,7 +7,7 @@ extends Area2D
 @export var type := Global.BulletType.DEFAULT
 @export var speed := 400        # movement speed
 @export var fire_frequency := 8 # shots per second
-@export var damage := 50        # damage dealt on hit
+@export var damage := 25        # damage dealt on hit
 
 # properties defined on instantiation
 var direction := Vector2.ZERO
@@ -15,6 +15,7 @@ var direction := Vector2.ZERO
 # state used by AERIAL_MINE to add random vertical movement
 var velocity := Vector2(1,1)
 var init_pos := Vector2.ZERO
+var hit := false
 
 
 func _ready():
@@ -33,12 +34,17 @@ func _ready():
   if type == Global.BulletType.ENERGY_CANNON:
     direction = direction.rotated(deg_to_rad(randf_range(-10, 10)))
 
-  # rotate sprite to match direction
+  # rotate bullet to match direction
   if type == Global.BulletType.MEGA_CANNON:
-    animated_sprite.rotation_degrees = rad_to_deg(direction.angle())
+    var angle = rad_to_deg(direction.angle())
+    animated_sprite.rotation_degrees = angle
+    collision_shape.rotation_degrees = angle + 90
 
 
 func _physics_process(delta):
+  if hit:
+    return
+
   position += speed * direction * delta
 
   # add a random movement in the orthogonal direction
@@ -52,7 +58,7 @@ func _physics_process(delta):
 
 # collision detection
 func _on_body_entered(body):
-  print("BULLET _on_body_entered() ", body)
+  # print("BULLET _on_body_entered() ", body)
   if body.has_method("bullet_hit"):
     body.bullet_hit(self)
   explode()
@@ -77,6 +83,6 @@ func explode():
       get_parent().add_child(frag)
 
   # stop bullet, disable collision and play hit animation
-  speed = 0
+  hit = true
   collision_shape.disabled = true
   animated_sprite.play("hit")
