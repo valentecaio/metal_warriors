@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvwwgboxq5xiw"]
+
+[ext_resource type="Texture2D" uid="uid://c587lijwvs3a5" path="res://assets/stage/elevator_bg.png" id="1_gvvxj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ls2px"]
+atlas = ExtResource("1_gvvxj")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yibet"]
+atlas = ExtResource("1_gvvxj")
+region = Rect2(65, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svdch"]
+atlas = ExtResource("1_gvvxj")
+region = Rect2(130, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mw4ic"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ls2px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ls2px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yibet")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svdch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yibet")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svdch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yibet")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="ElevatorBackGround" type="AnimatedSprite2D"]
+z_index = 2
+sprite_frames = SubResource("SpriteFrames_mw4ic")
+autoplay = "default"
+frame_progress = 0.20469

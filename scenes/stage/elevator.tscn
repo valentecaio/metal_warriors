@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://dfob2xq5b2i13"]
+
+[ext_resource type="Texture2D" uid="uid://bxu882gpe4qkw" path="res://assets/stage/elevators.png" id="1_0s8ub"]
+[ext_resource type="Script" path="res://scripts/elevator.gd" id="1_aqpqd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dcnah"]
+atlas = ExtResource("1_0s8ub")
+region = Rect2(0, 0, 64, 52)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wf5b"]
+atlas = ExtResource("1_0s8ub")
+region = Rect2(0, 52, 64, 52)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eg43b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dcnah")
+}],
+"loop": false,
+"name": &"metal",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4wf5b")
+}],
+"loop": false,
+"name": &"wood",
+"speed": 1.0
+}]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_tjdbo"]
+a = Vector2(-32, 0.75)
+b = Vector2(32, 0.75)
+
+[node name="Elevator" type="AnimatableBody2D"]
+z_index = 4
+collision_layer = 8192
+collision_mask = 0
+script = ExtResource("1_aqpqd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_eg43b")
+animation = &"metal"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 19.25)
+shape = SubResource("SegmentShape2D_tjdbo")
+one_way_collision = true

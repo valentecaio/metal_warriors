@@ -1,0 +1,86 @@
+[gd_scene load_steps=10 format=3 uid="uid://cc2s1b3et6hp8"]
+
+[ext_resource type="Texture2D" uid="uid://bcmqe26t3oesr" path="res://assets/stage/port.png" id="1_7g086"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n27j7"]
+atlas = ExtResource("1_7g086")
+region = Rect2(0, 33, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rb6hi"]
+atlas = ExtResource("1_7g086")
+region = Rect2(33, 33, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mg3bh"]
+atlas = ExtResource("1_7g086")
+region = Rect2(66, 33, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jkyc4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n27j7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n27j7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rb6hi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mg3bh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rb6hi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mg3bh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rb6hi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1mxwt"]
+atlas = ExtResource("1_7g086")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2o7hw"]
+atlas = ExtResource("1_7g086")
+region = Rect2(33, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kcqk4"]
+atlas = ExtResource("1_7g086")
+region = Rect2(66, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aqh6j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1mxwt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2o7hw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kcqk4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="Port" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_jkyc4")
+autoplay = "default"
+frame_progress = 0.774634
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_aqh6j")
+autoplay = "default"
+frame_progress = 0.965703

@@ -406,7 +406,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"block_build",
-"speed": 16.0
+"speed": 24.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -746,7 +746,7 @@ size = Vector2(7, 7)
 [node name="Prometheus" type="CharacterBody2D"]
 z_index = 11
 collision_layer = 4
-collision_mask = 2555
+collision_mask = 10747
 script = ExtResource("1_ng5p2")
 friction = 4000
 

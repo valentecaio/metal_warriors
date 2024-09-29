@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://ndmu4y4a5qri"]
+[gd_scene load_steps=19 format=4 uid="uid://ndmu4y4a5qri"]
 
 [ext_resource type="PackedScene" uid="uid://0vhoym1v8uqs" path="res://scenes/robots/drache.tscn" id="1_fra3j"]
 [ext_resource type="Texture2D" uid="uid://ddipvsf5sjwtl" path="res://assets/maps/space_station/space_station.png" id="2_7p05h"]
@@ -8,7 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://dr1pag2aac1t5" path="res://scenes/pilot.tscn" id="6_cpfsb"]
 [ext_resource type="Texture2D" uid="uid://btxnnjguomnu6" path="res://assets/maps/space_station/240926-184325.png" id="7_pvowr"]
 [ext_resource type="Script" path="res://scripts/destructible_walls.gd" id="8_362ry"]
-[ext_resource type="PackedScene" uid="uid://dlgw1dl4nnauh" path="res://scenes/block.tscn" id="8_s6wkr"]
+[ext_resource type="PackedScene" uid="uid://dlgw1dl4nnauh" path="res://scenes/stage/block.tscn" id="8_s6wkr"]
+[ext_resource type="PackedScene" uid="uid://dfob2xq5b2i13" path="res://scenes/stage/elevator.tscn" id="10_afqlp"]
+[ext_resource type="PackedScene" uid="uid://cvwwgboxq5xiw" path="res://scenes/stage/elevator_bg.tscn" id="11_3246c"]
+[ext_resource type="PackedScene" uid="uid://d4c737inwfr5j" path="res://scenes/stage/elevator_floor.tscn" id="12_qun11"]
+[ext_resource type="PackedScene" uid="uid://cc2s1b3et6hp8" path="res://scenes/stage/port.tscn" id="13_d5sbr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hwpc8"]
 texture = ExtResource("2_7p05h")
@@ -3190,19 +3194,10 @@ sources/0 = SubResource("TileSetAtlasSource_lcdmr")
 [node name="MapSpaceStation" type="Node2D"]
 
 [node name="Pilot" parent="." instance=ExtResource("6_cpfsb")]
-position = Vector2(450, 475)
+position = Vector2(536, 597)
 
 [node name="Camera2D" type="Camera2D" parent="Pilot"]
 zoom = Vector2(3, 3)
-
-[node name="Drache" parent="." instance=ExtResource("1_fra3j")]
-position = Vector2(450, 626)
-
-[node name="Nitro" parent="." instance=ExtResource("2_7y4d2")]
-position = Vector2(645, 620)
-
-[node name="Prometheus" parent="." instance=ExtResource("3_a3a4b")]
-position = Vector2(478, 466)
 
 [node name="Background" type="TextureRect" parent="."]
 show_behind_parent = true
@@ -3211,13 +3206,20 @@ offset_right = 1088.0
 offset_bottom = 661.0
 texture = ExtResource("2_7p05h")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(867, 304)
-zoom = Vector2(3, 3)
-
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_kdisv")
 autoplay = true
+
+[node name="Robots" type="Node" parent="."]
+
+[node name="Drache" parent="Robots" instance=ExtResource("1_fra3j")]
+position = Vector2(450, 626)
+
+[node name="Nitro" parent="Robots" instance=ExtResource("2_7y4d2")]
+position = Vector2(645, 620)
+
+[node name="Prometheus" parent="Robots" instance=ExtResource("3_a3a4b")]
+position = Vector2(478, 466)
 
 [node name="TileMaps" type="Node" parent="."]
 
@@ -3456,3 +3458,43 @@ type = 7
 [node name="Block56" parent="Blocks" instance=ExtResource("8_s6wkr")]
 position = Vector2(760, 344)
 type = 8
+
+[node name="Elevators" type="Node" parent="."]
+
+[node name="Elevator" parent="Elevators" instance=ExtResource("10_afqlp")]
+position = Vector2(544, 588)
+
+[node name="ElevatorFloor" parent="Elevators" instance=ExtResource("12_qun11")]
+position = Vector2(544, 616)
+
+[node name="ElevatorBackGround" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 160)
+
+[node name="ElevatorBackGround2" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 224)
+
+[node name="ElevatorBackGround3" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 288)
+
+[node name="ElevatorBackGround4" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 352)
+
+[node name="ElevatorBackGround5" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 416)
+
+[node name="ElevatorBackGround6" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 480)
+
+[node name="ElevatorBackGround7" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 544)
+
+[node name="ElevatorBackGround8" parent="Elevators" instance=ExtResource("11_3246c")]
+position = Vector2(544, 576)
+
+[node name="Ports" type="Node" parent="."]
+
+[node name="Port" parent="Ports" instance=ExtResource("13_d5sbr")]
+position = Vector2(288, 464)
+
+[node name="Port2" parent="Ports" instance=ExtResource("13_d5sbr")]
+position = Vector2(800, 464)

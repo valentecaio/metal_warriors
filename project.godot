@@ -88,6 +88,7 @@ button_select={
 2d_physics/layer_11="pilots"
 2d_physics/layer_12="blocks"
 2d_physics/layer_13="destructible_walls"
+2d_physics/layer_14="elevators"
 
 [rendering]
 

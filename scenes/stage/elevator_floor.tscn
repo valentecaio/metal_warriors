@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://d4c737inwfr5j"]
+
+[ext_resource type="Texture2D" uid="uid://b60updayth6g4" path="res://assets/stage/elevator_floor.png" id="1_coy0h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5ti3"]
+atlas = ExtResource("1_coy0h")
+region = Rect2(0, 0, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oygkq"]
+atlas = ExtResource("1_coy0h")
+region = Rect2(0, 17, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jg6is"]
+atlas = ExtResource("1_coy0h")
+region = Rect2(0, 34, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w75km"]
+atlas = ExtResource("1_coy0h")
+region = Rect2(0, 51, 64, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jfjmj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5ti3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oygkq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jg6is")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w75km")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jg6is")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w75km")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jg6is")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="ElevatorFloor" type="AnimatedSprite2D"]
+z_index = 5
+sprite_frames = SubResource("SpriteFrames_jfjmj")
+autoplay = "default"

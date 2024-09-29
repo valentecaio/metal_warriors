@@ -34,7 +34,7 @@ const mine_scene = preload("res://scenes/bullets/aerial_mine.tscn")
 var time_to_next_mine := 0.0
 
 # blocks
-const block_scene = preload("res://scenes/block.tscn")
+const block_scene = preload("res://scenes/stage/block.tscn")
 
 # state variables
 var shooting := false
@@ -172,6 +172,7 @@ func process_block_build(delta, _dir):
     # create block
     var block = block_scene.instantiate()
     block.position = block_building_area_2d.global_position
+    block.type = Global.BlockType.BrownGreen
     get_parent().add_child(block)
     # clip block to multiple of 16 (with 8 offset)
     block.position.x = 8 + int(block.position.x/16) * 16
