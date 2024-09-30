@@ -3194,7 +3194,7 @@ sources/0 = SubResource("TileSetAtlasSource_lcdmr")
 [node name="MapSpaceStation" type="Node2D"]
 
 [node name="Pilot" parent="." instance=ExtResource("6_cpfsb")]
-position = Vector2(536, 597)
+position = Vector2(583, 605)
 
 [node name="Camera2D" type="Camera2D" parent="Pilot"]
 zoom = Vector2(3, 3)
@@ -3217,6 +3217,7 @@ position = Vector2(450, 626)
 
 [node name="Nitro" parent="Robots" instance=ExtResource("2_7y4d2")]
 position = Vector2(645, 620)
+init_boarded = true
 
 [node name="Prometheus" parent="Robots" instance=ExtResource("3_a3a4b")]
 position = Vector2(478, 466)
@@ -3462,7 +3463,7 @@ type = 8
 [node name="Elevators" type="Node" parent="."]
 
 [node name="Elevator" parent="Elevators" instance=ExtResource("10_afqlp")]
-position = Vector2(544, 588)
+position = Vector2(544, 592)
 
 [node name="ElevatorFloor" parent="Elevators" instance=ExtResource("12_qun11")]
 position = Vector2(544, 616)

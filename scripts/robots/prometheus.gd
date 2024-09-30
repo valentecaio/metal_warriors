@@ -54,7 +54,7 @@ func _physics_process(delta):
     State.UNBOARDED:
       process_unboarded(delta, dir)
     State.DEAD:
-      pass
+      apply_gravity(delta)
     State.FALL:
       process_fall(delta, dir)
     State.FLAMETHROWER:

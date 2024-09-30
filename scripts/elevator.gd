@@ -5,7 +5,7 @@ extends AnimatableBody2D
 # properties defined in the editor
 @export var type := Global.ElevatorType.Metal
 @export var speed := 60        ## movement speed (pixels per second)
-@export var max_height := 446  ## max delta height (pixels)
+@export var max_height := 448  ## max delta height (pixels)
 @export var stop_time := 1.0   ## time to wait at the top/bottom (seconds)
 
 enum State {UP, DOWN, STOP}

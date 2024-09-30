@@ -45,6 +45,6 @@ sprite_frames = SubResource("SpriteFrames_eg43b")
 animation = &"metal"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 19.25)
+position = Vector2(0, 18.25)
 shape = SubResource("SegmentShape2D_tjdbo")
 one_way_collision = true

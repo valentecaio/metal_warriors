@@ -30,12 +30,14 @@ enum State {
 
 # scenes
 const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
+const remote_shield_scene = preload("res://scenes/stage/remote_shield.tscn")
 
 # state variables
 var cannon_animation := "idle"
 var shooting := false
 var time_to_next_shot := 0.0 # time until next bullet can be shot
 var last_y_velocity := 0.0   # last y velocity before colliding with floor
+var remote_shield = null     # pointer to dropped remote shield
 
 
 
@@ -50,7 +52,7 @@ func _physics_process(delta):
     State.UNBOARDED:
       process_unboarded(delta, dir)
     State.DEAD:
-      pass
+      apply_gravity(delta)
     State.JUMP:
       process_jump(delta, dir)
     State.FALL:
@@ -79,6 +81,7 @@ func process_walk(delta, dir):
   move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
   process_shoot(delta)
+  process_shield_drop()
 
   # walk animation
   if dir.x:
@@ -111,6 +114,7 @@ func process_jump(delta, dir):
   move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
   process_shoot(delta)
+  process_shield_drop()
 
   # check if should go to fall of fly state
   if not body_animated_sprite.is_playing():
@@ -125,6 +129,7 @@ func process_fall(delta, dir):
   move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
   process_shoot(delta)
+  process_shield_drop()
 
   # check fly button
   if Input.is_action_pressed("button_south"):
@@ -144,6 +149,7 @@ func process_fly(delta, dir):
   move_with_inertia(delta, dir, max_fly_speed)
   apply_gravity(delta)
   process_shoot(delta)
+  process_shield_drop()
 
   # state is locked while button is pressed
   if Input.is_action_pressed("button_south"):
@@ -160,6 +166,7 @@ func process_land(delta, dir):
   move_with_inertia(delta, dir, max_fly_speed)
   apply_gravity(delta)
   process_shoot(delta)
+  process_shield_drop()
 
   # go back to walk state after "land" animation ends
   if not body_animated_sprite.is_playing():
@@ -199,6 +206,19 @@ func process_shoot(delta):
     time_to_next_shot = 1.0/bullet.fire_frequency
   else:
     cannon_animation = "idle"
+
+
+func process_shield_drop():
+  # check drop shield button
+  if Input.is_action_just_pressed("button_north"):
+    # destroy existing shield
+    if remote_shield != null:
+      remote_shield.queue_free()
+      remote_shield = null
+    # drop new shield
+    remote_shield = remote_shield_scene.instantiate()
+    remote_shield.position = global_position
+    get_parent().add_child(remote_shield)
 
 
 func process_aim(delta, dir):

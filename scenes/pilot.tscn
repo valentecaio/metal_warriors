@@ -269,7 +269,7 @@ _data = {
 [node name="Pilot" type="CharacterBody2D"]
 z_index = 30
 collision_layer = 1024
-collision_mask = 11008
+collision_mask = 27392
 script = ExtResource("1_3uei5")
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]

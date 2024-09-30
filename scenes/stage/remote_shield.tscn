@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://vb4d6k706ba2"]
+
+[ext_resource type="Texture2D" uid="uid://bo2fh4bhvj5m4" path="res://assets/robots/nitro.png" id="1_1h4g4"]
+[ext_resource type="Script" path="res://scripts/remote_shield.gd" id="1_3qeap"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtped"]
+atlas = ExtResource("1_1h4g4")
+region = Rect2(647, 389, 126, 126)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6h81h"]
+atlas = ExtResource("1_1h4g4")
+region = Rect2(776, 389, 126, 126)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_up4tv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gtped")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6h81h")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_valdm"]
+radius = 4.0
+
+[node name="RemoteShield" type="StaticBody2D"]
+z_index = 9
+collision_layer = 16384
+collision_mask = 0
+script = ExtResource("1_3qeap")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_up4tv")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_valdm")
