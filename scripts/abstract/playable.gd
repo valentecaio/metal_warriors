@@ -8,7 +8,7 @@ func custom_class_name(): return "Playable"
 @onready var body_collision_shape = $BodyCollisionShape2D
 
 # properties defined in the editor
-@export var acceleration := 2.0
+@export var acceleration := 1.5
 @export var friction := 2000
 
 # state variables

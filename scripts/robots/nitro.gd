@@ -10,7 +10,8 @@ func custom_class_name(): return "Nitro"
 @export var aim_speed := 150
 @export var max_walk_speed := 200
 @export var max_fly_speed := 300
-@export var jump_speed := -350
+@export var jump_speed := 350           ## controls the height of jump
+@export var land_threshold_speed := 350 ## speed to trigger landing animation
 # @export var acceleration := 2.0
 # @export var friction := 2000
 
@@ -27,13 +28,14 @@ enum State {
   SWORD,     # sword attack
 }
 
-# bullets
+# scenes
 const bullet_scene = preload("res://scenes/bullets/fusion_rifle.tscn")
-var time_to_next_shot := 0.0
 
 # state variables
 var cannon_animation := "idle"
 var shooting := false
+var time_to_next_shot := 0.0 # time until next bullet can be shot
+var last_y_velocity := 0.0   # last y velocity before colliding with floor
 
 
 
@@ -68,6 +70,7 @@ func _physics_process(delta):
   # cannon animation is set only once per loop
   cannon_animated_sprite.play("shoot" if shooting else cannon_animation)
 
+  last_y_velocity = velocity.y
   move_and_slide()
 
 
@@ -75,7 +78,6 @@ func process_walk(delta, dir):
   # print("process_walk()")
   move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
-
   process_shoot(delta)
 
   # walk animation
@@ -108,12 +110,10 @@ func process_jump(delta, dir):
   # print("process_jump()")
   move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
-
   process_shoot(delta)
 
   # check if should go to fall of fly state
-  # TODO: should be done at animation end callback
-  if velocity.y >= 0:
+  if not body_animated_sprite.is_playing():
     if Input.is_action_pressed("button_south"):
       return set_state(State.FLY)
     else:
@@ -124,7 +124,6 @@ func process_fall(delta, dir):
   # print("process_fall()")
   move_with_inertia(delta, dir, max_walk_speed)
   apply_gravity(delta)
-
   process_shoot(delta)
 
   # check fly button
@@ -133,14 +132,17 @@ func process_fall(delta, dir):
 
   # check landing
   if is_on_floor():
-    return set_state(State.LAND)
+    # only trigger landing animation if falling from a considerable height
+    if last_y_velocity >= jump_speed:
+      return set_state(State.LAND)
+    else:
+      return set_state(State.WALK)
 
 
 func process_fly(delta, dir):
   # print("process_fly()")
   move_with_inertia(delta, dir, max_fly_speed)
   apply_gravity(delta)
-
   process_shoot(delta)
 
   # state is locked while button is pressed
@@ -152,20 +154,16 @@ func process_fly(delta, dir):
     if velocity.y >= 0:
       return set_state(State.FALL)
 
-    # check landing
-    if is_on_floor():
-      return set_state(State.LAND)
-
 
 func process_land(delta, dir):
   # print("process_land()")
   move_with_inertia(delta, dir, max_fly_speed)
   apply_gravity(delta)
-
   process_shoot(delta)
 
-  # TODO: should be done at animation end callback
-  set_state(State.WALK)
+  # go back to walk state after "land" animation ends
+  if not body_animated_sprite.is_playing():
+    set_state(State.WALK)
 
 
 func process_shield(delta, dir):
@@ -250,7 +248,7 @@ func set_state(new_state):
       shield_collision_shape.disabled = true
       body_animated_sprite.play("idle_on")
     State.JUMP:
-      velocity.y = jump_speed
+      velocity.y = -jump_speed
       body_animated_sprite.play("jump")
     State.FALL:
       body_animated_sprite.play("fall")
