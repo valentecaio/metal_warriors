@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=3 uid="uid://bkogojhciuxc6"]
+[gd_scene load_steps=98 format=3 uid="uid://bkogojhciuxc6"]
 
 [ext_resource type="Texture2D" uid="uid://djk16ha3u2o0u" path="res://assets/robots/prometheus.png" id="1_2v82f"]
 [ext_resource type="Script" path="res://scripts/robots/prometheus.gd" id="1_ng5p2"]
@@ -741,7 +741,10 @@ animations = [{
 size = Vector2(30, 28.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ghc1"]
-size = Vector2(7, 7)
+size = Vector2(9, 9)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1dmef"]
+radius = 12.0
 
 [node name="Prometheus" type="CharacterBody2D"]
 z_index = 11
@@ -752,7 +755,7 @@ friction = 4000
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_a34u6")
-animation = &"idle_on"
+animation = &"fire_loop"
 autoplay = "idle_on"
 
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
@@ -768,17 +771,25 @@ sprite_frames = SubResource("SpriteFrames_a765p")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="BoardingArea2D" type="Area2D" parent="."]
+[node name="BoardingArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BoardingArea2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoardingArea"]
 position = Vector2(0, 2.25)
 shape = SubResource("RectangleShape2D_pydbi")
 debug_color = Color(0, 1, 0, 0.117647)
 
-[node name="BlockBuildingArea2D" type="Area2D" parent="."]
+[node name="BlockBuildingArea" type="Area2D" parent="."]
 position = Vector2(24, 24)
 collision_layer = 0
 collision_mask = 2304
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BlockBuildingArea2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BlockBuildingArea"]
 shape = SubResource("RectangleShape2D_0ghc1")
+
+[node name="FireArea" type="Area2D" parent="."]
+position = Vector2(39, -4)
+collision_layer = 512
+collision_mask = 7423
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FireArea"]
+shape = SubResource("CapsuleShape2D_1dmef")

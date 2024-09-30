@@ -48,6 +48,6 @@ animations = [{
 }]
 
 [node name="ElevatorFloor" type="AnimatedSprite2D"]
-z_index = 5
+z_index = 4
 sprite_frames = SubResource("SpriteFrames_jfjmj")
 autoplay = "default"

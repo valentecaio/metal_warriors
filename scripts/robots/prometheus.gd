@@ -4,12 +4,16 @@ func custom_class_name(): return "Prometheus"
 
 @onready var cannon = $Cannon
 @onready var cannon_animated_sprite = $Cannon/CannonAnimatedSprite2D
-@onready var boarding_area = $BoardingArea2D
-@onready var block_building_area_2d = $BlockBuildingArea2D
+@onready var boarding_area = $BoardingArea
+@onready var block_building_area = $BlockBuildingArea
+@onready var fire_area = $FireArea
+
 
 # properties defined in the editor
 @export var aim_speed := 150
 @export var max_walk_speed := 80
+@export var fire_damage := 100
+@export var fire_damage_frequency := 2 # hits per second
 # @export var acceleration := 2.0
 # @export var friction := 4000
 
@@ -24,20 +28,18 @@ enum State {
   BLOCKBUILD,   # block building animation
 }
 
-# bullets
+# scenes
 const bullet_scene = preload("res://scenes/bullets/mega_cannon.tscn")
-var time_to_next_shot := 0.0
-var bullet = null
-
-# air mines
 const mine_scene = preload("res://scenes/bullets/aerial_mine.tscn")
-var time_to_next_mine := 0.0
-
-# blocks
 const block_scene = preload("res://scenes/stage/block.tscn")
 
 # state variables
-var shooting := false
+var bullet = null             # pointer to current bullet instance
+var shooting := false         # shooting flag
+var time_to_next_shot := 0.0  # time until next shot
+var time_to_next_mine := 0.0  # time until next aerial mine
+var time_to_next_fire_damage := 0.0 # time until next fire damage
+
 
 
 
@@ -142,6 +144,18 @@ func process_flamethrower(delta, dir):
   if dir.x:
     flip_sprites(dir.x < 0)
 
+  # deal damage to enemies in fire area
+  time_to_next_fire_damage -= delta
+  if time_to_next_fire_damage <= 0:
+    time_to_next_fire_damage = 1.0/fire_damage_frequency
+    var bodies = fire_area.get_overlapping_bodies()
+    print("bodies: ", bodies)
+    for body in bodies:
+      if body.has_method("burn"):
+        body.burn(fire_damage)
+      elif body.has_method("hit"):
+        body.hit(fire_damage)
+
   # stop flamethrower when button is released
   if body_animated_sprite.animation == 'fire_loop' and !Input.is_action_pressed("button_east"):
     body_animated_sprite.play("fire_end")
@@ -171,7 +185,7 @@ func process_block_build(delta, _dir):
   if not body_animated_sprite.is_playing():
     # create block
     var block = block_scene.instantiate()
-    block.position = block_building_area_2d.global_position
+    block.position = block_building_area.global_position
     block.type = Global.BlockType.BrownGreen
     get_parent().add_child(block)
     # clip block to multiple of 16 (with 8 offset)
@@ -259,11 +273,13 @@ func flip_sprites(flip):
   if flip:
     cannon.position.x = 5
     cannon_animated_sprite.position.x = -12
-    block_building_area_2d.position.x = -24
+    block_building_area.position.x = -24
+    fire_area.position.x = -39
   else:
     cannon.position.x = -5
     cannon_animated_sprite.position.x = 12
-    block_building_area_2d.position.x = 24
+    block_building_area.position.x = 24
+    fire_area.position.x = 39
 
 
 func set_state(new_state):
@@ -291,4 +307,4 @@ func start_flamethrower():
 
 # check if robot is in a valid position to build a block
 func can_build_block():
-  return not (block_building_area_2d.has_overlapping_bodies() or block_building_area_2d.has_overlapping_areas())
+  return not (block_building_area.has_overlapping_bodies() or block_building_area.has_overlapping_areas())

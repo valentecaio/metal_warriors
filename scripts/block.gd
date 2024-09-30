@@ -15,12 +15,11 @@ func _ready():
 
 ### CALLBACKS ###
 
-# called when a bullet hits this block
-func bullet_hit(bullet):
-  hp -= bullet.damage
+func hit(damage):
+  hp -= damage
   animated_sprite.frame = eval_frame()
+  # disable collisions when destroyed, stay on last frame
   if hp <= 0:
-    # disable collisions
     collision_layer = 0
 
 

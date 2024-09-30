@@ -30,6 +30,7 @@ func _ready():
     body_animated_sprite.play("idle_off")
     set_state(Global.RobotState.UNBOARDED)
 
+
 # all robots have UNBOARDED state
 # wait until a pilot script triggers drive()
 func process_unboarded(delta, _dir):
@@ -52,11 +53,18 @@ func drive(new_pilot):
   await body_animated_sprite.animation_finished
   set_state(Global.RobotState.DEFAULT)
 
-# called by bullet on hit
-func bullet_hit(bullet):
-  hp -= bullet.damage
+
+# called by bullet/fire/power_dive on hit
+func hit(damage):
+  hp -= damage
   if hp <= 0:
     explode()
+
+
+func burn(damage):
+  hit(damage)
+  print("burning")
+  # TODO: burn animation
 
 
 
@@ -69,6 +77,7 @@ func eject_pilot():
   body_animated_sprite.play("power_off")
   await body_animated_sprite.animation_finished
   set_state(Global.RobotState.UNBOARDED)
+
 
 # start explosion animation, go to dead state and delete robot
 func explode():
