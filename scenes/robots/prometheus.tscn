@@ -755,7 +755,7 @@ friction = 4000
 
 [node name="BodyAnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_a34u6")
-animation = &"fire_loop"
+animation = &"idle_on"
 autoplay = "idle_on"
 
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
@@ -793,3 +793,4 @@ collision_mask = 7423
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FireArea"]
 shape = SubResource("CapsuleShape2D_1dmef")
+debug_color = Color(1, 0, 0, 0.196078)

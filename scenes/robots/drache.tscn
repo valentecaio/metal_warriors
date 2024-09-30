@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://0vhoym1v8uqs"]
+[gd_scene load_steps=58 format=3 uid="uid://0vhoym1v8uqs"]
 
 [ext_resource type="Script" path="res://scripts/robots/drache.gd" id="1_xq8l0"]
 [ext_resource type="Texture2D" uid="uid://skao7pm1u88e" path="res://assets/robots/drache.png" id="2_eevej"]
@@ -416,10 +416,14 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o3b4k"]
 radius = 14.0
-height = 38.0
+height = 36.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_it6ch"]
 size = Vector2(38, 19)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_nmco1"]
+a = Vector2(0, -12)
+b = Vector2(0, 12)
 
 [node name="Drache" type="CharacterBody2D"]
 z_index = 10
@@ -445,6 +449,7 @@ sprite_frames = SubResource("SpriteFrames_g5o30")
 autoplay = "default"
 
 [node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
 rotation = -3.14159
 shape = SubResource("CapsuleShape2D_o3b4k")
 disabled = true
@@ -456,3 +461,13 @@ debug_color = Color(1, 0, 0, 0.27451)
 position = Vector2(0, 5.5)
 shape = SubResource("RectangleShape2D_it6ch")
 debug_color = Color(0, 1, 0, 0.117647)
+
+[node name="PowerDiveArea2D" type="Area2D" parent="."]
+position = Vector2(0, 19)
+collision_layer = 512
+collision_mask = 7423
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PowerDiveArea2D"]
+rotation = 1.5708
+shape = SubResource("SegmentShape2D_nmco1")
+debug_color = Color(1, 0, 0, 0.196078)

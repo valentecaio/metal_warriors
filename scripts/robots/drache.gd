@@ -4,9 +4,13 @@ func custom_class_name(): return "Drache"
 
 @onready var shot_animated_sprite = $ShotAnimatedSprite2D
 @onready var shield_collision_shape = $ShieldCollisionShape2D
+@onready var power_dive_area = $PowerDiveArea2D
+
 
 # properties defined in the editor
 @export var max_fly_speed := 250
+@export var power_dive_damage := 100
+@export var power_dive_damage_frequency := 2 # hits per second
 # @export var acceleration := 3.0
 # @export var friction := 600
 
@@ -18,9 +22,12 @@ enum State {
   SHIELD,    # power dive (shield) while holding shield button
 }
 
-# bullets
+# scenes
 const bullet_scene = preload("res://scenes/bullets/energy_cannon.tscn")
-var time_to_next_shot := 0.0
+
+# state variables
+var time_to_next_shot := 0.0   # time until next shot
+var time_to_next_power_dive_damage := 0.0
 
 
 
@@ -53,9 +60,9 @@ func process_fly(delta, dir):
   if dir.x:
     body_animated_sprite.play("move_right")
     flip_sprites(dir.x < 0)
-  elif dir.y > 0:
-    body_animated_sprite.play("move_up")
   elif dir.y < 0:
+    body_animated_sprite.play("move_up")
+  elif dir.y > 0:
     body_animated_sprite.play("move_down")
   else:
     body_animated_sprite.play("idle_on")
@@ -71,10 +78,19 @@ func process_fly(delta, dir):
 
 
 func process_shield(delta, _dir):
-  if Input.is_action_pressed("shoulder_right"):
-    velocity.x = eval_velocity(velocity.x, 0, delta, max_fly_speed)
-    velocity.y = eval_velocity(velocity.y, 1, delta, 2*max_fly_speed)
-  else:
+  velocity.x = eval_velocity(velocity.x, 0, delta, max_fly_speed)
+  velocity.y = eval_velocity(velocity.y, 1, delta, 2*max_fly_speed)
+
+  # deal damage to enemies in power dive area
+  time_to_next_power_dive_damage -= delta
+  if time_to_next_power_dive_damage <= 0:
+    time_to_next_power_dive_damage = 1.0/power_dive_damage_frequency
+    for body in power_dive_area.get_overlapping_bodies():
+      if body.has_method("hit"):
+        body.hit(power_dive_damage)
+
+  # check shield button (released)
+  if not Input.is_action_pressed("shoulder_right"):
     set_state(State.FLY)
 
 

@@ -148,9 +148,7 @@ func process_flamethrower(delta, dir):
   time_to_next_fire_damage -= delta
   if time_to_next_fire_damage <= 0:
     time_to_next_fire_damage = 1.0/fire_damage_frequency
-    var bodies = fire_area.get_overlapping_bodies()
-    print("bodies: ", bodies)
-    for body in bodies:
+    for body in fire_area.get_overlapping_bodies():
       if body.has_method("burn"):
         body.burn(fire_damage)
       elif body.has_method("hit"):
