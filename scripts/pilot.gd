@@ -6,12 +6,9 @@ func custom_class_name(): return "Pilot"
 @onready var area_2d = $Area2D
 
 # properties defined in the editor
-@export var aim_speed := 150
+@export_range(1, 4) var id := 1 ## player identifier
 @export var max_walk_speed := 100
 @export var max_fly_speed := 200
-@export var jump_speed := -350
-# @export var acceleration := 2.0
-# @export var friction := 2000
 
 # main state machine
 enum State {
@@ -77,11 +74,15 @@ func process_walk(delta, dir):
   if Input.is_action_pressed("button_south"):
     return set_state(State.FLY)
 
-  # check if there is a robot touching the player and board it
+  # check if there is an empty robot touching the player and board it
   if Input.is_action_just_pressed("button_select"):
     for area in area_2d.get_overlapping_areas():
-      robot = area.get_parent()
-      return set_state(State.ROBOT)
+      var obj = area.get_parent()
+      if obj.has_method("is_empty_robot") and obj.is_empty_robot():
+        robot = obj
+        set_state(State.ROBOT)
+        board()
+
 
 
 func process_fly(delta, dir):
@@ -146,8 +147,6 @@ func set_state(new_state):
       body_animated_sprite.play("idle")
     State.FLY:
       body_animated_sprite.play("fly")
-    State.ROBOT:
-      board()
 
 
 
@@ -166,10 +165,11 @@ func eject():
 
 ### HELPERS ###
 
-# board robot animation
+# board robot, play 'board' animation, then start robot
 func board():
+  robot.board(self)
   body_collision_shape.disabled = true
   body_animated_sprite.play("fly")
   animation_player.play("board")
   await animation_player.animation_finished
-  robot.drive(self)
+  robot.start()

@@ -32,7 +32,7 @@ func _ready():
 
 
 # all robots have UNBOARDED state
-# wait until a pilot script triggers drive()
+# wait until a pilot script triggers start()
 func process_unboarded(delta, _dir):
   move_with_inertia(delta, Vector2.ZERO, 500)
   apply_gravity(delta)
@@ -41,26 +41,29 @@ func process_unboarded(delta, _dir):
 
 ### CALLBACKS ###
 
-# called by pilot script after boarding robot
-func drive(new_pilot):
-  print(custom_class_name() + " boarded")
+# called by pilot script BEFORE boarding robot
+func board(new_pilot):
   if pilot != null:
     return # robot already occupied
-
-  # start robot
   pilot = new_pilot
+  print(custom_class_name(), " boarded by player ", pilot.id)
+
+
+# called by pilot script AFTER boarding robot
+func start():
   body_animated_sprite.play("power_on")
   await body_animated_sprite.animation_finished
   set_state(Global.RobotState.DEFAULT)
 
 
-# called by bullet/fire/power_dive on hit
+# called by bullet/power_dive on hit
 func hit(damage):
   hp -= damage
   if hp <= 0:
     explode()
 
 
+# called by prometheus fire on hit
 func burn(damage):
   hit(damage)
   print("burning")
@@ -90,3 +93,7 @@ func explode():
   set_state(Global.RobotState.DEAD)
   await body_animated_sprite.animation_finished
   queue_free()
+
+
+func is_empty_robot():
+  return state == Global.RobotState.UNBOARDED and pilot == null
