@@ -3193,34 +3193,27 @@ sources/0 = SubResource("TileSetAtlasSource_lcdmr")
 
 [node name="MapSpaceStation" type="Node2D"]
 
-[node name="Pilot" parent="." instance=ExtResource("6_cpfsb")]
-position = Vector2(583, 605)
+[node name="Players" type="Node" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="Pilot"]
+[node name="Player1" parent="Players" instance=ExtResource("6_cpfsb")]
+position = Vector2(279, 330)
+
+[node name="Camera2D" type="Camera2D" parent="Players/Player1"]
 zoom = Vector2(3, 3)
 
-[node name="Background" type="TextureRect" parent="."]
-show_behind_parent = true
-offset_top = -8.0
-offset_right = 1088.0
-offset_bottom = 661.0
-texture = ExtResource("2_7p05h")
-
-[node name="Music" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_kdisv")
-autoplay = true
+[node name="Player2" parent="Players" instance=ExtResource("6_cpfsb")]
+position = Vector2(798, 328)
 
 [node name="Robots" type="Node" parent="."]
 
 [node name="Drache" parent="Robots" instance=ExtResource("1_fra3j")]
-position = Vector2(450, 626)
+position = Vector2(228, 320)
 
 [node name="Nitro" parent="Robots" instance=ExtResource("2_7y4d2")]
-position = Vector2(645, 620)
-init_boarded = true
+position = Vector2(856, 316)
 
 [node name="Prometheus" parent="Robots" instance=ExtResource("3_a3a4b")]
-position = Vector2(478, 466)
+position = Vector2(433, 145)
 
 [node name="TileMaps" type="Node" parent="."]
 
@@ -3499,3 +3492,14 @@ position = Vector2(288, 464)
 
 [node name="Port2" parent="Ports" instance=ExtResource("13_d5sbr")]
 position = Vector2(800, 464)
+
+[node name="Background" type="TextureRect" parent="."]
+show_behind_parent = true
+offset_top = -8.0
+offset_right = 1088.0
+offset_bottom = 661.0
+texture = ExtResource("2_7p05h")
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_kdisv")
+autoplay = true

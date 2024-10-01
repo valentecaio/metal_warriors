@@ -14,6 +14,7 @@ config/name="Metal Warriors"
 run/main_scene="res://scenes/maps/space_station.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://assets/icon.png"
+config/size/initial_position_type=1
 
 [autoload]
 
