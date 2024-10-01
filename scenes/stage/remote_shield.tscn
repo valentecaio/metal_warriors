@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://vb4d6k706ba2"]
 
 [ext_resource type="Texture2D" uid="uid://bo2fh4bhvj5m4" path="res://assets/robots/nitro.png" id="1_1h4g4"]
-[ext_resource type="Script" path="res://scripts/remote_shield.gd" id="1_3qeap"]
+[ext_resource type="Script" path="res://scripts/stage/remote_shield.gd" id="1_3qeap"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gtped"]
 atlas = ExtResource("1_1h4g4")
