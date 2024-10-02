@@ -59,3 +59,10 @@ var elevator_type_names = {
   ElevatorType.Wood: "wood",
   ElevatorType.Metal: "metal",
 }
+
+var colour_materials = [
+  load("res://scenes/shader_material/red.tres"),
+  load("res://scenes/shader_material/blue.tres"),
+  load("res://scenes/shader_material/green.tres"),
+  load("res://scenes/shader_material/yellow.tres"),
+]

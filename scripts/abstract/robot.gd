@@ -46,6 +46,7 @@ func board(new_pilot):
   if pilot != null:
     return # robot already occupied
   pilot = new_pilot
+  set_colour(Global.colour_materials[pilot.id-1])
   print(custom_class_name(), " boarded by player ", pilot.id)
 
 
@@ -97,3 +98,8 @@ func explode():
 
 func is_empty_robot():
   return state == Global.RobotState.UNBOARDED and pilot == null
+
+
+# change robot colour palette
+func set_colour(colour_material):
+  body_animated_sprite.material = colour_material

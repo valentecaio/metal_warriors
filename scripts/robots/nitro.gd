@@ -260,6 +260,11 @@ func flip_sprites(flip):
     cannon_animated_sprite.position.x = 10.5
 
 
+func set_colour(colour_material):
+  body_animated_sprite.material = colour_material
+  cannon_animated_sprite.material = colour_material
+
+
 func set_state(new_state):
   state = new_state
   cannon.visible = state not in [State.SHIELD, State.UNBOARDED, State.DEAD]

@@ -280,6 +280,11 @@ func flip_sprites(flip):
     fire_area.position.x = 39
 
 
+func set_colour(colour_material):
+  body_animated_sprite.material = colour_material
+  cannon_animated_sprite.material = colour_material
+
+
 func set_state(new_state):
   state = new_state
   cannon.visible = state in [State.WALK, State.FALL]

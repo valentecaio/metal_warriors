@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://bwfl1nb6tjaiq" path="res://assets/music/08 The Enemy Commander.mp3" id="3_kdisv"]
 [ext_resource type="PackedScene" uid="uid://dr1pag2aac1t5" path="res://scenes/pilot.tscn" id="6_cpfsb"]
 [ext_resource type="Texture2D" uid="uid://btxnnjguomnu6" path="res://assets/maps/space_station/240926-184325.png" id="7_pvowr"]
-[ext_resource type="Script" path="res://scripts/destructible_walls.gd" id="8_362ry"]
+[ext_resource type="Script" path="res://scripts/stage/destructible_walls.gd" id="8_362ry"]
 [ext_resource type="PackedScene" uid="uid://dlgw1dl4nnauh" path="res://scenes/stage/block.tscn" id="8_s6wkr"]
 [ext_resource type="PackedScene" uid="uid://dfob2xq5b2i13" path="res://scenes/stage/elevator.tscn" id="10_afqlp"]
 [ext_resource type="PackedScene" uid="uid://cvwwgboxq5xiw" path="res://scenes/stage/elevator_bg.tscn" id="11_3246c"]
@@ -3196,21 +3196,23 @@ sources/0 = SubResource("TileSetAtlasSource_lcdmr")
 [node name="Players" type="Node" parent="."]
 
 [node name="Player1" parent="Players" instance=ExtResource("6_cpfsb")]
-position = Vector2(279, 330)
+position = Vector2(423, 329)
+id = 3
 
 [node name="Camera2D" type="Camera2D" parent="Players/Player1"]
 zoom = Vector2(3, 3)
 
 [node name="Player2" parent="Players" instance=ExtResource("6_cpfsb")]
 position = Vector2(798, 328)
+id = 2
 
 [node name="Robots" type="Node" parent="."]
 
+[node name="Nitro" parent="Robots" instance=ExtResource("2_7y4d2")]
+position = Vector2(336, 314)
+
 [node name="Drache" parent="Robots" instance=ExtResource("1_fra3j")]
 position = Vector2(228, 320)
-
-[node name="Nitro" parent="Robots" instance=ExtResource("2_7y4d2")]
-position = Vector2(856, 316)
 
 [node name="Prometheus" parent="Robots" instance=ExtResource("3_a3a4b")]
 position = Vector2(433, 145)
