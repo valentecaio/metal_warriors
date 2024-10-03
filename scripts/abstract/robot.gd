@@ -6,12 +6,14 @@ func custom_class_name(): return "Robot"
 
 # properties defined in the editor
 @export var init_boarded := false  # start boarded, for debug
-@export var hp := 1000
+@export var max_hp := 1000
 
 # state variables
 var pilot = null
 var state := 0
-
+var hp := max_hp
+var body_material = null
+var damage_ratio = 0.0
 
 
 ### VIRTUALS ###
@@ -46,7 +48,7 @@ func board(new_pilot):
   if pilot != null:
     return # robot already occupied
   pilot = new_pilot
-  set_colour(Global.colour_materials[pilot.id-1])
+  update_sprite_material()
   print(custom_class_name(), " boarded by player ", pilot.id)
 
 
@@ -60,6 +62,12 @@ func start():
 # called by bullet/power_dive on hit
 func hit(damage):
   hp -= damage
+  damage_ratio = 1 - float(hp)/max_hp
+  # TODO:
+  # < 0.7: blend sprite with damage colours -> DONE
+  # > 0.7: add fire sprite
+  # > 0.9: remove cannon
+  update_sprite_material()
   if hp <= 0:
     explode()
 
@@ -97,9 +105,14 @@ func explode():
 
 
 func is_empty_robot():
-  return state == Global.RobotState.UNBOARDED and pilot == null
+  return (state == Global.RobotState.UNBOARDED) and (pilot == null)
 
 
 # change robot colour palette
-func set_colour(colour_material):
-  body_animated_sprite.material = colour_material
+func update_sprite_material():
+  if pilot == null:
+    return
+  body_material = load(Global.colour_materials[pilot.id-1])
+  var shader_ratio = clamp(damage_ratio / 0.7, 0.0, 1.0)
+  body_material.set("shader_param/damage_percent", shader_ratio);
+  body_animated_sprite.material = body_material

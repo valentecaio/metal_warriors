@@ -61,8 +61,8 @@ var elevator_type_names = {
 }
 
 var colour_materials = [
-  load("res://scenes/shader_material/red.tres"),
-  load("res://scenes/shader_material/blue.tres"),
-  load("res://scenes/shader_material/green.tres"),
-  load("res://scenes/shader_material/yellow.tres"),
+  "res://scenes/shader_material/red.tres",
+  "res://scenes/shader_material/blue.tres",
+  "res://scenes/shader_material/green.tres",
+  "res://scenes/shader_material/yellow.tres",
 ]

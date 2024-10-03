@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://df433se5ajrkd"]
+
+[ext_resource type="Shader" path="res://shaders/robot.gdshader" id="1_cfe2a"]
+[ext_resource type="Texture2D" uid="uid://bpviyoa1y6ut3" path="res://assets/palettes/red.png" id="2_apata"]
+[ext_resource type="Texture2D" uid="uid://cyc8nmhkv1pwj" path="res://assets/palettes/damage.png" id="3_waem4"]
+
+[resource]
+shader = ExtResource("1_cfe2a")
+shader_parameter/skip_first_row = true
+shader_parameter/damage_percent = 0.0
+shader_parameter/palette = ExtResource("2_apata")
+shader_parameter/palette_damage = ExtResource("3_waem4")

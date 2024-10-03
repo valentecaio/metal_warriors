@@ -1,11 +1,12 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://co11xoflg6a2h"]
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://co11xoflg6a2h"]
 
-[ext_resource type="Shader" path="res://addons/PaletteSwap/PaletteSwap.gdshader" id="1_vrpln"]
-[ext_resource type="Texture2D" uid="uid://536jqbckcnt5" path="res://assets/palettes/blue.png" id="2_eqiug"]
+[ext_resource type="Shader" path="res://shaders/robot.gdshader" id="1_vrpln"]
+[ext_resource type="Texture2D" uid="uid://536jqbckcnt5" path="res://assets/palettes/blue.png" id="2_d3fvw"]
+[ext_resource type="Texture2D" uid="uid://cyc8nmhkv1pwj" path="res://assets/palettes/damage.png" id="3_b2deb"]
 
 [resource]
 shader = ExtResource("1_vrpln")
 shader_parameter/skip_first_row = true
-shader_parameter/use_palette_alpha = false
-shader_parameter/fps = 6.0
-shader_parameter/palette = ExtResource("2_eqiug")
+shader_parameter/damage_percent = 0.0
+shader_parameter/palette = ExtResource("2_d3fvw")
+shader_parameter/palette_damage = ExtResource("3_b2deb")

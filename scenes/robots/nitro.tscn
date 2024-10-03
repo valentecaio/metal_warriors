@@ -488,10 +488,12 @@ sprite_frames = SubResource("SpriteFrames_t168q")
 animation = &"walk"
 
 [node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_xfchl")
 
 [node name="BoardingArea2D" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BoardingArea2D"]
 position = Vector2(0, 8)
@@ -499,6 +501,7 @@ shape = SubResource("RectangleShape2D_vl6o3")
 debug_color = Color(0, 1, 0, 0.117647)
 
 [node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(15, -1)
 shape = SubResource("CapsuleShape2D_sb244")
 disabled = true
